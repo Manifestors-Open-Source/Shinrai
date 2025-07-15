@@ -1,8 +1,8 @@
 package com.manifestors.shinrai.client.utils
 
-import net.minecraft.client.Minecraft
+import net.minecraft.client.MinecraftClient
 
 interface MinecraftInstance {
-    val mc: Minecraft
-        get() = Minecraft.getInstance()
+    val mc: MinecraftClient
+        get() = MinecraftClient.getInstance()
 }
