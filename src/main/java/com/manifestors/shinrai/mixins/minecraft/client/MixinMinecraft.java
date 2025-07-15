@@ -2,48 +2,50 @@ package com.manifestors.shinrai.mixins.minecraft.client;
 
 import com.manifestors.shinrai.client.Shinrai;
 import net.minecraft.SharedConstants;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.resources.language.I18n;
-import net.minecraft.client.server.IntegratedServer;
+import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.network.ClientPlayNetworkHandler;
+import net.minecraft.client.network.ServerInfo;
+import net.minecraft.client.resource.language.I18n;
+import net.minecraft.server.integrated.IntegratedServer;
 import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
 
-@Mixin(Minecraft.class)
+@Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft {
 
     @Shadow
-    public abstract ClientPacketListener getConnection();
+    public abstract ClientPlayNetworkHandler getNetworkHandler();
     @Shadow
-    public abstract ServerData getCurrentServer();
+    public abstract ServerInfo getCurrentServerEntry();
     @Shadow
-    public abstract IntegratedServer getSingleplayerServer();
+    public abstract IntegratedServer getServer();
 
     /**
      * @author meto1558
      * @reason Change title
-     */
+    */
     @Overwrite
-    private @NotNull String createTitle() {
+    private @NotNull String getWindowTitle() {
         StringBuilder stringBuilder = new StringBuilder(Shinrai.INSTANCE.getFullVersion());
+
         stringBuilder.append(" ");
-        ClientPacketListener clientPacketListener = this.getConnection();
-        if (clientPacketListener != null && clientPacketListener.getConnection().isConnected()) {
+        stringBuilder.append(SharedConstants.getGameVersion().name());
+        var clientPlayNetworkHandler = this.getNetworkHandler();
+        if (clientPlayNetworkHandler != null && clientPlayNetworkHandler.getConnection().isOpen()) {
             stringBuilder.append(" - ");
-            ServerData serverData = this.getCurrentServer();
-            if (this.getSingleplayerServer() != null && !this.getSingleplayerServer().isPublished()) {
-                stringBuilder.append(I18n.get("title.singleplayer"));
-            } else if (this.getSingleplayerServer() == null && (serverData == null || !serverData.isLan())) {
-                stringBuilder.append(I18n.get("title.multiplayer.other"));
+            var serverInfo = this.getCurrentServerEntry();
+            if (this.getServer() != null && !this.getServer().isRemote()) {
+                stringBuilder.append(I18n.translate("title.singleplayer"));
+            } else if (this.getServer() == null && (serverInfo == null || !serverInfo.isLocal())) {
+                stringBuilder.append(I18n.translate("title.multiplayer.other"));
             } else {
-                stringBuilder.append(I18n.get("title.multiplayer.lan"));
+                stringBuilder.append(I18n.translate("title.multiplayer.lan"));
             }
             stringBuilder.append(" ");
         }
-        stringBuilder.append(String.format("[%s]", SharedConstants.getCurrentVersion().name()));
+        stringBuilder.append(String.format("[%s]", SharedConstants.getGameVersion().name()));
 
         return stringBuilder.toString();
     }

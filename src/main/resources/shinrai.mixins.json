@@ -5,7 +5,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "minecraft.client.MixinMinecraft",
-    "blaze3d.platform.MixinWindow"
+    "minecraft.util.MixinWindow"
   ],
   "injectors": {
     "defaultRequire": 1

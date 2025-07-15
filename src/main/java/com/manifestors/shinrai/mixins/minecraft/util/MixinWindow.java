@@ -1,10 +1,10 @@
-package com.manifestors.shinrai.mixins.blaze3d.platform;
+package com.manifestors.shinrai.mixins.minecraft.util;
 
 import com.manifestors.shinrai.client.Shinrai;
-import com.mojang.blaze3d.platform.IconSet;
-import com.mojang.blaze3d.platform.Window;
-import net.minecraft.server.packs.PackResources;
-import net.minecraft.server.packs.resources.IoSupplier;
+import net.minecraft.client.util.Icons;
+import net.minecraft.client.util.Window;
+import net.minecraft.resource.InputSupplier;
+import net.minecraft.resource.ResourcePack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -16,13 +16,13 @@ import java.util.List;
 @Mixin(Window.class)
 public class MixinWindow {
 
-    @Redirect(method = "setIcon", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/IconSet;getStandardIcons(Lnet/minecraft/server/packs/PackResources;)Ljava/util/List;"))
-    private List<IoSupplier<InputStream>> changeIconPath(IconSet instance, PackResources resources) throws IOException {
+    @Redirect(method = "setIcon", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/util/Icons;getIcons(Lnet/minecraft/resource/ResourcePack;)Ljava/util/List;"))
+    private List<InputSupplier<InputStream>> changeIconPath(Icons instance, ResourcePack resources) throws IOException {
         InputStream icon16 = Shinrai.class.getResourceAsStream("/assets/shinrai/icon_16x16.png");
         InputStream icon32 = Shinrai.class.getResourceAsStream("/assets/shinrai/icon_32x32.png");
 
         if (icon16 == null || icon32 == null)
-            return instance.getStandardIcons(resources);
+            return instance.getIcons(resources);
 
         return List.of(() -> icon16, () -> icon32);
     }

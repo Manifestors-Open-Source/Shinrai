@@ -1,6 +1,8 @@
 package com.manifestors.shinrai.client
 
-object Shinrai {
+import com.manifestors.shinrai.client.utils.logging.LoggerInstance
+
+object Shinrai : LoggerInstance {
 
     const val NAME = "Shinrai"
     const val VERSION = "1.0.0"
@@ -11,4 +13,5 @@ object Shinrai {
         val nameAndVersion = "$NAME $VERSION"
         return if (IN_DEV) "$nameAndVersion (Development)" else nameAndVersion
     }
+
 }
