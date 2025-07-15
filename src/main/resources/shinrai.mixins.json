@@ -1,0 +1,16 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.manifestors.shinrai.mixins",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+    "minecraft.client.MixinMinecraft",
+    "blaze3d.platform.MixinWindow"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  },
+  "overwrites": {
+    "requireAnnotations": true
+  }
+}
