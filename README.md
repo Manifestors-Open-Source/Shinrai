@@ -41,4 +41,5 @@ Let’s make Shinrai even better. 🍁
 
 > “Shinrai” (信頼) means **trust** in Japanese — and we're always trust our community. 💖
 
-<img width="1920" height="658" alt="outbanner" src="https://github.com/user-attachments/assets/3d1279f7-05b1-41c0-853a-6eac7802c03f" />
+<img width="1920" height="658" alt="outbanner2" src="https://github.com/user-attachments/assets/5d539eb6-5d96-4303-877f-a7b7c5b7b2b6" />
+
