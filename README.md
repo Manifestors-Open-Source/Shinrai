@@ -1,5 +1,5 @@
 Choose your language.
-[Türkçe](README.tr.md) | [English](README.en.md) | [日本語](README.jp.md)
+[Turkish](README.tr.md) | [English](README.en.md) | [Japanese](README.jp.md) | [Russian](README.ru.md) | [Arabic](README.ar.md)
 
 # 🍁 Shinrai
 <img width="1920" height="658" alt="shinraibanner" src="https://github.com/user-attachments/assets/6c637b2d-b035-4f3e-a7ae-ca0ff3f2202a" />
