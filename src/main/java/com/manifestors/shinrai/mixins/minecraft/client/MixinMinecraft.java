@@ -11,6 +11,9 @@ import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Overwrite;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
 public abstract class MixinMinecraft {
@@ -31,7 +34,6 @@ public abstract class MixinMinecraft {
         StringBuilder stringBuilder = new StringBuilder(Shinrai.INSTANCE.getFullVersion());
 
         stringBuilder.append(" ");
-        stringBuilder.append(SharedConstants.getGameVersion().name());
         var clientPlayNetworkHandler = this.getNetworkHandler();
         if (clientPlayNetworkHandler != null && clientPlayNetworkHandler.getConnection().isOpen()) {
             stringBuilder.append(" - ");
@@ -48,6 +50,11 @@ public abstract class MixinMinecraft {
         stringBuilder.append(String.format("[%s]", SharedConstants.getGameVersion().name()));
 
         return stringBuilder.toString();
+    }
+
+    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    private void initializeShinrai(CallbackInfo ci) {
+        Shinrai.INSTANCE.initializeShinrai();
     }
 
 }

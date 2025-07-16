@@ -6,5 +6,5 @@ enum class Category {
     PLAYER,
     EXPLOIT,
     VISUALS,
-    EXTRA
+    EXTRAS
 }

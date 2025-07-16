@@ -1,11 +1,13 @@
 package com.manifestors.shinrai.client.module
 
+import com.manifestors.shinrai.client.module.modules.movement.Sprint
+
 class ModuleManager {
 
     val modules = mutableListOf<Module>()
 
     fun registerModules() {
-
+        modules.add(Sprint())
     }
 
     fun getModuleFromName(moduleName: String) = modules.find { it.name.equals(moduleName, true) }

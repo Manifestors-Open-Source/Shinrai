@@ -4,8 +4,10 @@
   "package": "com.manifestors.shinrai.mixins",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "minecraft.util.MixinWindow",
+    "minecraft.client.MixinKeyboard",
     "minecraft.client.MixinMinecraft",
-    "minecraft.util.MixinWindow"
+    "minecraft.client.network.MixinClientPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1

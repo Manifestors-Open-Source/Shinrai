@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.client.module
 
+import com.manifestors.shinrai.client.Shinrai
 import com.manifestors.shinrai.client.utils.MinecraftInstance
 import com.manifestors.shinrai.client.utils.logging.LoggerInstance
 
@@ -14,10 +15,13 @@ open class Module(
 
     fun toggleModule() {
         enabled = !enabled
-        if (enabled)
+        if (enabled) {
+            Shinrai.eventManager.registerListener(this)
             onEnable()
-        else
+        } else {
+            Shinrai.eventManager.unregisterListener(this)
             onDisable()
+        }
     }
 
     open fun onEnable() {}
