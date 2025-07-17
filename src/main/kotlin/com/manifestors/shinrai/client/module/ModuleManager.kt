@@ -10,6 +10,7 @@ class ModuleManager {
     fun registerModules() {
         modules.add(Sprint())
         modules.add(NoFOV())
+        modules.add(NoHurtCam())
     }
 
     fun getModuleFromName(moduleName: String) = modules.find { it.name.equals(moduleName, true) }

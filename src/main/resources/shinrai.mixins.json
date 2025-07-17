@@ -7,6 +7,7 @@
     "minecraft.util.MixinWindow",
     "minecraft.client.MixinKeyboard",
     "minecraft.client.MixinMinecraft",
+    "minecraft.client.render.MixinGameRenderer",
     "minecraft.client.network.MixinClientPlayerEntity",
     "minecraft.client.network.MixinAbstractClientPlayerEntity"
   ],
