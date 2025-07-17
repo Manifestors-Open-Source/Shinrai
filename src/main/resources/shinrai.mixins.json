@@ -7,7 +7,8 @@
     "minecraft.util.MixinWindow",
     "minecraft.client.MixinKeyboard",
     "minecraft.client.MixinMinecraft",
-    "minecraft.client.network.MixinClientPlayerEntity"
+    "minecraft.client.network.MixinClientPlayerEntity",
+    "minecraft.client.network.MixinAbstractClientPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1

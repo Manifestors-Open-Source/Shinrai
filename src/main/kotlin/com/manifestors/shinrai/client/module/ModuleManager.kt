@@ -1,6 +1,7 @@
 package com.manifestors.shinrai.client.module
 
-import com.manifestors.shinrai.client.module.modules.movement.Sprint
+import com.manifestors.shinrai.client.module.modules.movement.*
+import com.manifestors.shinrai.client.module.modules.visuals.*
 
 class ModuleManager {
 
@@ -8,10 +9,11 @@ class ModuleManager {
 
     fun registerModules() {
         modules.add(Sprint())
+        modules.add(NoFOV())
     }
 
     fun getModuleFromName(moduleName: String) = modules.find { it.name.equals(moduleName, true) }
-    fun getModuleFromClass(moduleClass: Class<Module>) = modules.find { it::class.java == moduleClass }
+    fun <T : Module> getModuleFromClass(moduleClass: Class<T>) = modules.find { it::class.java == moduleClass }
 
     fun getModulesFromCategory(category: Category) = modules.filter { it.category == category }
 }
