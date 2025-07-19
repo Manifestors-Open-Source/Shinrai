@@ -3,6 +3,7 @@ package com.manifestors.shinrai.client
 import com.manifestors.shinrai.client.event.EventManager
 import com.manifestors.shinrai.client.module.ModuleManager
 import com.manifestors.shinrai.client.utils.logging.LoggerInstance
+import net.minecraft.client.MinecraftClient
 
 object Shinrai : LoggerInstance {
 
@@ -18,7 +19,10 @@ object Shinrai : LoggerInstance {
         moduleManager = ModuleManager()
         moduleManager.registerModules()
         eventManager = EventManager()
+
+
     }
+
 
     fun getFullVersion(): String {
         val nameAndVersion = "$NAME $VERSION"
