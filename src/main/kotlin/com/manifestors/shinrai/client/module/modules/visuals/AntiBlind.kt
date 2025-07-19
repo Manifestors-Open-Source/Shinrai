@@ -4,9 +4,9 @@ import com.manifestors.shinrai.client.module.Category
 import com.manifestors.shinrai.client.module.Module
 import org.lwjgl.glfw.GLFW
 
-object NoFOV : Module(
-    name = "NoFOV",
-    description = "Disables dynamic FOV effect.",
+object AntiBlind : Module(
+    name = "AntiBlind",
+    description = "Removes some bad visual effects for you.",
     category = Category.VISUALS,
-    key = GLFW.GLFW_KEY_V
+    key = GLFW.GLFW_KEY_I
 )
