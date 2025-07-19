@@ -20,7 +20,6 @@ object Shinrai : LoggerInstance {
         moduleManager.registerModules()
         eventManager = EventManager()
 
-
     }
 
 
