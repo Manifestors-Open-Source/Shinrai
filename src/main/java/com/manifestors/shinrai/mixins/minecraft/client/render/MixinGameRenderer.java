@@ -1,6 +1,5 @@
 package com.manifestors.shinrai.mixins.minecraft.client.render;
 
-import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.modules.visuals.NoHurtCam;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
