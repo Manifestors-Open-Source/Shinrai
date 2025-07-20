@@ -1,6 +1,5 @@
 package com.manifestors.shinrai.mixins.minecraft.client.gui.screen;
 
-import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;
@@ -29,7 +28,6 @@ public class MixinTitleScreen {
 
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/screen/TitleScreen;renderPanoramaBackground(Lnet/minecraft/client/gui/DrawContext;F)V", shift = At.Shift.AFTER))
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks, CallbackInfo ci) {
-        BackgroundDrawer.drawBackgroundTexture(context);
         logoDrawer.draw(context, MinecraftClient.getInstance().getWindow().getScaledWidth(), 0);
     }
 
