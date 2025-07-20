@@ -42,13 +42,20 @@ public class MixinSplashOverlay {
     }*/
 
     // New code
-    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIIIIII)V", ordinal = 0))
-    private void changeSplash(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color) {
-        instance.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("shinrai", "lg.png"), MinecraftClient.getInstance().getWindow().getScaledWidth() / 2, 0, 0, 0, 256, 64, 256, 64);
+
+    @Redirect(method = "<clinit>",at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper;getArgb(IIII)I",ordinal = 0))
+    private static int manifestorsBlack(int alpha, int red, int green, int blue){
+
+        return ColorHelper.getArgb(0,0,0);
     }
 
+    @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIIIIII)V", ordinal = 0))
+    private void changeSplash(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color) {
+        instance.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("shinrai", "mopensource.png"), MinecraftClient.getInstance().getWindow().getScaledWidth()/2 - 64, MinecraftClient.getInstance().getWindow().getScaledHeight()/2 - 64 , 0, 0, 128, 128, 128, 128);
+    }
     @Redirect(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIFFIIIIIII)V", ordinal = 1))
     private void testDraw2(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, float u, float v, int width, int height, int regionWidth, int regionHeight, int textureWidth, int textureHeight, int color) {
-        instance.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("shinrai", "lg.png"), MinecraftClient.getInstance().getWindow().getScaledWidth() / 2, 0, 0, 0, 256, 64, 256, 64);
+        instance.drawTexture(RenderPipelines.GUI_TEXTURED, Identifier.of("shinrai", "mopensource.png"), MinecraftClient.getInstance().getWindow().getScaledWidth()/2 - 64, MinecraftClient.getInstance().getWindow().getScaledHeight()/2 - 64, 0, 0, 128, 128, 128, 128);
     }
+
 }
