@@ -3,8 +3,6 @@ package com.manifestors.shinrai.client
 import com.manifestors.shinrai.client.event.EventManager
 import com.manifestors.shinrai.client.module.ModuleManager
 import com.manifestors.shinrai.client.utils.logging.LoggerInstance
-import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer
-import net.minecraft.client.MinecraftClient
 
 object Shinrai : LoggerInstance {
 
