@@ -10,7 +10,7 @@ object BackgroundDrawer : MinecraftInstance {
 
     @JvmStatic
     fun drawBackgroundTexture(context: DrawContext) {
-        val background = ShinraiAssets.getIdFromBackgroundsFolder("teto_bg.png")
+        val background = ShinraiAssets.getIdFromBackgroundsFolder("background.png")
         context.drawTexture(
             RenderPipelines.GUI_TEXTURED,
             background,
