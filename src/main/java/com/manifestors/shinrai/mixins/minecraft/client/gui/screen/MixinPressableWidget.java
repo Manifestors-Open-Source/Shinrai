@@ -14,9 +14,16 @@ public class MixinPressableWidget{
 
     @Redirect(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIIII)V"))
     private void drawShinraiButtons(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color) {
+        PressableWidget widget = (PressableWidget)(Object)this;
+
+        Identifier textureId = ShinraiAssets.getIdFromTexturesFolder(
+                widget.isHovered() ? "button_highlighted.png" : "button.png"
+        );
+
+
         instance.drawTexture(
                 pipeline,
-                ShinraiAssets.getIdFromTexturesFolder("button.png"),
+                textureId,
                 x,
                 y,
                 0F,
@@ -29,6 +36,3 @@ public class MixinPressableWidget{
     }
 
 }
-
-
-
