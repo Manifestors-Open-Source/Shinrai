@@ -1,22 +1,32 @@
 package com.manifestors.shinrai.mixins.minecraft.client.gui.screen;
 
-import net.minecraft.client.gui.screen.ButtonTextures;
+import com.manifestors.shinrai.client.utils.file.ShinraiAssets;
+import com.mojang.blaze3d.pipeline.RenderPipeline;
+import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.PressableWidget;
 import net.minecraft.util.Identifier;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(PressableWidget.class)
 public class MixinPressableWidget{
-    @Unique
-    private static final ButtonTextures TEXTURES = new ButtonTextures(Identifier.of("shinrai","textures/gui/sprites/widget"), Identifier.ofVanilla("widget/button_disabled"), Identifier.ofVanilla("widget/button_highlighted"));
 
-   @Redirect(method = "renderWidget",at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/widget/PressableWidget;TEXTURES:Lnet/minecraft/client/gui/screen/ButtonTextures;",ordinal = 0))
-   private static ButtonTextures butnMan(){
-       return TEXTURES;
-   }
+    @Redirect(method = "renderWidget", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/gui/DrawContext;drawGuiTexture(Lcom/mojang/blaze3d/pipeline/RenderPipeline;Lnet/minecraft/util/Identifier;IIIII)V"))
+    private void drawShinraiButtons(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color) {
+        instance.drawTexture(
+                pipeline,
+                ShinraiAssets.getIdFromTexturesFolder("button.png"),
+                x,
+                y,
+                0F,
+                0F,
+                width,
+                height,
+                width,
+                height
+        );
+    }
 
 }
 

@@ -1,8 +1,11 @@
 package com.manifestors.shinrai.mixins.minecraft.client;
 
 import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.ui.screen.CustomTitleScreen;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.Screen;
+import net.minecraft.client.gui.screen.TitleScreen;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ServerInfo;
 import net.minecraft.client.resource.language.I18n;
@@ -16,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(MinecraftClient.class)
-public abstract class MixinMinecraft {
+public abstract class MixinMinecraftClient {
 
     @Shadow
     public abstract ClientPlayNetworkHandler getNetworkHandler();
@@ -24,6 +27,14 @@ public abstract class MixinMinecraft {
     public abstract ServerInfo getCurrentServerEntry();
     @Shadow
     public abstract IntegratedServer getServer();
+
+    @Inject(method = "setScreen", at = @At("HEAD"), cancellable = true)
+    private void test(Screen screen, CallbackInfo ci) {
+        if (screen instanceof TitleScreen) {
+            MinecraftClient.getInstance().setScreen(new CustomTitleScreen());
+            ci.cancel();
+        }
+    }
 
     /**
      * @author meto1558
