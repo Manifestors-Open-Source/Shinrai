@@ -12,6 +12,7 @@ class ModuleManager {
         modules.add(NoFOV)
         modules.add(NoHurtCam)
         modules.add(AntiBlind)
+        modules.add(HUD)
     }
 
     fun getModulesFromCategory(category: Category) = modules.filter { it.category == category }

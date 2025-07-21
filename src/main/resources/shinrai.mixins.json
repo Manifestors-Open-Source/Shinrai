@@ -8,6 +8,7 @@
     "minecraft.client.MixinKeyboard",
     "minecraft.client.MixinMinecraftClient",
     "minecraft.client.gui.MixinSplashOverlay",
+    "minecraft.client.gui.hud.MixinInGameHud",
     "minecraft.client.gui.screen.MixinPressableWidget",
     "minecraft.client.render.MixinGameRenderer",
     "minecraft.client.gui.MixinLogoDrawer",
