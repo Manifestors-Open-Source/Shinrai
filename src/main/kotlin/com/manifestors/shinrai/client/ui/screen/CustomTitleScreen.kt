@@ -6,88 +6,86 @@ import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.LogoDrawer
 import net.minecraft.client.gui.screen.Screen
-import net.minecraft.client.gui.screen.TitleScreen
+import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen
 import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen
 import net.minecraft.client.gui.screen.option.OptionsScreen
 import net.minecraft.client.gui.screen.world.SelectWorldScreen
 import net.minecraft.client.gui.widget.ButtonWidget
-import net.minecraft.client.gui.widget.ButtonWidget.PressAction
 import net.minecraft.client.gui.widget.PressableTextWidget
 import net.minecraft.text.Text
 
 class CustomTitleScreen : Screen(Text.of("Custom Title Screen")), MinecraftInstance {
 
-    val COPYRIGHT: Text = Text.translatable("title.screen.copyright")
     val logoDrawer = LogoDrawer(false)
+
     override fun init() {
+        val copyrightText: Text = Text.translatable("title.screen.copyright")
+
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("menu.singleplayer")) {
                 mc.setScreen(SelectWorldScreen(this))
             }.dimensions(this.width / 2 - 100, this.height / 4 + 38, 200, 20).build()
-
         )
 
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("menu.multiplayer")) {
-                mc.setScreen(SelectWorldScreen(this))
+                mc.setScreen(MultiplayerScreen(this))
             }.dimensions(this.width / 2 - 100, this.height / 4 + 63, 200, 20).build()
-
         )
+
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("title.screen.altbutton")) {
-                mc.setScreen(SelectWorldScreen(this))
+                mc.setScreen(null)
             }.dimensions(this.width / 2 - 100, this.height / 4 + 88, 200, 20).build()
-
         )
 
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("menu.options")) {
                 mc.setScreen(OptionsScreen(this, this.client!!.options))
             }.dimensions(this.width / 2 - 100, this.height / 4 + 113, 98, 20).build()
-
         )
 
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("menu.quit")) {
-                mc.setScreen(SelectWorldScreen(this))
+                mc.close()
             }.dimensions(this.width / 2 + 2, this.height / 4 + 113, 98, 20).build()
-
         )
-        val i = this.textRenderer.getWidth(COPYRIGHT)
-        val j = this.width - i - 2
-        this.addDrawableChild<PressableTextWidget?>(
+
+        val copyrightTextWidth = this.textRenderer.getWidth(copyrightText)
+        val copyrightTextXPosition = this.width - copyrightTextWidth - 2
+
+        this.addDrawableChild(
             PressableTextWidget(
-                j,
+                copyrightTextXPosition,
                 this.height - 10,
-                i,
+                copyrightTextWidth,
                 10,
-                COPYRIGHT,
-                PressAction { button: ButtonWidget? -> this.client!!.setScreen(CreditsAndAttributionScreen(this)) },
+                copyrightText,
+                { button: ButtonWidget? -> mc.setScreen(CreditsAndAttributionScreen(this)) },
                 this.textRenderer
             )
         )
-        val k: Text = Text.of {Shinrai.NAME + " Client " + Shinrai.VERSION}
-        this.addDrawableChild<PressableTextWidget?>(
+
+        val clientVersionText: Text = Text.of { Shinrai.getFullVersion() }
+
+        this.addDrawableChild(
             PressableTextWidget(
                 2,
                 this.height - 10,
-                i,
+                this.textRenderer.getWidth(clientVersionText),
                 10,
-                k,
-                PressAction { button: ButtonWidget? -> this.client!!.setScreen(CreditsAndAttributionScreen(this)) },
+                clientVersionText,
+                { button: ButtonWidget? -> mc.setScreen(CreditsAndAttributionScreen(this)) },
                 this.textRenderer
             )
         )
-
     }
-
 
     override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
         BackgroundDrawer.drawBackgroundTexture(context)
         logoDrawer.draw(context, mc.window.scaledWidth, 0F)
         super.render(context, mouseX, mouseY, deltaTicks)
     }
-
 
     override fun shouldPause() = false
     override fun shouldCloseOnEsc() = false
