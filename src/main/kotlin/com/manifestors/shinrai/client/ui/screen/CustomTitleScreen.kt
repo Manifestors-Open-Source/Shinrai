@@ -47,7 +47,7 @@ class CustomTitleScreen : Screen(Text.of("Custom Title Screen")), MinecraftInsta
 
         this.addDrawableChild(
             ButtonWidget.builder(Text.translatable("menu.quit")) {
-                mc.close()
+                mc.scheduleStop()
             }.dimensions(this.width / 2 + 2, this.height / 4 + 113, 98, 20).build()
         )
 
