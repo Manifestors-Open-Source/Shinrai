@@ -15,7 +15,10 @@
     "minecraft.client.gui.screen.MixinScreen",
     "minecraft.client.gui.screen.world.MixinCreateWorldScreen",
     "minecraft.client.network.MixinClientPlayerEntity",
-    "minecraft.client.network.MixinAbstractClientPlayerEntity"
+    "minecraft.client.network.MixinAbstractClientPlayerEntity",
+    "minecraft.client.gui.screen.MixinTextFieldWidget",
+    "minecraft.client.gui.screen.MixinCreditScreen",
+    "minecraft.client.network.MixinSessionAccessor"
   ],
   "injectors": {
     "defaultRequire": 1

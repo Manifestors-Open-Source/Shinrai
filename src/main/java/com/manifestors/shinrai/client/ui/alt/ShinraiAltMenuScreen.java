@@ -1,68 +1,58 @@
-package com.manifestors.shinrai.client.ui.title;
+package com.manifestors.shinrai.client.ui.alt;
 
 import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.ui.alt.ShinraiAltMenuScreen;
+import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
 import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer;
+import com.manifestors.shinrai.mixins.minecraft.client.network.MixinSessionAccessor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;
 import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.multiplayer.MultiplayerScreen;
 import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen;
-import net.minecraft.client.gui.screen.option.OptionsScreen;
-import net.minecraft.client.gui.screen.world.SelectWorldScreen;
 import net.minecraft.client.gui.widget.ButtonWidget;
 import net.minecraft.client.gui.widget.PressableTextWidget;
+import net.minecraft.client.gui.widget.TextFieldWidget;
+import net.minecraft.client.gui.widget.TextWidget;
+import net.minecraft.client.session.Session;
 import net.minecraft.text.Text;
 
-public class ShinraiTitleScreen extends Screen implements MinecraftInstance {
+import java.util.Optional;
+import java.util.UUID;
 
-    public ShinraiTitleScreen() {
-        super(Text.of("Shinrai Title Screen"));
+public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
+    Session altSession;
+    private TextFieldWidget altNameField;
+    public ShinraiAltMenuScreen() {
+        super(Text.of("Shinrai Alt Manage Screen"));
     }
-
-    @Override
     protected void init() {
         final Text copyrightText = Text.translatable("title.screen.copyright");
-
+        this.altNameField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Text.translatable("altmanager.gui.textfield"));
+        this.addDrawableChild(altNameField);
         this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.singleplayer"), (button) ->
-                                mc.setScreen(new SelectWorldScreen(this)))
-                        .dimensions(this.width / 2 - 100, this.height / 4 + 38, 200, 20)
-                        .build()
-        );
+                ButtonWidget.builder(Text.translatable("altmanager.gui.altbutton"), (button) ->
 
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.multiplayer"), (button) ->
-                                mc.setScreen(new MultiplayerScreen(this)))
-                        .dimensions(this.width / 2 - 100, this.height / 4 + 63, 200, 20)
-                        .build()
-        );
+                enterNewSession(new Session(altNameField.getText(), UUID.randomUUID(),"", Optional.empty(),Optional.empty(), Session.AccountType.LEGACY))
 
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("title.screen.altbutton"), (button) ->
-                                mc.setScreen(new ShinraiAltMenuScreen()))
-                        .dimensions(this.width / 2 - 100, this.height / 4 + 88, 200, 20)
-                        .build()
-        );
+                        )
 
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.options"), (button) ->
-                                mc.setScreen(new OptionsScreen(this, mc.options)))
-                        .dimensions(this.width / 2 - 100, this.height / 4 + 113, 98, 20)
-                        .build()
-        );
-
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("menu.quit"), (button) ->
-                                mc.scheduleStop())
-                        .dimensions(this.width / 2 + 2, this.height / 4 + 113, 98, 20)
+                        .dimensions(this.width / 2 + - 100,this.height/2 + 20 , 200, 20)
                         .build()
         );
 
         final int copyrightTextWidth = this.textRenderer.getWidth(copyrightText);
         final int copyrightTextX = this.width - copyrightTextWidth - 2;
-
+        final Text altText = Text.translatable("altmanager.gui.text");
+        this.addDrawableChild(
+                new TextWidget(
+                        this.width / 2 - textRenderer.getWidth(altText) / 2,
+                        this.height /2 - 25,
+                        copyrightTextWidth,
+                        10,
+                        altText,
+                        this.textRenderer
+                )
+        );
         this.addDrawableChild(
                 new PressableTextWidget(
                         copyrightTextX,
@@ -92,6 +82,7 @@ public class ShinraiTitleScreen extends Screen implements MinecraftInstance {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
+
         final LogoDrawer drawer = new LogoDrawer(false);
         BackgroundDrawer.drawBackground(context);
         drawer.draw(context, mc.getWindow().getScaledWidth(), 0);
@@ -100,11 +91,18 @@ public class ShinraiTitleScreen extends Screen implements MinecraftInstance {
 
     @Override
     public boolean shouldCloseOnEsc() {
-        return false;
+        return true;
     }
-
+    @Override
+    public void close() {
+        this.client.setScreen(new ShinraiTitleScreen());
+    }
     @Override
     public boolean shouldPause() {
         return false;
+    }
+
+    void enterNewSession(Session alterSession){
+        ((MixinSessionAccessor) mc).setSession(alterSession);
     }
 }
