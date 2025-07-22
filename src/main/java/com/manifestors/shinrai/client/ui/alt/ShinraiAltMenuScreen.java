@@ -20,13 +20,15 @@ import java.util.Optional;
 import java.util.UUID;
 
 public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
-    Session altSession;
+
     private TextFieldWidget altNameField;
+
     public ShinraiAltMenuScreen() {
         super(Text.of("Shinrai Alt Manage Screen"));
     }
     protected void init() {
         final Text copyrightText = Text.translatable("title.screen.copyright");
+
         this.altNameField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Text.translatable("altmanager.gui.textfield"));
         this.addDrawableChild(altNameField);
         this.addDrawableChild(
@@ -36,13 +38,14 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
 
                         )
 
-                        .dimensions(this.width / 2 + - 100,this.height/2 + 20 , 200, 20)
+                        .dimensions(this.width / 2 - 100,this.height/2 + 20 , 200, 20)
                         .build()
         );
 
         final int copyrightTextWidth = this.textRenderer.getWidth(copyrightText);
         final int copyrightTextX = this.width - copyrightTextWidth - 2;
         final Text altText = Text.translatable("altmanager.gui.text");
+
         this.addDrawableChild(
                 new TextWidget(
                         this.width / 2 - textRenderer.getWidth(altText) / 2,
@@ -82,7 +85,6 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-
         final LogoDrawer drawer = new LogoDrawer(false);
         BackgroundDrawer.drawBackground(context);
         drawer.draw(context, mc.getWindow().getScaledWidth(), 0);
@@ -93,10 +95,12 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
     public boolean shouldCloseOnEsc() {
         return true;
     }
+
     @Override
     public void close() {
-        this.client.setScreen(new ShinraiTitleScreen());
+        mc.setScreen(new ShinraiTitleScreen());
     }
+
     @Override
     public boolean shouldPause() {
         return false;
@@ -105,4 +109,5 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
     void enterNewSession(Session alterSession){
         ((MixinSessionAccessor) mc).setSession(alterSession);
     }
+
 }
