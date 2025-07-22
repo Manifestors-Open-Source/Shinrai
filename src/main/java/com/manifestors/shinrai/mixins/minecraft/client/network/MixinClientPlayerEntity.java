@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.mixins.minecraft.client.network;
 
 import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.event.events.TickEvent;
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
 import net.minecraft.client.network.ClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +13,7 @@ public class MixinClientPlayerEntity {
 
     @Inject(method = "tickMovement", at = @At(value = "HEAD"))
     private void updateEventHook(CallbackInfo ci) {
-        Shinrai.eventManager.listenEvent(new TickEvent());
+        Shinrai.INSTANCE.getEventManager().listenEvent(new TickMovementEvent());
     }
 
 }

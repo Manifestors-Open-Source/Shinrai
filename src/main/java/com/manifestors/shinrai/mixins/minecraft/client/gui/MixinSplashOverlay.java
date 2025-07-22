@@ -37,7 +37,7 @@ public class MixinSplashOverlay {
     // New code
     
     @Unique
-    private final Identifier mOpenSourceImage = ShinraiAssets.getIdFromTexturesFolder("mopensource.png");
+    private final Identifier mOpenSourceImage = ShinraiAssets.getTextureId("mopensource");
 
     @Redirect(method = "<clinit>",at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper;getArgb(IIII)I",ordinal = 0))
     private static int manifestorsBlack(int alpha, int red, int green, int blue){

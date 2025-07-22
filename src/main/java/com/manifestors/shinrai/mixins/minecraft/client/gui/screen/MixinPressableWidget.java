@@ -16,8 +16,8 @@ public class MixinPressableWidget{
     private void drawShinraiButtons(DrawContext instance, RenderPipeline pipeline, Identifier sprite, int x, int y, int width, int height, int color) {
         PressableWidget widget = (PressableWidget)(Object)this;
 
-        Identifier textureId = ShinraiAssets.getIdFromTexturesFolder(
-                widget.isHovered() ? "button_highlighted.png" : "button.png"
+        Identifier textureId = ShinraiAssets.getTextureId(
+                widget.isHovered() ? "button_highlighted" : "button"
         );
 
 

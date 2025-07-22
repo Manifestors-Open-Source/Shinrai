@@ -13,7 +13,7 @@ public abstract class MixinScreen {
 
     @Inject(method = "renderPanoramaBackground", at = @At(value = "HEAD"), cancellable = true)
     private void showShinraiBackground(DrawContext context, float deltaTicks, CallbackInfo ci) {
-        BackgroundDrawer.drawBackgroundTexture(context);
+        BackgroundDrawer.drawBackground(context);
         ci.cancel();
     }
 

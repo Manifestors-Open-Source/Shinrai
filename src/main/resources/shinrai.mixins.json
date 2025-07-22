@@ -13,6 +13,7 @@
     "minecraft.client.render.MixinGameRenderer",
     "minecraft.client.gui.MixinLogoDrawer",
     "minecraft.client.gui.screen.MixinScreen",
+    "minecraft.client.gui.screen.world.MixinCreateWorldScreen",
     "minecraft.client.network.MixinClientPlayerEntity",
     "minecraft.client.network.MixinAbstractClientPlayerEntity"
   ],

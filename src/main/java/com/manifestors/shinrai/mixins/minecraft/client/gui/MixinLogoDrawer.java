@@ -17,7 +17,7 @@ public class MixinLogoDrawer {
      */
     @Overwrite
     public void draw(DrawContext context, int screenWidth, float alpha, int y) {
-        Identifier logo = ShinraiAssets.getIdFromTexturesFolder("smooth_logo.png");
+        Identifier logo = ShinraiAssets.getTextureId("smooth_logo");
         int logoWidth = 256;
         int logoHeight = 64;
         int logoX = screenWidth / 2 - logoWidth / 2;

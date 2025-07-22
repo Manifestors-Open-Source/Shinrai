@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.client.render;
 
+import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.modules.visuals.NoHurtCam;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.client.util.math.MatrixStack;
@@ -13,7 +14,7 @@ public class MixinGameRenderer {
 
     @Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void hookNoHurtCam(MatrixStack matrices, float tickProgress, CallbackInfo ci) {
-        if (NoHurtCam.INSTANCE.getEnabled())
+        if (Shinrai.INSTANCE.getModuleManager().isModuleEnabled(NoHurtCam.class))
             ci.cancel();
     }
 

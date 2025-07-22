@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.mixins.minecraft.client.gui.hud;
 
 import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.event.events.RenderHudEvent;
+import com.manifestors.shinrai.client.event.events.rendering.Rendering2DEvent;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -16,7 +16,7 @@ public class MixinInGameHud {
 
     @Inject(method = "renderMainHud", at = @At(value = "HEAD"))
     private void renderHudEventHook(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        Shinrai.eventManager.listenEvent(new RenderHudEvent(context, MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight()));
+        Shinrai.INSTANCE.getEventManager().listenEvent(new Rendering2DEvent(context, MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight()));
     }
 
 }
