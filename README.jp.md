@@ -6,7 +6,7 @@ Choose your language.
 
 ## ✨ Shinraiとは？
 
-**Shinrai**は、**Minecraft 1.21.7**向けに開発された、**Fabric Mod Loader**を使用した洗練された強力なユーティリティモッドです。  
+**Shinrai**は、**Minecraft 1.21.4**向けに開発された、**Fabric Mod Loader**を使用した洗練された強力なユーティリティモッドです。  
 私たちの目標はシンプルです：**物事をより簡単に、より速く、そしてより楽しくすること**、そしてパフォーマンスと明瞭さを維持すること。
 
 ---
