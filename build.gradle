@@ -1,6 +1,5 @@
 plugins {
-    id 'fabric-loom' version '1.11-SNAPSHOT'
-    id 'maven-publish'
+    id 'fabric-loom' version '1.10.5'
 }
 
 version = project.mod_version
@@ -9,6 +8,8 @@ group = project.maven_group
 base {
     archivesName = project.archives_base_name
 }
+
+
 
 repositories {
     mavenCentral()
@@ -51,11 +52,12 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
+
     withSourcesJar()
 }
 
 jar {
     from("LICENSE") {
-        rename { "${it}_${project.archivesBaseName}" }
+        rename { "${it}_${project.archivesBaseName}"}
     }
 }
