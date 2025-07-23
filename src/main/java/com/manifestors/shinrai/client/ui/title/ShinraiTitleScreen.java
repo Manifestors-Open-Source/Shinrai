@@ -92,14 +92,10 @@ public class ShinraiTitleScreen extends Screen implements MinecraftInstance {
 
     @Override
     public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-        super.render(context, mouseX, mouseY, deltaTicks);
-        final LogoDrawer drawer = new LogoDrawer(true);
-        drawer.draw(context, mc.getWindow().getScaledWidth(), 0);
-    }
-
-    @Override
-    public void renderBackground(DrawContext context, int mouseX, int mouseY, float delta) {
+        final LogoDrawer drawer = new LogoDrawer(false);
         BackgroundDrawer.drawBackground(context);
+        drawer.draw(context, mc.getWindow().getScaledWidth(), 0);
+        super.render(context, mouseX, mouseY, deltaTicks);
     }
 
     @Override

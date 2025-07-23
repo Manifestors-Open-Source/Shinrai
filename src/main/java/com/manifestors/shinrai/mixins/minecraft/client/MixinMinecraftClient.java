@@ -60,7 +60,7 @@ public abstract class MixinMinecraftClient {
             }
             stringBuilder.append(" ");
         }
-        stringBuilder.append(String.format("[%s]", SharedConstants.getGameVersion().getName()));
+        stringBuilder.append(String.format("[%s]", SharedConstants.getGameVersion().name()));
 
         return stringBuilder.toString();
     }

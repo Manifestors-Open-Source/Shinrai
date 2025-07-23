@@ -6,7 +6,7 @@ Choose your language.
 
 ## ✨ Shinrai Nedir?
 
-**Shinrai**, **Minecraft 1.21.4** için geliştirilmiş, **Fabric Mod Loader** kullanılarak yapılmış şık ve güçlü bir yardımcı moddur.  
+**Shinrai**, **Minecraft 1.21.7** için geliştirilmiş, **Fabric Mod Loader** kullanılarak yapılmış şık ve güçlü bir yardımcı moddur.  
 Amacımız basit: **işleri kolaylaştırmak, hızlandırmak ve daha keyifli hale getirmek**, aynı zamanda performans ve açıklığı korumak.
 
 ---
