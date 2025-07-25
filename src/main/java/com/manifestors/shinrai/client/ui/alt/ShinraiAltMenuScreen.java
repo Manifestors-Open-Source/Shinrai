@@ -4,7 +4,7 @@ import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
 import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer;
-import com.manifestors.shinrai.mixins.minecraft.client.network.MixinSessionAccessor;
+import com.manifestors.shinrai.mixins.minecraft.network.MixinSessionAccessor;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;
 import net.minecraft.client.gui.screen.Screen;

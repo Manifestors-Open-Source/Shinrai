@@ -15,5 +15,6 @@ public @interface ModuleData {
     String description() default "";
     ModuleCategory category();
     int keyCode() default 0;
+    String[] alternatives() default "";
 
 }

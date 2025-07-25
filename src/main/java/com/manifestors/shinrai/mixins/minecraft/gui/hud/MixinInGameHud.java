@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.gui.hud;
+package com.manifestors.shinrai.mixins.minecraft.gui.hud;
 
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.event.events.rendering.Rendering2DEvent;

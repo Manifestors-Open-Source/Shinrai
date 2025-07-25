@@ -12,6 +12,7 @@ public class Module implements MinecraftInstance {
     private String description;
     private ModuleCategory category;
     private int keyCode;
+    private String[] alternativeNames;
 
     private boolean enabled = false;
 
@@ -22,6 +23,7 @@ public class Module implements MinecraftInstance {
             this.description = moduleData.description().isEmpty() ? "module." + name+ ".desc" : moduleData.description();
             this.category = moduleData.category();
             this.keyCode = moduleData.keyCode();
+            this.alternativeNames = moduleData.alternatives();
         } else {
             Shinrai.logger.error("A module have not ModuleData annotation: {}", getClass().getSimpleName());
         }

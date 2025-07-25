@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.client.module;
 
+import com.manifestors.shinrai.client.module.modules.combat.Velocity;
 import com.manifestors.shinrai.client.module.modules.movement.*;
 
 import com.manifestors.shinrai.client.module.modules.visuals.HUD;
@@ -19,6 +20,7 @@ public class ModuleManager {
         modules.add(new NoFOV());
         modules.add(new NoHurtCam());
         modules.add(new HUD());
+        modules.add(new Velocity());
     }
 
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {

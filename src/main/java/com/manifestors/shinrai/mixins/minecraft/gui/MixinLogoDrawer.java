@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.gui;
+package com.manifestors.shinrai.mixins.minecraft.gui;
 
 import com.manifestors.shinrai.client.utils.file.ShinraiAssets;
 import net.minecraft.client.gl.RenderPipelines;

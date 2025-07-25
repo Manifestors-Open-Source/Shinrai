@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.network;
+package com.manifestors.shinrai.mixins.minecraft.network;
 
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.modules.visuals.NoFOV;

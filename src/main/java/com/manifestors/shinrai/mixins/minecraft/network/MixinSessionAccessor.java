@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.network;
+package com.manifestors.shinrai.mixins.minecraft.network;
 
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.session.Session;

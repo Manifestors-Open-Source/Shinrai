@@ -11,7 +11,8 @@ import org.lwjgl.glfw.GLFW;
         name = "Sprint",
         description = "Automatically sprints for you.",
         category = ModuleCategory.MOVEMENT,
-        keyCode = GLFW.GLFW_KEY_Z
+        keyCode = GLFW.GLFW_KEY_Z,
+        alternatives = "AutoSprint"
 )
 public class Sprint extends Module {
 

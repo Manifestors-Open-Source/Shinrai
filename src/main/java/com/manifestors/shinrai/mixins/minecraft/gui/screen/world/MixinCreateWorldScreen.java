@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.gui.screen.world;
+package com.manifestors.shinrai.mixins.minecraft.gui.screen.world;
 
 import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen;
 import net.minecraft.client.MinecraftClient;

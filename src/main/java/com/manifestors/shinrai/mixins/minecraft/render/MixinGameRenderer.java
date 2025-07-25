@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.render;
+package com.manifestors.shinrai.mixins.minecraft.render;
 
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.modules.visuals.NoHurtCam;

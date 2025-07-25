@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.client.gui.screen;
+package com.manifestors.shinrai.mixins.minecraft.gui.screen;
 
 import net.minecraft.client.gui.screen.CreditsScreen;
 import net.minecraft.util.Identifier;
