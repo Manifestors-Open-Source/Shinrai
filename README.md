@@ -42,6 +42,12 @@ Let’s make Shinrai even better. 🍁
 
 ---
 
+## License
+
+This project is licensed under the **GNU General Public License v3 (GPLv3)**.  
+For the full license text, please see the [LICENSE](./LICENSE) file.
+
+
 > “Shinrai” (信頼) means **trust** in Japanese — and we're always trust our community. 💖
 
 <img width="1920" height="658" alt="outbanner" src="https://github.com/user-attachments/assets/3d1279f7-05b1-41c0-853a-6eac7802c03f" />
