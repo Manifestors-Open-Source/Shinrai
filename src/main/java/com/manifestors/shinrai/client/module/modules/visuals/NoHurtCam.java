@@ -12,4 +12,5 @@ import org.lwjgl.glfw.GLFW;
         keyCode = GLFW.GLFW_KEY_B
 )
 public class NoHurtCam extends Module {
+
 }

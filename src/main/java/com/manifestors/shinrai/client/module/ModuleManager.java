@@ -1,6 +1,7 @@
 package com.manifestors.shinrai.client.module;
 
-import com.manifestors.shinrai.client.module.modules.combat.Velocity;
+import com.manifestors.shinrai.client.module.modules.extras.NoPortalCoolDown;
+import com.manifestors.shinrai.client.module.modules.fun.NoGravity;
 import com.manifestors.shinrai.client.module.modules.movement.*;
 
 import com.manifestors.shinrai.client.module.modules.visuals.HUD;
@@ -20,7 +21,9 @@ public class ModuleManager {
         modules.add(new NoFOV());
         modules.add(new NoHurtCam());
         modules.add(new HUD());
-        modules.add(new Velocity());
+        modules.add(new Jesus());
+        modules.add(new NoPortalCoolDown());
+        modules.add(new NoGravity());
     }
 
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
