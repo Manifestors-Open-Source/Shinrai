@@ -11,7 +11,7 @@ import org.lwjgl.glfw.GLFWFramebufferSizeCallback;
 @ModuleData(
         name = "No Portal Cool Down",
         description = "You are not gonna get effected from portal's cooldown.",
-        category = ModuleCategory.MOVEMENT,
+        category = ModuleCategory.EXTRAS,
         keyCode = GLFW.GLFW_KEY_C
 )
 public class NoPortalCoolDown extends Module {

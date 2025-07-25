@@ -10,7 +10,7 @@ import org.lwjgl.glfw.GLFW;
 @ModuleData(
         name = "No Gravity",
         description = "Lets Change World Upside down",
-        category = ModuleCategory.MOVEMENT,
+        category = ModuleCategory.FUN,
         keyCode = GLFW.GLFW_KEY_G
 )
 public class NoGravity extends Module {

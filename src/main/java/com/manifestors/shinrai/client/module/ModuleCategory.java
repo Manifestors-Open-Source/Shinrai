@@ -7,6 +7,7 @@ public enum ModuleCategory {
     PLAYER,
     EXPLOIT,
     VISUALS,
-    EXTRAS
+    EXTRAS,
+    FUN
 
 }
