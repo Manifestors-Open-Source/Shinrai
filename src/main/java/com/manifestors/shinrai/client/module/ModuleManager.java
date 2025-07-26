@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.client.module;
 
-import com.manifestors.shinrai.client.module.modules.extras.NoPortalCoolDown;
+import com.manifestors.shinrai.client.module.modules.extras.NoPortalCooldown;
 import com.manifestors.shinrai.client.module.modules.fun.NoGravity;
 import com.manifestors.shinrai.client.module.modules.movement.*;
 
@@ -22,7 +22,7 @@ public class ModuleManager {
         modules.add(new NoHurtCam());
         modules.add(new HUD());
         modules.add(new Jesus());
-        modules.add(new NoPortalCoolDown());
+        modules.add(new NoPortalCooldown());
         modules.add(new NoGravity());
     }
 

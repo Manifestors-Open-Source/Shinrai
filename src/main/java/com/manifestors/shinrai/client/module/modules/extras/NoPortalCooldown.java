@@ -11,5 +11,5 @@ import org.lwjgl.glfw.GLFW;
         category = ModuleCategory.EXTRAS,
         keyCode = GLFW.GLFW_KEY_C
 )
-public class NoPortalCoolDown extends Module {
+public class NoPortalCooldown extends Module {
 }
