@@ -21,10 +21,11 @@ public class Jesus extends Module {
     public void onTickMovement(TickMovementEvent event) {
         BlockPos blockBelow = mc.player.getBlockPos().down();
         Block block = mc.world.getBlockState(blockBelow).getBlock();
-
         if (block == Blocks.WATER && !mc.player.isJumping()) {
-            mc.player.setVelocity(mc.player.getVelocity().x, 0.01, mc.player.getVelocity().z);
+            mc.player.setVelocity(mc.player.getVelocity().x, 0.00001, mc.player.getVelocity().z);
             mc.player.setOnGround(true);
+        } else if (mc.player.isTouchingWater() || mc.player.isSubmergedInWater()) {
+            mc.player.setVelocity(mc.player.getVelocity().x, 0.1, mc.player.getVelocity().z );
         }
        /*
        gonna add tomorrow

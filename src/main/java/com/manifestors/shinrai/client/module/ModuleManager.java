@@ -24,7 +24,7 @@ public class ModuleManager {
         modules.add(new Jesus());
         modules.add(new NoPortalCooldown());
         modules.add(new NoGravity());
-        modules.add(new NoSlow());
+        modules.add(new NoJumpDelay());
     }
 
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
