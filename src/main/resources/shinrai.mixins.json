@@ -15,9 +15,10 @@
     "minecraft.gui.screen.MixinScreen",
     "minecraft.gui.screen.world.MixinCreateWorldScreen",
     "minecraft.network.MixinClientConnection",
-    "minecraft.network.MixinClientPlayerEntity",
-    "minecraft.network.MixinAbstractClientPlayerEntity",
+    "minecraft.entity.player.MixinClientPlayerEntity",
+    "minecraft.entity.player.MixinAbstractClientPlayerEntity",
     "minecraft.gui.screen.MixinTextFieldWidget",
+    "minecraft.block.MixinNetherPortalBlock",
     "minecraft.gui.screen.MixinCreditScreen",
     "minecraft.network.MixinSessionAccessor"
   ],
