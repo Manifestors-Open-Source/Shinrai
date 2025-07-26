@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 
 @ModuleData(
         name = "NoJumpDelay",
-        description = "Block submerge in Water",
+        description = "Removes jump delay when jumping between blocks.",
         category = ModuleCategory.MOVEMENT,
         keyCode = GLFW.GLFW_KEY_I
 )
