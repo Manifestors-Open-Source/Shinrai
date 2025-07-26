@@ -21,7 +21,6 @@
     "minecraft.block.MixinNetherPortalBlock",
     "minecraft.gui.screen.MixinCreditScreen",
     "minecraft.network.MixinSessionAccessor",
-    "minecraft.entity.MixinLivingEntityAccessor",
     "minecraft.entity.MixinLivingEntity"
   ],
   "injectors": {
