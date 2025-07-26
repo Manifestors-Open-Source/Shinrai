@@ -1,6 +1,5 @@
 package com.manifestors.shinrai.client.module.modules.visuals;
 
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
 import com.manifestors.shinrai.client.module.Module;
 import com.manifestors.shinrai.client.module.ModuleCategory;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
@@ -13,7 +12,4 @@ import org.lwjgl.glfw.GLFW;
         keyCode = GLFW.GLFW_KEY_V
 )
 public class NoFOV extends Module {
-public void NoFov(TickMovementEvent event){
-    mc.player.getFovMultiplier(true,0);
-}
 }
