@@ -41,7 +41,8 @@ We’d love to see your ideas, features, and improvements. Whether you’re a de
 Let’s make Shinrai even better. 🍁
 
 ---
-
+## Thanks to Our Translators
+Finnish Translator : Juusto_Velho
 ## License
 
 This project is licensed under the **GNU General Public License v3 (GPLv3)**.  
