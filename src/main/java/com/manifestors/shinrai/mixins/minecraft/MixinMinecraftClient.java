@@ -65,9 +65,14 @@ public abstract class MixinMinecraftClient {
         return stringBuilder.toString();
     }
 
-    @Inject(method = "<init>", at = @At(value = "TAIL"))
+    @Inject(method = "<init>", at = @At("TAIL"))
     private void initializeShinrai(CallbackInfo ci) {
         Shinrai.INSTANCE.initializeShinrai();
+    }
+
+    @Inject(method = "scheduleStop", at = @At("TAIL"))
+    private void shutdownShinrai(CallbackInfo ci) {
+        Shinrai.INSTANCE.shutdownShinrai();
     }
 
 

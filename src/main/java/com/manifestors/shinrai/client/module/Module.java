@@ -1,20 +1,28 @@
 package com.manifestors.shinrai.client.module;
 
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
 public class Module implements MinecraftInstance {
 
+    @Expose
     private String name;
     private String description;
     private ModuleCategory category;
+    @Setter
+    @Expose
+    @SerializedName("key")
     private int keyCode;
     private String[] alternativeNames;
 
-    private boolean enabled = false;
+    @Expose
+    private boolean enabled;
 
     protected Module() {
         if (getClass().isAnnotationPresent(ModuleData.class)) {
