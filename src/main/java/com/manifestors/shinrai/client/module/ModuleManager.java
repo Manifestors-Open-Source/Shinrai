@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.client.module;
 
+import com.manifestors.shinrai.client.module.modules.combat.BackToOldPVP;
 import com.manifestors.shinrai.client.module.modules.extras.NoPortalCooldown;
 import com.manifestors.shinrai.client.module.modules.fun.NoGravity;
 import com.manifestors.shinrai.client.module.modules.movement.*;
@@ -7,6 +8,7 @@ import com.manifestors.shinrai.client.module.modules.movement.*;
 import com.manifestors.shinrai.client.module.modules.visuals.HUD;
 import com.manifestors.shinrai.client.module.modules.visuals.NoFOV;
 import com.manifestors.shinrai.client.module.modules.visuals.NoHurtCam;
+import com.manifestors.shinrai.client.module.modules.visuals.NoTorchAnymore;
 import lombok.Getter;
 
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -25,6 +27,8 @@ public class ModuleManager {
         modules.add(new NoPortalCooldown());
         modules.add(new NoGravity());
         modules.add(new NoJumpDelay());
+        modules.add(new NoTorchAnymore());
+        modules.add(new BackToOldPVP());
     }
 
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
