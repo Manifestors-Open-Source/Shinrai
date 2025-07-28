@@ -1,19 +1,11 @@
 package com.manifestors.shinrai.client.module.modules.visuals;
 
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
 import com.manifestors.shinrai.client.module.Module;
 import com.manifestors.shinrai.client.module.ModuleCategory;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import com.manifestors.shinrai.mixins.minecraft.entity.MixinGameOptionsAccessor;
-import net.minecraft.block.Portal;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.client.option.SimpleOption;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import org.lwjgl.glfw.GLFW;
-
-import java.lang.reflect.Field;
 
 @ModuleData(
         name = "NoTorchAnymore",
