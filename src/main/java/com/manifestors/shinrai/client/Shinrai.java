@@ -3,7 +3,6 @@ package com.manifestors.shinrai.client;
 import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.module.ModuleManager;
 import com.manifestors.shinrai.client.utils.LoggerInstance;
-import com.manifestors.shinrai.file.FileManager;
 import lombok.Getter;
 
 @Getter
@@ -22,12 +21,11 @@ public enum Shinrai implements LoggerInstance {
     public void initializeShinrai() {
         moduleManager = new ModuleManager();
         moduleManager.registerModules();
-        FileManager.initializeFiles();
         eventManager = new EventManager();
     }
 
     public void shutdownShinrai() {
-        FileManager.saveSettings();
+
     }
 
     public String getFullVersion() {
