@@ -25,6 +25,7 @@ public class NoTorchAnymore extends Module {
                 false, // show particles
                 false  // show icon
         );
+        if (mc.player != null)
             mc.player.addStatusEffect(effect);
     }
 

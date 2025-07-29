@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.client.module;
 
+import com.google.gson.annotations.Expose;
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
@@ -9,13 +10,16 @@ import lombok.Setter;
 @Getter
 public class Module implements MinecraftInstance {
 
+    @Expose
     private String name;
     private String description;
     private ModuleCategory category;
     @Setter
+    @Expose
     private int keyCode;
     private String[] alternativeNames;
 
+    @Expose
     private boolean enabled;
 
     protected Module() {
@@ -33,7 +37,11 @@ public class Module implements MinecraftInstance {
     }
 
     public void toggleModule() {
-        enabled = !enabled;
+        toggleModule(!enabled);
+    }
+
+    public void toggleModule(boolean state) {
+        enabled = state;
         if (enabled) {
             Shinrai.INSTANCE.getEventManager().registerListener(this);
             onEnable();

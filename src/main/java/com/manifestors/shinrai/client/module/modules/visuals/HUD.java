@@ -6,15 +6,13 @@ import com.manifestors.shinrai.client.event.events.rendering.Rendering2DEvent;
 import com.manifestors.shinrai.client.module.Module;
 import com.manifestors.shinrai.client.module.ModuleCategory;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import org.lwjgl.glfw.GLFW;
 
 import java.awt.*;
 
 @ModuleData(
         name = "HUD",
         description = "Shows active modules and watermark.",
-        category = ModuleCategory.VISUALS,
-        keyCode = GLFW.GLFW_KEY_H
+        category = ModuleCategory.VISUALS
 )
 public class HUD extends Module {
 

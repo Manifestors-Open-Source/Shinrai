@@ -8,13 +8,11 @@ import com.manifestors.shinrai.client.module.annotations.ModuleData;
 import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
-import org.lwjgl.glfw.GLFW;
 
 @ModuleData(
         name = "Jesus",
         description = "Block submerge in Water",
-        category = ModuleCategory.MOVEMENT,
-        keyCode = GLFW.GLFW_KEY_J
+        category = ModuleCategory.MOVEMENT
 )
 public class Jesus extends Module {
     @ListenEvent

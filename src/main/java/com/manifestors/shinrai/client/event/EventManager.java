@@ -2,6 +2,7 @@ package com.manifestors.shinrai.client.event;
 
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.event.annotations.ListenEvent;
+
 import java.lang.reflect.Method;
 import java.util.HashMap;
 import java.util.Map;

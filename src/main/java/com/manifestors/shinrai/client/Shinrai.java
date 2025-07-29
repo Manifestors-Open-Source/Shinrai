@@ -1,12 +1,17 @@
 package com.manifestors.shinrai.client;
 
+import com.manifestors.shinrai.client.command.CommandManager;
 import com.manifestors.shinrai.client.event.EventManager;
+import com.manifestors.shinrai.client.utils.file.FileManager;
 import com.manifestors.shinrai.client.module.ModuleManager;
 import com.manifestors.shinrai.client.utils.LoggerInstance;
+import com.manifestors.shinrai.client.utils.MinecraftInstance;
 import lombok.Getter;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 
 @Getter
-public enum Shinrai implements LoggerInstance {
+public enum Shinrai implements LoggerInstance, MinecraftInstance {
 
     INSTANCE;
 
@@ -17,20 +22,31 @@ public enum Shinrai implements LoggerInstance {
 
     private ModuleManager moduleManager;
     private EventManager eventManager;
+    private CommandManager commandManager;
 
     public void initializeShinrai() {
         moduleManager = new ModuleManager();
         moduleManager.registerModules();
         eventManager = new EventManager();
+        moduleManager.loadModulesFromJson();
+        commandManager = new CommandManager();
+        commandManager.registerCommands();
+
+        FileManager.createDirectories();
     }
 
     public void shutdownShinrai() {
-
+        moduleManager.saveModulesJson();
     }
 
     public String getFullVersion() {
         String nameAndVersion = NAME + " " + VERSION;
         return IN_DEV ? nameAndVersion + " (Development)" : nameAndVersion;
+    }
+
+    public void addChatMessage(String message) {
+        var header = Formatting.RED + "" + Formatting.BOLD + Shinrai.NAME + Formatting.GRAY + " » ";
+        mc.inGameHud.getChatHud().addMessage(Text.literal(header + message));
     }
 
 }
