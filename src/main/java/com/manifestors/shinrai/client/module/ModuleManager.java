@@ -50,7 +50,13 @@ public class ModuleManager {
     @Nullable
     public Module getModuleByName(String moduleName) {
         return modules.stream()
-                .filter(module -> module.getName().equalsIgnoreCase(moduleName))
+                .filter(module -> {
+                    if (module.getName().equalsIgnoreCase(moduleName)) return true;
+
+                    for (String altName : module.getAlternativeNames())
+                        if (altName.equalsIgnoreCase(moduleName)) return true;
+                    return false;
+                })
                 .findAny().orElse(null);
     }
 

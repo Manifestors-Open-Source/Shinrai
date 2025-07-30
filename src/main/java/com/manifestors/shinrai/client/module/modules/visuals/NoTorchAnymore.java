@@ -5,13 +5,12 @@ import com.manifestors.shinrai.client.module.ModuleCategory;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
-import org.lwjgl.glfw.GLFW;
 
 @ModuleData(
         name = "NoTorchAnymore",
         description = "Disables FOV camera effect.",
         category = ModuleCategory.VISUALS,
-        keyCode = GLFW.GLFW_KEY_N
+        alternatives = "FullBright"
 )
 
 public class NoTorchAnymore extends Module {
