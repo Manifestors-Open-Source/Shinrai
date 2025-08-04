@@ -70,10 +70,9 @@ public abstract class MixinMinecraftClient {
         Shinrai.INSTANCE.initializeShinrai();
     }
 
-    @Inject(method = "scheduleStop", at = @At("TAIL"))
+    @Inject(method = "stop", at = @At(value = "INVOKE", target = "Lorg/slf4j/Logger;info(Ljava/lang/String;)V"), remap = false)
     private void shutdownShinrai(CallbackInfo ci) {
         Shinrai.INSTANCE.shutdownShinrai();
     }
-
 
 }

@@ -33,6 +33,8 @@ public class BindCommand extends Command {
                 } else
                     Shinrai.INSTANCE.addChatMessage("Invalid key " + keyInput + ".");
             }
+        } else {
+            sendNotFound("Module '" + moduleName + "'");
         }
 
         return true;

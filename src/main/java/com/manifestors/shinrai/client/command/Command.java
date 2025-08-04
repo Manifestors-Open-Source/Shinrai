@@ -41,4 +41,8 @@ public abstract class Command implements LoggerInstance, MinecraftInstance {
 
         return names;
     }
+
+    public void sendNotFound(String findingObject) {
+        Shinrai.INSTANCE.addChatMessage(findingObject + " not found.");
+    }
 }

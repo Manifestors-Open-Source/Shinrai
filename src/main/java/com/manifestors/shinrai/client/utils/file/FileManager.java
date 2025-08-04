@@ -2,16 +2,20 @@ package com.manifestors.shinrai.client.utils.file;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import com.google.gson.JsonElement;
 import com.manifestors.shinrai.client.Shinrai;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 
 public class FileManager {
 
     private static final File ROOT_DIRECTORY = new File("Shinrai");
+    private static final Gson GSON = new Gson();
 
     public static void createDirectories() {
         if (ROOT_DIRECTORY.mkdirs())
@@ -27,6 +31,12 @@ public class FileManager {
         return gson.toJson(obj);
     }
 
+    public static String toJson(Map<String, Object> data) {
+        var gson = new GsonBuilder().setPrettyPrinting().create();
+
+        return gson.toJson(data);
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public static void writeJsonToFile(String json, String childDirectory, String fileName) {
         try {
@@ -37,7 +47,21 @@ public class FileManager {
 
             Files.writeString(Path.of(jsonFile.toURI()), json);
         } catch (IOException e) {
-            Shinrai.logger.error("Can't write json: ", e);
+            Shinrai.logger.warn("Can't write json: ", e);
+        }
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public static void writeJsonToFile(JsonElement element, String childDirectory, String fileName) {
+        try {
+            var folder = new File(ROOT_DIRECTORY, childDirectory);
+            var jsonFile = new File(folder, fileName);
+            folder.mkdirs();
+            jsonFile.createNewFile();
+
+            Files.writeString(Path.of(jsonFile.toURI()), GSON.toJson(element));
+        } catch (IOException e) {
+            Shinrai.logger.warn("Can't write json: ", e);
         }
     }
 
@@ -48,9 +72,13 @@ public class FileManager {
 
             return Files.readString(jsonFile.toPath());
         } catch (IOException e) {
-            Shinrai.logger.error("Can't read json: ", e);
+            Shinrai.logger.warn("Can't read json: ", e);
+            return "";
         }
-
-        return "";
     }
+
+    public static <T> T getObjectFromJson(String json, Type type) {
+        return GSON.fromJson(json, type);
+    }
+
 }

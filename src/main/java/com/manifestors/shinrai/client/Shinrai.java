@@ -2,10 +2,11 @@ package com.manifestors.shinrai.client;
 
 import com.manifestors.shinrai.client.command.CommandManager;
 import com.manifestors.shinrai.client.event.EventManager;
-import com.manifestors.shinrai.client.utils.file.FileManager;
 import com.manifestors.shinrai.client.module.ModuleManager;
+import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen;
 import com.manifestors.shinrai.client.utils.LoggerInstance;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
+import com.manifestors.shinrai.client.utils.file.FileManager;
 import lombok.Getter;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
@@ -33,10 +34,15 @@ public enum Shinrai implements LoggerInstance, MinecraftInstance {
         commandManager.registerCommands();
 
         FileManager.createDirectories();
+
+        new ShinraiCustomizationScreen().loadBackgroundFromJson();
     }
 
     public void shutdownShinrai() {
+        logger.info("Saving modules...");
         moduleManager.saveModulesJson();
+        logger.info("Modules saved, shutting down subsystems...");
+        logger.info("Goodbye!");
     }
 
     public String getFullVersion() {

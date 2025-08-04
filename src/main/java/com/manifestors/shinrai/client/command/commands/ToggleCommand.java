@@ -19,10 +19,10 @@ public class ToggleCommand extends Command {
         if (module != null) {
             module.toggleModule();
             Shinrai.INSTANCE.addChatMessage(module.getName() + " has been " + (module.isEnabled() ? "enabled" : "disabled") + ".");
-            return true;
-        } else
-            Shinrai.INSTANCE.addChatMessage("Module not found.");
+        } else {
+            sendNotFound("Module '" + moduleName + "'");
+        }
 
-        return false;
+        return true;
     }
 }

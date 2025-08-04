@@ -15,8 +15,15 @@ public class CommandManager {
     public static final String PREFIX = ".";
 
     public void registerCommands() {
-        commands.add(new BindCommand());
-        commands.add(new ToggleCommand());
+        try {
+            Shinrai.logger.info("Loading commands...");
+            commands.add(new BindCommand());
+            commands.add(new ToggleCommand());
+            Shinrai.logger.info("Loaded {} commands.", commands.size());
+        } catch (Exception e) {
+            Shinrai.logger.error("Can't load commands: ", e);
+        }
+
     }
 
     public void processCommands(ChatMessageSendEvent event) {

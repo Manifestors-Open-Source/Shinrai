@@ -2,6 +2,7 @@ package com.manifestors.shinrai.client.ui.title;
 
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.ui.alt.ShinraiAltMenuScreen;
+import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
 import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer;
 import net.minecraft.client.gui.DrawContext;
@@ -47,16 +48,24 @@ public class ShinraiTitleScreen extends Screen implements MinecraftInstance {
         );
 
         this.addDrawableChild(
+                ButtonWidget.builder(Text.translatable("title.screen.customization"), (button) ->
+                                mc.setScreen(new ShinraiCustomizationScreen()))
+                        .dimensions(this.width / 2 - 100, this.height / 4 + 113, 200, 20)
+                        .build()
+        );
+
+        this.addDrawableChild(
                 ButtonWidget.builder(Text.translatable("menu.options"), (button) ->
                                 mc.setScreen(new OptionsScreen(this, mc.options)))
-                        .dimensions(this.width / 2 - 100, this.height / 4 + 113, 98, 20)
+                        .dimensions(this.width / 2 - 100, this.height / 4 + 140, 98, 20)
                         .build()
         );
 
         this.addDrawableChild(
                 ButtonWidget.builder(Text.translatable("menu.quit"), (button) ->
-                                mc.scheduleStop())
-                        .dimensions(this.width / 2 + 2, this.height / 4 + 113, 98, 20)
+                                mc.scheduleStop()
+                        )
+                        .dimensions(this.width / 2 + 2, this.height / 4 + 140, 98, 20)
                         .build()
         );
 

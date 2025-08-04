@@ -109,5 +109,4 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
     void enterNewSession(Session alterSession){
         ((MixinSessionAccessor) mc).setSession(alterSession);
     }
-
 }
