@@ -6,6 +6,7 @@ import com.manifestors.shinrai.client.module.modules.combat.*;
 import com.manifestors.shinrai.client.module.modules.extras.*;
 import com.manifestors.shinrai.client.module.modules.fun.*;
 import com.manifestors.shinrai.client.module.modules.movement.*;
+import com.manifestors.shinrai.client.module.modules.player.BlockFly;
 import com.manifestors.shinrai.client.module.modules.visuals.*;
 import com.manifestors.shinrai.client.utils.file.FileManager;
 import lombok.Getter;
@@ -35,6 +36,8 @@ public class ModuleManager {
             modules.add(new BackToOldPVP());
             modules.add(new Speed());
             modules.add(new Velocity());
+            modules.add(new NoSlow());
+            modules.add(new BlockFly());
             Shinrai.logger.info("Loaded {} modules.", modules.size());
         } catch (Exception e) {
             Shinrai.logger.error("Can't load modules", e);
