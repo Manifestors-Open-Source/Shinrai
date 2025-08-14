@@ -127,4 +127,8 @@ public class ShinraiCustomizationScreen extends Screen implements MinecraftInsta
         FileManager.writeJsonToFile(data, metadataProperties[0], metadataProperties[1]);
     }
 
+    @Override
+    public void close() {
+        mc.setScreen(new ShinraiTitleScreen());
+    }
 }

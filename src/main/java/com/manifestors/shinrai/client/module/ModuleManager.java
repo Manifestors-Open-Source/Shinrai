@@ -47,7 +47,7 @@ public class ModuleManager {
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
         return modules.stream()
                 .filter(module -> moduleClass == module.getClass())
-                .findAny().orElseThrow()
+                .findFirst().orElseThrow()
                 .isEnabled();
     }
 
@@ -61,7 +61,7 @@ public class ModuleManager {
                         if (altName.equalsIgnoreCase(moduleName)) return true;
                     return false;
                 })
-                .findAny().orElse(null);
+                .findFirst().orElse(null);
     }
 
     public void saveModulesJson() {
