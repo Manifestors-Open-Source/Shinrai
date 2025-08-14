@@ -12,8 +12,12 @@ base {
 repositories {
     mavenCentral()
 }
+configurations {
+    javafx
+}
 
 dependencies {
+
     compileOnly "org.projectlombok:lombok:1.18.38"
     annotationProcessor "org.projectlombok:lombok:1.18.38"
 
@@ -21,7 +25,8 @@ dependencies {
     mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
 
     implementation 'com.google.code.gson:gson:2.13.1'
-
+    javafx "org.openjfx:javafx-controls:20"
+    javafx "org.openjfx:javafx-web:20"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 }
@@ -52,7 +57,7 @@ java {
     if (JavaVersion.current() < javaVersion) {
         toolchain.languageVersion = JavaLanguageVersion.of(targetJavaVersion)
     }
-
+    modularity.inferModulePath.set(true)
     withSourcesJar()
 }
 
