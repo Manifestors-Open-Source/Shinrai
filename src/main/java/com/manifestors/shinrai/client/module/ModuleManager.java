@@ -6,12 +6,15 @@ import com.manifestors.shinrai.client.module.modules.combat.*;
 import com.manifestors.shinrai.client.module.modules.extras.*;
 import com.manifestors.shinrai.client.module.modules.fun.*;
 import com.manifestors.shinrai.client.module.modules.movement.*;
+import com.manifestors.shinrai.client.module.modules.player.BlockFly;
+import com.manifestors.shinrai.client.module.modules.player.ChestStealer;
 import com.manifestors.shinrai.client.module.modules.visuals.*;
 import com.manifestors.shinrai.client.utils.file.FileManager;
 import lombok.Getter;
 import org.jetbrains.annotations.Nullable;
 
 import java.lang.reflect.Type;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -22,20 +25,33 @@ public class ModuleManager {
     private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
 
     public void registerModules() {
+        Shinrai.logger.info("Loading modules...");
+            addModules(
+                    // Combat
+                    new BackToOldPVP(),
+                    new Velocity(),
+                    // Movement
+                    new Jesus(),
+                    new NoJumpDelay(),
+                    new NoSlow(),
+                    new Speed(),
+                    new Sprint(),
+                    // Player
+                    new BlockFly(),
+                    new ChestStealer(),
+                    // Visuals
+                    new HUD(),
+                    // Extras
+                    new NoPortalCooldown(),
+                    // Fun
+                    new NoGravity()
+            );
+        Shinrai.logger.info("Loaded {} modules.", modules.size());
+    }
+
+    private void addModules(Module ... modules) {
         try {
-            modules.add(new Sprint());
-            modules.add(new NoFOV());
-            modules.add(new NoHurtCam());
-            modules.add(new HUD());
-            modules.add(new Jesus());
-            modules.add(new NoPortalCooldown());
-            modules.add(new NoGravity());
-            modules.add(new NoJumpDelay());
-            modules.add(new NoTorchAnymore());
-            modules.add(new BackToOldPVP());
-            modules.add(new Speed());
-            modules.add(new Velocity());
-            Shinrai.logger.info("Loaded {} modules.", modules.size());
+            this.modules.addAll(Arrays.asList(modules));
         } catch (Exception e) {
             Shinrai.logger.error("Can't load modules", e);
         }
