@@ -1,10 +1,7 @@
 {
   "title.screen.copyright": "© Manifestors 2025",
   "title.screen.altbutton": "Alt Manager",
-  "title.screen.customization": "Customization",
   "altmanager.gui.altbutton" : "Enter to The Alt Account",
   "altmanager.gui.textfield" : "Alt Account Name",
-  "altmanager.gui.text" : "Alt Account Name",
-  "customization.gui.changebutton": "Change background",
-  "customization.gui.resetbutton": "Reset background"
+  "altmanager.gui.text" : "Alt Account Name"
 }

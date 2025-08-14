@@ -22,6 +22,7 @@ import java.util.UUID;
 public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
 
     private TextFieldWidget altNameField;
+    private TextFieldWidget accesTokenField;
 
     public ShinraiAltMenuScreen() {
         super(Text.of("Shinrai Alt Manage Screen"));
@@ -29,7 +30,7 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
     protected void init() {
         final Text copyrightText = Text.translatable("title.screen.copyright");
 
-        this.altNameField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 - 10, 200, 20, Text.translatable("altmanager.gui.textfield"));
+        this.altNameField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 - 50, 200, 20, Text.translatable("altmanager.gui.textfield"));
         this.addDrawableChild(altNameField);
         this.addDrawableChild(
                 ButtonWidget.builder(Text.translatable("altmanager.gui.altbutton"), (button) ->
@@ -38,7 +39,20 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
 
                         )
 
-                        .dimensions(this.width / 2 - 100,this.height/2 + 20 , 200, 20)
+                        .dimensions(this.width / 2 - 100,this.height/2 - 20 , 200, 20)
+                        .build()
+        );
+
+        this.accesTokenField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 + 10, 200, 20, Text.translatable("altmanager.gui.AcesssText"));
+        this.addDrawableChild(accesTokenField);
+        this.addDrawableChild(
+                ButtonWidget.builder(Text.translatable("altmanager.gui.AccessButton"), (button) ->
+
+                                enterNewSession(new Session("MANIFESTORS", UUID.fromString("0a512f4a-2da2-4261-b4c3-e69b20875fa6"),"eyJraWQiOiIwNDkxODEiLCJhbGciOiJSUzI1NiJ9.eyJ4dWlkIjoiMjUzNTQzODA2OTQzMDM1MyIsImFnZyI6IkFkdWx0Iiwic3ViIjoiMDc2ZTc5OWItNmJiMS00MTFmLTg1NWQtM2U0NTZiMzAxOTUyIiwiYXV0aCI6IlhCT1giLCJucyI6ImRlZmF1bHQiLCJyb2xlcyI6W10sImlzcyI6ImF1dGhlbnRpY2F0aW9uIiwiZmxhZ3MiOlsibXVsdGlwbGF5ZXIiLCJ0d29mYWN0b3JhdXRoIiwibXNhbWlncmF0aW9uX3N0YWdlNCIsIm9yZGVyc18yMDIyIl0sInByb2ZpbGVzIjp7Im1jIjoiMGE1MTJmNGEtMmRhMi00MjYxLWI0YzMtZTY5YjIwODc1ZmE2In0sInBsYXRmb3JtIjoiUENfTEFVTkNIRVIiLCJwZmQiOlt7InR5cGUiOiJtYyIsImlkIjoiMGE1MTJmNGEtMmRhMi00MjYxLWI0YzMtZTY5YjIwODc1ZmE2IiwibmFtZSI6Ik1BTklGRVNUT1JTIn1dLCJuYmYiOjE3NTUxMDkyMzYsImV4cCI6MTc1NTE5NTYzNiwiaWF0IjoxNzU1MTA5MjM2fQ.sFw5qFoos76_DqTv-l5zR0gR1c5KWplnsRFT0e71mvYrttoUEeuqJPt546GT9f4Z0FwPhjAtHqQ0zF0HRvFUanmIKuUyZNSafmizR_qLDkr0VsRLmVFuGZS17z_MF_2WC3gxTlLEiGGZ_lbWENbMWBe90Z-PsKG9M7KFz9XFrPpL47KRlfNIFwJxaLQbnZD-L95JnYBwob90pPnR8-c3ukLlqch7rPG4C9TjY2Ib1LnSlmE4uhG98lK77EsI6QfzoFYZPGkqI-KdgrvCW3Fet9DmjvXxP5FBBnObMCEU4rcRnWBNNbTN_QN_Flb2p__KZnoznYhRGcXJMIDHxNuVCA", Optional.empty(),Optional.empty(), Session.AccountType.MSA))
+
+                        )
+
+                        .dimensions(this.width / 2 - 100,this.height/2 + 40 , 200, 20)
                         .build()
         );
 
@@ -49,13 +63,15 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
         this.addDrawableChild(
                 new TextWidget(
                         this.width / 2 - textRenderer.getWidth(altText) / 2,
-                        this.height /2 - 25,
+                        this.height /2 - 60,
                         copyrightTextWidth,
                         10,
                         altText,
                         this.textRenderer
                 )
         );
+
+
         this.addDrawableChild(
                 new PressableTextWidget(
                         copyrightTextX,
