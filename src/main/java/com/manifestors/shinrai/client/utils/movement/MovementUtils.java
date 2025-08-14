@@ -1,6 +1,7 @@
 package com.manifestors.shinrai.client.utils.movement;
 
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
+import net.minecraft.util.math.MathHelper;
 
 public class MovementUtils implements MinecraftInstance {
 
@@ -49,6 +50,17 @@ public class MovementUtils implements MinecraftInstance {
 
             mc.player.setVelocity(x, mc.player.getVelocity().y, z);
         }
+    }
+
+    public static boolean isLookingDiagonally() {
+        var direction = mc.player.bodyYaw;
+
+        var yaw = Math.round(Math.abs(MathHelper.wrapDegrees(direction)) / 45f) * 45f;
+
+        var isYawDiagonal = yaw % 90f != 0f;
+        var isMovingDiagonal = mc.player.getMovement().y != 0f && mc.player.getMovement().x == 0f;
+
+        return isYawDiagonal || isMovingDiagonal;
     }
 
 }
