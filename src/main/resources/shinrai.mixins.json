@@ -23,7 +23,12 @@
     "minecraft.gui.screen.MixinCreditScreen",
     "minecraft.network.MixinSessionAccessor",
     "minecraft.entity.MixinLivingEntity",
-    "minecraft.entity.player.MixinPlayerEntity"
+    "minecraft.entity.player.MixinPlayerEntity",
+    "minecraft.entity.combat.MixinBipedEntityModel",
+    "minecraft.entity.combat.MixinBipedEntityRenderer",
+    "minecraft.entity.combat.MixinHeldItemFeatureRenderer",
+    "minecraft.entity.combat.MixinHeldItemRenderer",
+    "minecraft.entity.combat.MixinPlayerEntityRenderer"
   ],
   "injectors": {
     "defaultRequire": 1

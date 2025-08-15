@@ -3,6 +3,7 @@ package com.manifestors.shinrai.client;
 import com.manifestors.shinrai.client.command.CommandManager;
 import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.module.ModuleManager;
+
 import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen;
 import com.manifestors.shinrai.client.utils.LoggerInstance;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
@@ -32,7 +33,6 @@ public enum Shinrai implements LoggerInstance, MinecraftInstance {
         moduleManager.loadModulesFromJson();
         commandManager = new CommandManager();
         commandManager.registerCommands();
-
         FileManager.createDirectories();
 
         new ShinraiCustomizationScreen().loadBackgroundFromJson();

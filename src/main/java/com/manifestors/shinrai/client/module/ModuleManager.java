@@ -26,33 +26,34 @@ public class ModuleManager {
 
     public void registerModules() {
         Shinrai.logger.info("Loading modules...");
-            addModules(
-                    // Combat
-                    new BackToOldPVP(),
-                    new Velocity(),
-                    // Movement
-                    new Jesus(),
-                    new NoJumpDelay(),
-                    new NoSlow(),
-                    new Speed(),
-                    new Sprint(),
-                    // Player
-                    new BlockFly(),
-                    new ChestStealer(),
-                    // Visuals
-                    new HUD(),
-                    new NoFOV(),
-                    new NoHurtCam(),
-                    new NoTorchAnymore(),
-                    // Extras
-                    new NoPortalCooldown(),
-                    // Fun
-                    new NoGravity()
-            );
+        addModules(
+                // Combat
+                new BackToOldPVP(),
+                new Velocity(),
+                new SwordBlocking(),
+                // Movement
+                new Jesus(),
+                new NoJumpDelay(),
+                new NoSlow(),
+                new Speed(),
+                new Sprint(),
+                // Player
+                new BlockFly(),
+                new ChestStealer(),
+                // Visuals
+                new HUD(),
+                new NoFOV(),
+                new NoHurtCam(),
+                new NoTorchAnymore(),
+                // Extras
+                new NoPortalCooldown(),
+                // Fun
+                new NoGravity()
+        );
         Shinrai.logger.info("Loaded {} modules.", modules.size());
     }
 
-    private void addModules(Module ... modules) {
+    private void addModules(Module... modules) {
         try {
             this.modules.addAll(Arrays.asList(modules));
         } catch (Exception e) {
@@ -86,7 +87,8 @@ public class ModuleManager {
     }
 
     public void loadModulesFromJson() {
-        Type type = new TypeToken<List<Map<String, Object>>>(){}.getType();
+        Type type = new TypeToken<List<Map<String, Object>>>() {
+        }.getType();
         var json = FileManager.getJsonFromFile("settings", "modules.shinrai");
         if (json.isEmpty())
             return;
@@ -100,5 +102,4 @@ public class ModuleManager {
             }
         }
     }
-
 }
