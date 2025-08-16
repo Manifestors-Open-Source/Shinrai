@@ -32,11 +32,12 @@ public class ModuleManager {
                 new Velocity(),
                 new SwordBlocking(),
                 // Movement
-                new Jesus(),
+                new TensionedFluid(),
                 new NoJumpDelay(),
                 new NoSlow(),
                 new Speed(),
                 new Sprint(),
+                new SilkFall(),
                 // Player
                 new BlockFly(),
                 new ChestStealer(),
