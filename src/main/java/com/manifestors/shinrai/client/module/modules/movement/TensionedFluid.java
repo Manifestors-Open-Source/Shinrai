@@ -10,11 +10,11 @@ import net.minecraft.block.Blocks;
 import net.minecraft.util.math.BlockPos;
 
 @ModuleData(
-        name = "Jesus",
+        name = "TensionedFluid",
         description = "Block submerge in Water",
         category = ModuleCategory.MOVEMENT
 )
-public class Jesus extends Module {
+public class TensionedFluid extends Module {
     @ListenEvent
     public void onTickMovement(TickMovementEvent event) {
         BlockPos blockBelow = mc.player.getBlockPos().down();
