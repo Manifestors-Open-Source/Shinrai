@@ -24,7 +24,6 @@ public class SwordBlockingClient {
         swordList.add(Items.NETHERITE_SWORD);
     }
     public static boolean isEntityBlocking(LivingEntity entity) {
-
         return SwordBlockingConfig.enabled && entity.isUsingItem() && canShieldSwordBlock(entity);
     }
 

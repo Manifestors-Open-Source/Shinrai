@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.mixins.minecraft.entity.combat;
+package com.manifestors.shinrai.mixins.minecraft.render;
 
 import com.manifestors.shinrai.client.module.modules.combat.SwordBlockingClient;
 import com.manifestors.shinrai.client.module.modules.combat.config.SwordBlockingConfig;

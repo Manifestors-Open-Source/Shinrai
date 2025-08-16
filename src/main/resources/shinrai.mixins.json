@@ -25,10 +25,10 @@
     "minecraft.entity.MixinLivingEntity",
     "minecraft.entity.player.MixinPlayerEntity",
     "minecraft.entity.combat.MixinBipedEntityModel",
-    "minecraft.entity.combat.MixinBipedEntityRenderer",
+    "minecraft.render.MixinBipedEntityRenderer",
     "minecraft.entity.combat.MixinHeldItemFeatureRenderer",
     "minecraft.entity.combat.MixinHeldItemRenderer",
-    "minecraft.entity.combat.MixinPlayerEntityRenderer"
+    "minecraft.render.MixinPlayerEntityRenderer"
   ],
   "injectors": {
     "defaultRequire": 1
