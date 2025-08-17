@@ -6,10 +6,7 @@ import com.manifestors.shinrai.client.module.modules.combat.*;
 import com.manifestors.shinrai.client.module.modules.extras.*;
 import com.manifestors.shinrai.client.module.modules.fun.*;
 import com.manifestors.shinrai.client.module.modules.movement.*;
-import com.manifestors.shinrai.client.module.modules.player.AutoEat;
-import com.manifestors.shinrai.client.module.modules.player.AutoTotem;
-import com.manifestors.shinrai.client.module.modules.player.BlockFly;
-import com.manifestors.shinrai.client.module.modules.player.ChestStealer;
+import com.manifestors.shinrai.client.module.modules.player.*;
 import com.manifestors.shinrai.client.module.modules.visuals.*;
 import com.manifestors.shinrai.client.utils.file.FileManager;
 import lombok.Getter;
@@ -41,7 +38,6 @@ public class ModuleManager {
                 new Speed(),
                 new Sprint(),
                 new SilkFall(),
-                new AutoEat(),
                 // Player
                 new BlockFly(),
                 new ChestStealer(),
