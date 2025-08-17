@@ -33,6 +33,7 @@ public class ModuleManager {
                 new Velocity(),
                 new SwordBlocking(),
                 new AutoTotem(),
+                new AutoDodge(),
                 // Movement
                 new TensionedFluid(),
                 new NoJumpDelay(),
