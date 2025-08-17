@@ -15,7 +15,7 @@ import net.minecraft.screen.slot.SlotActionType;
 
 @ModuleData(
         name = "AutoTotem",
-        category = ModuleCategory.COMBAT
+        category = ModuleCategory.PLAYER
 )
 public class AutoTotem extends Module {
 
