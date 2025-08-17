@@ -19,7 +19,7 @@ import java.util.List;
 
 @ModuleData(
         name = "AutoDodge",
-        description = "",
+        description = "Module will dodge arrow,fireballs and snowballs automaticly.",
         category = ModuleCategory.COMBAT
 )
 public class AutoDodge extends Module {

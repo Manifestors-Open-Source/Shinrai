@@ -16,6 +16,7 @@ import net.minecraft.util.hit.HitResult;
 
 @ModuleData(
         name = "AutoWeapon",
+        description = "Module will get best weapon when you attack to an entity.",
         category = ModuleCategory.COMBAT
 )
 public class AutoWeapon extends Module {

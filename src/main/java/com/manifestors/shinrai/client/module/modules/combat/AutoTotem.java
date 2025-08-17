@@ -15,6 +15,7 @@ import net.minecraft.screen.slot.SlotActionType;
 
 @ModuleData(
         name = "AutoTotem",
+        description = "Will get Totem when your health is lesser than 2.5 Hearths",
         category = ModuleCategory.PLAYER
 )
 public class AutoTotem extends Module {

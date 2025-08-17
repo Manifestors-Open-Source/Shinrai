@@ -47,7 +47,7 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
         this.addDrawableChild(
                 ButtonWidget.builder(Text.translatable("altmanager.gui.AccessButton"), (button) ->
 
-                                enterNewSession(new Session("MANIFESTORS", UUID.fromString("0a512f4a-2da2-4261-b4c3-e69b20875fa6"),"", Optional.empty(),Optional.empty(), Session.AccountType.MSA))
+                                enterNewSession(new Session("", UUID.fromString(""),"", Optional.empty(),Optional.empty(), Session.AccountType.MSA))
 
                         )
 
