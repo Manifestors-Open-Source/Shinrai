@@ -1,4 +1,4 @@
-package com.manifestors.shinrai.client.module.modules.combat;
+package com.manifestors.shinrai.client.module.modules.player;
 
 import com.manifestors.shinrai.client.event.annotations.ListenEvent;
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
