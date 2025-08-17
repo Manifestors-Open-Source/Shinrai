@@ -70,7 +70,7 @@ public abstract class ManifestorsCustomMidnightConfig {
         }
     }
 
-    // Kendi konfigürasyon sınıfınızın içine gömülü (nested) sınıf
+
     public static class EntryInfo {
         public final Field field;
         public final String modid;

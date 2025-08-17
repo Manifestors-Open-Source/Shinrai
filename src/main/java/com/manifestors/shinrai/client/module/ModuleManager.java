@@ -6,6 +6,8 @@ import com.manifestors.shinrai.client.module.modules.combat.*;
 import com.manifestors.shinrai.client.module.modules.extras.*;
 import com.manifestors.shinrai.client.module.modules.fun.*;
 import com.manifestors.shinrai.client.module.modules.movement.*;
+import com.manifestors.shinrai.client.module.modules.player.AutoEat;
+import com.manifestors.shinrai.client.module.modules.player.AutoTotem;
 import com.manifestors.shinrai.client.module.modules.player.BlockFly;
 import com.manifestors.shinrai.client.module.modules.player.ChestStealer;
 import com.manifestors.shinrai.client.module.modules.visuals.*;
@@ -31,6 +33,7 @@ public class ModuleManager {
                 new BackToOldPVP(),
                 new Velocity(),
                 new SwordBlocking(),
+                new AutoTotem(),
                 // Movement
                 new TensionedFluid(),
                 new NoJumpDelay(),
@@ -38,6 +41,7 @@ public class ModuleManager {
                 new Speed(),
                 new Sprint(),
                 new SilkFall(),
+                new AutoEat(),
                 // Player
                 new BlockFly(),
                 new ChestStealer(),

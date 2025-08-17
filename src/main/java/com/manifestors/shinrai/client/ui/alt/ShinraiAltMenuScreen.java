@@ -15,7 +15,6 @@ import net.minecraft.client.gui.widget.TextFieldWidget;
 import net.minecraft.client.gui.widget.TextWidget;
 import net.minecraft.client.session.Session;
 import net.minecraft.text.Text;
-
 import java.util.Optional;
 import java.util.UUID;
 
@@ -124,5 +123,8 @@ public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
 
     void enterNewSession(Session alterSession){
         ((MixinSessionAccessor) mc).setSession(alterSession);
+
     }
+
+
 }
