@@ -27,6 +27,8 @@ public class ModuleManager {
         Shinrai.logger.info("Loading modules...");
         addModules(
                 // Combat
+                new AutoDodge(),
+                new AutoWeapon(),
                 new BackToOldPVP(),
                 new Velocity(),
                 new SwordBlocking(),
