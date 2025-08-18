@@ -4,12 +4,11 @@ import com.manifestors.shinrai.client.command.CommandManager;
 import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.module.ModuleManager;
 
-import com.manifestors.shinrai.client.utils.Discord.RPCEngine;
+import com.manifestors.shinrai.client.utils.discord.RPCEngine;
 import com.manifestors.shinrai.client.module.modules.combat.SwordBlockingClient;
 import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen;
 import com.manifestors.shinrai.client.utils.LoggerInstance;
 import com.manifestors.shinrai.client.utils.MinecraftInstance;
-import com.manifestors.shinrai.client.utils.Trackers;
 import com.manifestors.shinrai.client.utils.file.FileManager;
 import lombok.Getter;
 import net.minecraft.text.Text;
@@ -37,9 +36,7 @@ public enum Shinrai implements LoggerInstance, MinecraftInstance {
         commandManager = new CommandManager();
         commandManager.registerCommands();
         SwordBlockingClient.init();
-        RPCEngine.getOperatingSystem();
-        RPCEngine.StartRPC();
-        Trackers.init();
+        RPCEngine.startRPC();
         FileManager.createDirectories();
 
         new ShinraiCustomizationScreen().loadBackgroundFromJson();
@@ -49,6 +46,7 @@ public enum Shinrai implements LoggerInstance, MinecraftInstance {
         logger.info("Saving modules...");
         moduleManager.saveModulesJson();
         logger.info("Modules saved, shutting down subsystems...");
+        RPCEngine.shutdownRPC();
         logger.info("Goodbye!");
     }
 

@@ -17,6 +17,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.stream.Collectors;
 
 @Getter
 public class ModuleManager {
@@ -63,6 +64,10 @@ public class ModuleManager {
         } catch (Exception e) {
             Shinrai.logger.error("Can't load modules", e);
         }
+    }
+
+    public List<Module> getEnabledModules() {
+        return modules.stream().filter(Module::isEnabled).collect(Collectors.toList());
     }
 
     public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
