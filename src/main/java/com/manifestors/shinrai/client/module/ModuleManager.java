@@ -40,6 +40,7 @@ public class ModuleManager {
                 new Sprint(),
                 new SilkFall(),
                 // Player
+                new AutoEat(),
                 new AutoTotem(),
                 new BlockFly(),
                 new ChestStealer(),

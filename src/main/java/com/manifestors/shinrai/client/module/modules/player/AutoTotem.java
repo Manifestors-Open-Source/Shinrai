@@ -30,21 +30,17 @@ public class AutoTotem extends Module {
     public void onTick(TickMovementEvent e) {
         if (!this.isEnabled()) return;
 
-        if (cdTicks > 0) cdTicks--;
+        if (cdTicks > 0) {
+            if (lastTotemSlot != -1 && !lastItemStack.isEmpty()) {
+                lastTotemSlot = -1;
+                lastItemStack = ItemStack.EMPTY;
+            }
+            cdTicks--;
+        }
 
         MinecraftClient mc = MinecraftClient.getInstance();
         ClientPlayerEntity p = mc.player;
         if (p == null || mc.interactionManager == null) return;
-
-
-        if (mc.player.getHealth() > 5f) {
-            if (lastTotemSlot != -1 && !lastItemStack.isEmpty()) {
-                moveSlotToSlot(mc, OFFHAND_HANDLER_INDEX, lastTotemSlot);
-                lastTotemSlot = -1;
-                lastItemStack = ItemStack.EMPTY;
-            }
-            return;
-        }
 
         if (!shouldEquipTotem(p)) return;
 
@@ -62,11 +58,10 @@ public class AutoTotem extends Module {
     }
 
     private boolean shouldEquipTotem(ClientPlayerEntity p) {
-        float eHP = p.getHealth() + p.getAbsorptionAmount();
-        boolean lowHP = eHP <= 5.0f;
+        boolean lowHP = mc.player.getHealth() <= 1.5f;
         boolean riskyDim = p.getWorld().getRegistryKey().getValue().getPath().contains("the_nether")
                 || p.getWorld().getRegistryKey().getValue().getPath().contains("the_end");
-        boolean falling = p.fallDistance > 12.0f;
+        boolean falling = p.fallDistance >= 5.0f;
         boolean witherPoison = p.hasStatusEffect(StatusEffects.WITHER)
                 || p.hasStatusEffect(StatusEffects.POISON);
         return lowHP || riskyDim || falling || witherPoison;
