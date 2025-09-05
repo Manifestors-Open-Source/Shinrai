@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Shinrai is no longer actively developed, but we continue to accept pull requests. We may return, but not at this time.
+> Shinrai was discontinued. It is only read-only.
 
 Choose your language.
 [Turkish](README.tr.md) | [English](README.md) | [Japanese](README.jp.md) | [Russian](README.ru.md) | [Arabic](README.ar.md)
