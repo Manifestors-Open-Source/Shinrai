@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Shinrai is still developing.
+> Shinrai is still developing. May be an injectable ghost client instead of a blatant client.
 
 Choose your language.
 [Turkish](README.tr.md) | [English](README.md) | [Japanese](README.jp.md) | [Russian](README.ru.md) | [Arabic](README.ar.md)
