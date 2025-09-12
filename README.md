@@ -1,9 +1,3 @@
-> [!IMPORTANT]
-> Shinrai is still developing. May be an injectable ghost client instead of a blatant client.
-
-Choose your language.
-[Turkish](README.tr.md) | [English](README.md) | [Japanese](README.jp.md) | [Russian](README.ru.md) | [Arabic](README.ar.md)
-
 # 🍁 Shinrai
 <img width="1920" height="658" alt="shinraibanner" src="https://github.com/user-attachments/assets/6c637b2d-b035-4f3e-a7ae-ca0ff3f2202a" />
 
