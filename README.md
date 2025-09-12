@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> Shinrai was discontinued. It is only read-only.
+> Shinrai is still developing.
 
 Choose your language.
 [Turkish](README.tr.md) | [English](README.md) | [Japanese](README.jp.md) | [Russian](README.ru.md) | [Arabic](README.ar.md)
