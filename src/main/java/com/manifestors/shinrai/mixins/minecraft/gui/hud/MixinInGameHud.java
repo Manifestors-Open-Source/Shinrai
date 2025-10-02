@@ -18,8 +18,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(InGameHud.class)
 public class MixinInGameHud {
 
-    @Inject(method = "renderMainHud", at = @At(value = "HEAD"))
-    private void renderHudEventHook(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
+    @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;hudHidden:Z", shift = At.Shift.AFTER))
+    private void renderEventHook(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
         Shinrai.INSTANCE.getEventManager().listenEvent(new Rendering2DEvent(context, MinecraftClient.getInstance().getWindow().getScaledWidth(), MinecraftClient.getInstance().getWindow().getScaledHeight()));
     }
 
