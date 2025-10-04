@@ -31,6 +31,7 @@ public class ModuleManager {
                 new AutoDodge(),
                 new AutoWeapon(),
                 new BackToOldPVP(),
+                new KillAura(),
                 new Velocity(),
                 new SwordBlocking(),
                 // Movement
