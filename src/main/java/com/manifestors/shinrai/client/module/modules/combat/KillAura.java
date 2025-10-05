@@ -6,7 +6,10 @@ import com.manifestors.shinrai.client.module.Module;
 import com.manifestors.shinrai.client.module.ModuleCategory;
 import com.manifestors.shinrai.client.module.annotations.ModuleData;
 import com.manifestors.shinrai.client.utils.math.TimingUtil;
+import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.mob.MobEntity;
 import net.minecraft.entity.passive.AnimalEntity;
 import net.minecraft.entity.player.PlayerEntity;
@@ -26,7 +29,7 @@ public class KillAura extends Module {
         if (mc.world == null || mc.player == null) return;
 
         for (var entity : mc.world.getEntities()) {
-            if (isAttackable(entity)) {
+            if (isAttackable((LivingEntity) entity)) {
                 if (mc.player.distanceTo(entity) <= 3.5F && timer.hasElapsed(625L)) {
                     mc.player.swingHand(mc.player.getActiveHand() == Hand.MAIN_HAND ? Hand.MAIN_HAND : Hand.OFF_HAND);
                     mc.interactionManager.attackEntity(mc.player, entity);
@@ -36,7 +39,8 @@ public class KillAura extends Module {
         }
     }
 
-    private boolean isAttackable(Entity entity) {
+    private boolean isAttackable(LivingEntity entity) {
+        if (entity instanceof ClientPlayerEntity) return false;
         if (entity instanceof PlayerEntity) return true;
         if (entity instanceof AnimalEntity) return true;
         if (entity instanceof MobEntity) return true;
