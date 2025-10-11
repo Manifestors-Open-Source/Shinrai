@@ -17,7 +17,7 @@ public class MixinClientPlayNetworkHandler {
         Shinrai.INSTANCE.getEventManager().listenEvent(messageEvent);
         Shinrai.INSTANCE.getCommandManager().processCommands(messageEvent);
 
-        if (messageEvent.isCancelled())
+        if (messageEvent.getCancelled())
             ci.cancel();
     }
 

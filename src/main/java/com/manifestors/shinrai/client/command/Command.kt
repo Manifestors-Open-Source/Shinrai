@@ -1,48 +1,31 @@
-package com.manifestors.shinrai.client.command;
+package com.manifestors.shinrai.client.command
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.utils.LoggerInstance;
-import com.manifestors.shinrai.client.utils.MinecraftInstance;
-import lombok.Getter;
-import lombok.Setter;
+import com.manifestors.shinrai.client.Shinrai.addChatMessage
+import com.manifestors.shinrai.client.utils.LoggerInstance
+import com.manifestors.shinrai.client.utils.MinecraftInstance
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
+abstract class Command(
+    private val commandName: String,
+    private val commandDescription: String,
+    private val validParameters: String,
+    vararg val aliases: String
+) : LoggerInstance, MinecraftInstance {
 
-@Getter
-@Setter
-public abstract class Command implements LoggerInstance, MinecraftInstance {
+    abstract fun onCommandExecuted(args: Array<String>): Boolean
 
-    private final String commandName;
-    private final String commandDescription;
-    private final String validParameters;
-    private final String[] alternatives;
-
-    public Command(String name, String description, String parameters, String ... aliases) {
-        this.commandName = name;
-        this.commandDescription = description;
-        this.validParameters = parameters;
-        this.alternatives = aliases;
+    fun sendUsage() {
+        val cmdName = if (aliases.isNotEmpty()) {
+            CommandManager.PREFIX + "<${allCommandNames.joinToString("/")}>"
+        } else {
+            commandName
+        }
+        addChatMessage("Usage: $cmdName [$validParameters]")
     }
 
-    public abstract boolean onCommandExecuted(String[] args);
+    val allCommandNames: List<String>
+        get() = listOf(commandName) + aliases.toList()
 
-    public void sendUsage() {
-        var cmdName = alternatives.length > 0 ? CommandManager.PREFIX + "<" + String.join("/", getAllCommandNames()) + ">" : commandName;
-        Shinrai.INSTANCE.addChatMessage("Usage: " + cmdName + " [" + validParameters + "]");
-    }
-
-    public List<String> getAllCommandNames() {
-        List<String> names = new ArrayList<>();
-        names.add(this.commandName);
-        if (this.alternatives != null)
-            names.addAll(Arrays.stream(this.alternatives).toList());
-
-        return names;
-    }
-
-    public void sendNotFound(String findingObject) {
-        Shinrai.INSTANCE.addChatMessage(findingObject + " not found.");
+    fun sendNotFound(findingObject: String) {
+        addChatMessage("$findingObject not found.")
     }
 }

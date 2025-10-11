@@ -1,53 +1,44 @@
-package com.manifestors.shinrai.client.command;
+package com.manifestors.shinrai.client.command
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.command.commands.BindCommand;
-import com.manifestors.shinrai.client.command.commands.ToggleCommand;
-import com.manifestors.shinrai.client.event.events.player.ChatMessageSendEvent;
+import com.manifestors.shinrai.client.Shinrai
+import com.manifestors.shinrai.client.Shinrai.addChatMessage
+import com.manifestors.shinrai.client.command.commands.BindCommand
+import com.manifestors.shinrai.client.command.commands.ToggleCommand
+import com.manifestors.shinrai.client.event.events.player.ChatMessageSendEvent
+import java.util.concurrent.CopyOnWriteArrayList
 
-import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
+object CommandManager {
 
-public class CommandManager {
+    private val commands = CopyOnWriteArrayList<Command>()
 
-    private final CopyOnWriteArrayList<Command> commands = new CopyOnWriteArrayList<>();
+    const val PREFIX: String = "."
 
-    public static final String PREFIX = ".";
-
-    public void registerCommands() {
+    fun registerCommands() {
         try {
-            Shinrai.logger.info("Loading commands...");
-            commands.add(new BindCommand());
-            commands.add(new ToggleCommand());
-            Shinrai.logger.info("Loaded {} commands.", commands.size());
-        } catch (Exception e) {
-            Shinrai.logger.error("Can't load commands: ", e);
-        }
-
-    }
-
-    public void processCommands(ChatMessageSendEvent event) {
-        if (event.getMessage().startsWith(PREFIX)) {
-            var found = false;
-            for (Command command : commands) {
-                var args = event.getMessage().split("\\s+");
-                event.setCancelled(true);
-
-                if (isValidCommand(args[0], command.getAllCommandNames())) {
-                    found = true;
-                    if (!command.onCommandExecuted(args))
-                        command.sendUsage();
-                    break;
-                }
-            }
-
-            if (!found)
-                Shinrai.INSTANCE.addChatMessage("Unknown command. If you forget any command, type .help for help.");
+            Shinrai.logger.info("Loading commands...")
+            commands.add(BindCommand())
+            commands.add(ToggleCommand())
+            Shinrai.logger.info("Loaded ${commands.size} commands.")
+        } catch (e: Exception) {
+            Shinrai.logger.error("Can't load commands: ", e)
         }
     }
 
-    private boolean isValidCommand(String context, List<String> commandNames) {
-        return commandNames.stream().anyMatch(name -> context.startsWith(PREFIX + name));
+    fun processCommands(event: ChatMessageSendEvent) {
+        if (!event.message.startsWith(PREFIX)) return
+
+        val args = event.message.split("\\s+".toRegex()).toTypedArray()
+        event.cancelled = true
+
+        val command = commands.firstOrNull { isValidCommand(args[0], it.allCommandNames) }
+        if (command != null) {
+            if (!command.onCommandExecuted(args)) command.sendUsage()
+        } else {
+            addChatMessage("Unknown command. If you forget any command, type .help for help.")
+        }
     }
 
+    private fun isValidCommand(context: String, commandNames: List<String>): Boolean {
+        return commandNames.any { name -> context.startsWith("$PREFIX$name") }
+    }
 }

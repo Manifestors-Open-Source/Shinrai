@@ -1,49 +1,47 @@
-package com.manifestors.shinrai.client.utils.rendering;
+package com.manifestors.shinrai.client.utils.rendering
 
-import com.manifestors.shinrai.client.utils.MinecraftInstance;
-import com.manifestors.shinrai.client.utils.file.ShinraiAssets;
-import net.minecraft.client.gl.RenderPipelines;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.util.Identifier;
+import com.manifestors.shinrai.client.utils.MinecraftInstance
+import com.manifestors.shinrai.client.utils.file.ShinraiAssets
+import net.minecraft.client.gl.RenderPipelines
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.util.Identifier
 
-public class BackgroundDrawer implements MinecraftInstance {
+object BackgroundDrawer : MinecraftInstance {
 
-    public static boolean isCustomBgActivated = false;
-    public static Identifier customBgId;
+    var isCustomBgActivated = false
+    var customBgId: Identifier? = null
 
-    public static void drawBackground(DrawContext context, String backgroundName) {
-        var backgroundImage = isCustomBgActivated ? customBgId :
-                ShinraiAssets.getBackgroundId(backgroundName);
+    fun drawBackground(context: DrawContext, backgroundName: String?) {
+        val backgroundImage = if (isCustomBgActivated) customBgId else ShinraiAssets.getBackgroundId(backgroundName)
         context.drawTexture(
-                RenderPipelines.GUI_TEXTURED,
-                backgroundImage,
-                0,
-                0,
-                0,
-                0,
-                mc.getWindow().getScaledWidth(),
-                mc.getWindow().getScaledHeight(),
-                mc.getWindow().getScaledWidth(),
-                mc.getWindow().getScaledHeight()
-        );
+            RenderPipelines.GUI_TEXTURED,
+            backgroundImage,
+            0,
+            0,
+            0f,
+            0f,
+            mc.window.scaledWidth,
+            mc.window.scaledHeight,
+            mc.window.scaledWidth,
+            mc.window.scaledHeight
+        )
     }
 
-    public static void drawBackground(DrawContext context) {
-        var backgroundImage = isCustomBgActivated ? customBgId :
-                ShinraiAssets.getBackgroundId("background");
+    @JvmStatic
+    fun drawBackground(context: DrawContext) {
+        val backgroundImage = if (isCustomBgActivated) customBgId else ShinraiAssets.getBackgroundId("background")
 
         context.drawTexture(
-                RenderPipelines.GUI_TEXTURED,
-                backgroundImage,
-                0,
-                0,
-                0,
-                0,
-                mc.getWindow().getScaledWidth(),
-                mc.getWindow().getScaledHeight(),
-                mc.getWindow().getScaledWidth(),
-                mc.getWindow().getScaledHeight()
-        );
+            RenderPipelines.GUI_TEXTURED,
+            backgroundImage,
+            0,
+            0,
+            0f,
+            0f,
+            mc.window.scaledWidth,
+            mc.window.scaledHeight,
+            mc.window.scaledWidth,
+            mc.window.scaledHeight
+        )
     }
-
 }

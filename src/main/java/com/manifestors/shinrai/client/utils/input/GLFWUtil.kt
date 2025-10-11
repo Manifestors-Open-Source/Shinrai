@@ -1,39 +1,39 @@
-package com.manifestors.shinrai.client.utils.input;
+package com.manifestors.shinrai.client.utils.input
 
-import org.lwjgl.glfw.GLFW;
-
-import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
-import java.util.HashMap;
-import java.util.Map;
+import org.lwjgl.glfw.GLFW
+import java.lang.reflect.Modifier
 
 /**
  * Modified and part of LWJGL 2 code (LWJGL 2 -> org.lwjgl.input.Keyboard)
  * @author meto1558
  * @since 29.07.2025
- * */
-public class GLFWUtil {
+ */
+object GLFWUtil {
+    private val keyMap: MutableMap<String?, Int?> = HashMap(253)
 
-    private static final Map<String, Integer> keyMap = new HashMap<>(253);
-
-    static {
-        Field[] fields = GLFW.class.getFields();
+    init {
+        val fields = GLFW::class.java.fields
 
         try {
-            for(var field : fields) {
-
-                if (Modifier.isStatic(field.getModifiers()) && Modifier.isPublic(field.getModifiers()) && Modifier.isFinal(field.getModifiers()) && field.getType().equals(Integer.TYPE) && field.getName().startsWith("GLFW_KEY_") && !field.getName().endsWith("WIN")) {
-                    int key = field.getInt(null);
-                    String name = field.getName().substring(9);
-                    keyMap.put(name, key);
+            for (field in fields) {
+                if (Modifier.isStatic(field.modifiers) && Modifier.isPublic(field.modifiers) && Modifier.isFinal(
+                        field.modifiers
+                    ) && field.type == Integer.TYPE && field.name.startsWith("GLFW_KEY_") && !field.name
+                        .endsWith("WIN")
+                ) {
+                    val key = field.getInt(null)
+                    val name = field.name.substring(9)
+                    keyMap[name] = key
                 }
             }
-        } catch (Exception ignored) {}
+        } catch (ignored: Exception) {
+        }
     }
 
-    public static synchronized int getKeyIndex(String keyName) {
-        Integer ret = keyMap.get(keyName);
-        return ret == null ? -1 : ret;
+    @JvmStatic
+    @Synchronized
+    fun getKeyIndex(keyName: String?): Int {
+        val ret = keyMap[keyName]
+        return ret ?: -1
     }
-
 }

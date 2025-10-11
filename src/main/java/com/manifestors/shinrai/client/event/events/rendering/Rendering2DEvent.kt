@@ -1,16 +1,10 @@
-package com.manifestors.shinrai.client.event.events.rendering;
+package com.manifestors.shinrai.client.event.events.rendering
 
-import com.manifestors.shinrai.client.event.ConstantEvent;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import net.minecraft.client.gui.DrawContext;
+import com.manifestors.shinrai.client.event.ConstantEvent
+import net.minecraft.client.gui.DrawContext
 
-@Getter
-@AllArgsConstructor
-public class Rendering2DEvent extends ConstantEvent {
-
-    private final DrawContext context;
-    private int width;
-    private int height;
-
-}
+class Rendering2DEvent(
+    val context: DrawContext,
+    val width: Int,
+    val height: Int
+) : ConstantEvent()

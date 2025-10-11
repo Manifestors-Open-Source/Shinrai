@@ -1,115 +1,96 @@
-package com.manifestors.shinrai.client.module;
+package com.manifestors.shinrai.client.module
 
-import com.google.common.reflect.TypeToken;
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.module.modules.combat.*;
-import com.manifestors.shinrai.client.module.modules.extras.*;
-import com.manifestors.shinrai.client.module.modules.fun.*;
-import com.manifestors.shinrai.client.module.modules.movement.*;
-import com.manifestors.shinrai.client.module.modules.player.*;
-import com.manifestors.shinrai.client.module.modules.visuals.*;
-import com.manifestors.shinrai.client.utils.file.FileManager;
-import lombok.Getter;
-import org.jetbrains.annotations.Nullable;
+import com.google.common.reflect.TypeToken
+import com.manifestors.shinrai.client.Shinrai
+import com.manifestors.shinrai.client.module.modules.combat.*
+import com.manifestors.shinrai.client.module.modules.extras.*
+import com.manifestors.shinrai.client.module.modules.movement.*
+import com.manifestors.shinrai.client.module.modules.player.*
+import com.manifestors.shinrai.client.module.modules.visuals.*
+import com.manifestors.shinrai.client.module.modules.`fun`.*
+import com.manifestors.shinrai.client.utils.file.FileManager
+import com.manifestors.shinrai.client.utils.file.FileManager.getJsonFromFile
+import com.manifestors.shinrai.client.utils.file.FileManager.getObjectFromJson
+import com.manifestors.shinrai.client.utils.file.FileManager.toJsonOnlyExposedFields
+import java.util.concurrent.CopyOnWriteArrayList
 
-import java.lang.reflect.Type;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.stream.Collectors;
+object ModuleManager {
 
-@Getter
-public class ModuleManager {
+    val modules = CopyOnWriteArrayList<Module>()
 
-    private final CopyOnWriteArrayList<Module> modules = new CopyOnWriteArrayList<>();
+    fun registerModules() {
+        Shinrai.logger.info("Loading modules...")
 
-    public void registerModules() {
-        Shinrai.logger.info("Loading modules...");
-        addModules(
-                // Combat
-                new AutoDodge(),
-                new AutoWeapon(),
-                new BackToOldPVP(),
-                new KillAura(),
-                new Velocity(),
-                new SwordBlocking(),
-                // Movement
-                new TensionedFluid(),
-                new NoJumpDelay(),
-                new NoSlow(),
-                new Speed(),
-                new Sprint(),
-                new SilkFall(),
-                // Player
-                new AutoEat(),
-                new AutoTotem(),
-                new BlockFly(),
-                new ChestStealer(),
-                // Visuals
-                new HUD(),
-                new NoFOV(),
-                new NoHurtCam(),
-                new NoTorchAnymore(),
-                // Extras
-                new NoPortalCooldown(),
-                // Fun
-                new NoGravity()
-        );
-        Shinrai.logger.info("Loaded {} modules.", modules.size());
+        modules += listOf(
+            // Combat
+            AutoDodge,
+            AutoWeapon,
+            BackToOldPVP,
+            KillAura(),
+            Velocity(),
+
+            // Movement
+            TensionedFluid(),
+            NoJumpDelay,
+            NoSlow,
+            Speed(),
+            Sprint(),
+            SilkFall,
+
+            // Player
+            AutoEat(),
+            AutoTotem(),
+            BlockFly(),
+            ChestStealer(),
+
+            // Visuals
+            HUD(),
+            NoFOV,
+            NoHurtCam,
+            NoTorchAnymore(),
+
+            // Extras
+            NoPortalCooldown,
+
+            // Fun
+            NoGravity()
+        )
+
+        Shinrai.logger.info("Loaded ${modules.size} modules.")
     }
 
-    private void addModules(Module... modules) {
-        try {
-            this.modules.addAll(Arrays.asList(modules));
-        } catch (Exception e) {
-            Shinrai.logger.error("Can't load modules", e);
+    val enabledModules: List<Module>
+        get() = modules.filter { it.enabled }
+
+    fun getModuleByName(moduleName: String): Module? {
+        return modules.firstOrNull { module ->
+            module.name.equals(moduleName, ignoreCase = true) ||
+                    module.alternativeNames.any { it.equals(moduleName, ignoreCase = true) }
         }
     }
 
-    public List<Module> getEnabledModules() {
-        return modules.stream().filter(Module::isEnabled).collect(Collectors.toList());
+    fun saveModulesJson() {
+        val json = toJsonOnlyExposedFields(modules)
+        if (json != null) {
+            FileManager.writeJsonToFile(json, "settings", "modules.shinrai")
+        } else {
+            Shinrai.logger.warn("Failed to serialize modules to JSON.")
+        }
     }
 
-    public <T extends Module> boolean isModuleEnabled(Class<T> moduleClass) {
-        return modules.stream()
-                .filter(module -> moduleClass == module.getClass())
-                .findFirst().orElseThrow()
-                .isEnabled();
-    }
+    fun loadModulesFromJson() {
+        val type = object : TypeToken<MutableList<MutableMap<String, Any>>>() {}.type
+        val json = getJsonFromFile("settings", "modules.shinrai")
+        if (json.isEmpty()) return
 
-    @Nullable
-    public Module getModuleByName(String moduleName) {
-        return modules.stream()
-                .filter(module -> {
-                    if (module.getName().equalsIgnoreCase(moduleName)) return true;
+        val list = getObjectFromJson<MutableList<MutableMap<String, Any>>>(json, type) ?: return
 
-                    for (String altName : module.getAlternativeNames())
-                        if (altName.equalsIgnoreCase(moduleName)) return true;
-                    return false;
-                })
-                .findFirst().orElse(null);
-    }
+        list.forEach { moduleMap ->
+            val name = moduleMap["name"] as? String ?: return@forEach
+            val module = getModuleByName(name) ?: return@forEach
 
-    public void saveModulesJson() {
-        var json = FileManager.toJsonOnlyExposedFields(modules);
-        FileManager.writeJsonToFile(json, "settings", "modules.shinrai");
-    }
-
-    public void loadModulesFromJson() {
-        Type type = new TypeToken<List<Map<String, Object>>>() {
-        }.getType();
-        var json = FileManager.getJsonFromFile("settings", "modules.shinrai");
-        if (json.isEmpty())
-            return;
-
-        List<Map<String, Object>> list = FileManager.getObjectFromJson(json, type);
-        for (Map<String, Object> modulesMap : list) {
-            var module = getModuleByName((String) modulesMap.get("name"));
-            if (module != null) {
-                module.setKeyCode(((Double) modulesMap.get("keyCode")).intValue());
-                module.toggleModule((boolean) modulesMap.get("enabled"));
-            }
+            (moduleMap["keyCode"] as? Double)?.toInt()?.let { module.keyCode = it }
+            (moduleMap["enabled"] as? Boolean)?.let { module.toggleModule(it) }
         }
     }
 }

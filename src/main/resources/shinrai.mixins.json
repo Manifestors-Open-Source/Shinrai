@@ -8,16 +8,12 @@
     "minecraft.MixinMinecraftClient",
     "minecraft.block.MixinNetherPortalBlock",
     "minecraft.entity.MixinLivingEntity",
-    "minecraft.entity.combat.MixinBipedEntityModel",
-    "minecraft.entity.combat.MixinHeldItemFeatureRenderer",
-    "minecraft.entity.combat.MixinHeldItemRenderer",
-    "minecraft.entity.player.MixinAbstractClientPlayerEntity",
-    "minecraft.entity.player.MixinClientPlayerEntity",
     "minecraft.entity.player.MixinPlayerEntity",
     "minecraft.gui.MixinLogoDrawer",
     "minecraft.gui.MixinSplashOverlay",
     "minecraft.gui.hud.MixinInGameHud",
     "minecraft.gui.screen.MixinCreditScreen",
+    "minecraft.gui.screen.MixinDisconnectedScreen",
     "minecraft.gui.screen.MixinPressableWidget",
     "minecraft.gui.screen.MixinScreen",
     "minecraft.gui.screen.MixinTextFieldWidget",
@@ -25,11 +21,10 @@
     "minecraft.network.MixinClientConnection",
     "minecraft.network.MixinClientPlayNetworkHandler",
     "minecraft.network.MixinSessionAccessor",
-    "minecraft.render.MixinBipedEntityRenderer",
     "minecraft.render.MixinGameRenderer",
-    "minecraft.render.MixinPlayerEntityRenderer",
     "minecraft.util.MixinWindow",
-    "minecraft.gui.screen.MixinDisconnectedScreen"
+    "minecraft.entity.player.MixinAbstractClientPlayerEntity",
+    "minecraft.entity.player.MixinClientPlayerEntity"
   ],
   "injectors": {
     "defaultRequire": 1

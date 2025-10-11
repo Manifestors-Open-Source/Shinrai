@@ -1,130 +1,152 @@
-package com.manifestors.shinrai.client.ui.alt;
+package com.manifestors.shinrai.client.ui.alt
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen;
-import com.manifestors.shinrai.client.utils.MinecraftInstance;
-import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer;
-import com.manifestors.shinrai.mixins.minecraft.network.MixinSessionAccessor;
-import net.minecraft.client.gui.DrawContext;
-import net.minecraft.client.gui.LogoDrawer;
-import net.minecraft.client.gui.screen.Screen;
-import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
-import net.minecraft.client.gui.widget.PressableTextWidget;
-import net.minecraft.client.gui.widget.TextFieldWidget;
-import net.minecraft.client.gui.widget.TextWidget;
-import net.minecraft.client.session.Session;
-import net.minecraft.text.Text;
-import java.util.Optional;
-import java.util.UUID;
+import com.manifestors.shinrai.client.Shinrai.fullVersion
+import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen
+import com.manifestors.shinrai.client.utils.MinecraftInstance
+import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer.drawBackground
+import com.manifestors.shinrai.mixins.minecraft.network.MixinSessionAccessor
+import net.minecraft.client.gui.DrawContext
+import net.minecraft.client.gui.LogoDrawer
+import net.minecraft.client.gui.screen.Screen
+import net.minecraft.client.gui.screen.option.CreditsAndAttributionScreen
+import net.minecraft.client.gui.widget.ButtonWidget
+import net.minecraft.client.gui.widget.PressableTextWidget
+import net.minecraft.client.gui.widget.TextFieldWidget
+import net.minecraft.client.gui.widget.TextWidget
+import net.minecraft.client.session.Session
+import net.minecraft.text.Text
+import java.util.*
 
-public class ShinraiAltMenuScreen extends Screen implements MinecraftInstance {
+class ShinraiAltMenuScreen : Screen(Text.of("Shinrai Alt Manage Screen")), MinecraftInstance {
 
-    private TextFieldWidget altNameField;
-    private TextFieldWidget accesTokenField;
+    private var altNameField: TextFieldWidget? = null
+    private var accessTokenField: TextFieldWidget? = null
 
-    public ShinraiAltMenuScreen() {
-        super(Text.of("Shinrai Alt Manage Screen"));
-    }
-    protected void init() {
-        final Text copyrightText = Text.translatable("title.screen.copyright");
+    override fun init() {
+        val copyrightText: Text = Text.translatable("title.screen.copyright")
 
-        this.altNameField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 - 50, 200, 20, Text.translatable("altmanager.gui.textfield"));
-        this.addDrawableChild(altNameField);
+        this.altNameField = TextFieldWidget(
+            this.textRenderer,
+            this.width / 2 - 100,
+            this.height / 2 - 50,
+            200,
+            20,
+            Text.translatable("altmanager.gui.textfield")
+        )
+        this.addDrawableChild<TextFieldWidget?>(altNameField)
         this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("altmanager.gui.altbutton"), (button) ->
+            ButtonWidget.builder(Text.translatable("altmanager.gui.altbutton")
 
-                enterNewSession(new Session(altNameField.getText(), UUID.randomUUID(),"", Optional.empty(),Optional.empty(), Session.AccountType.LEGACY))
-
-                        )
-
-                        .dimensions(this.width / 2 - 100,this.height/2 - 20 , 200, 20)
-                        .build()
-        );
-
-        this.accesTokenField = new TextFieldWidget(this.textRenderer, this.width / 2 - 100, this.height / 2 + 10, 200, 20, Text.translatable("altmanager.gui.AcesssText"));
-        this.addDrawableChild(accesTokenField);
-        this.addDrawableChild(
-                ButtonWidget.builder(Text.translatable("altmanager.gui.AccessButton"), (button) ->
-
-                                enterNewSession(new Session("", UUID.fromString(""),"", Optional.empty(),Optional.empty(), Session.AccountType.MSA))
-
-                        )
-
-                        .dimensions(this.width / 2 - 100,this.height/2 + 40 , 200, 20)
-                        .build()
-        );
-
-        final int copyrightTextWidth = this.textRenderer.getWidth(copyrightText);
-        final int copyrightTextX = this.width - copyrightTextWidth - 2;
-        final Text altText = Text.translatable("altmanager.gui.text");
-
-        this.addDrawableChild(
-                new TextWidget(
-                        this.width / 2 - textRenderer.getWidth(altText) / 2,
-                        this.height /2 - 60,
-                        copyrightTextWidth,
-                        10,
-                        altText,
-                        this.textRenderer
+            ) {
+                enterNewSession(
+                    Session(
+                        altNameField!!.text,
+                        UUID.randomUUID(),
+                        "",
+                        Optional.empty(),
+                        Optional.empty(),
+                        Session.AccountType.LEGACY
+                    )
                 )
-        );
+            }
+
+                .dimensions(this.width / 2 - 100, this.height / 2 - 20, 200, 20)
+                .build()
+        )
+
+        this.accessTokenField = TextFieldWidget(
+            this.textRenderer,
+            this.width / 2 - 100,
+            this.height / 2 + 10,
+            200,
+            20,
+            Text.translatable("altmanager.gui.AcesssText")
+        )
+        this.addDrawableChild<TextFieldWidget?>(accessTokenField)
+        this.addDrawableChild(
+            ButtonWidget.builder(
+                Text.translatable("altmanager.gui.AccessButton")
+
+            ) {
+                enterNewSession(
+                    Session(
+                        "",
+                        UUID.fromString(""),
+                        "",
+                        Optional.empty(),
+                        Optional.empty(),
+                        Session.AccountType.MSA
+                    )
+                )
+            }
+
+                .dimensions(this.width / 2 - 100, this.height / 2 + 40, 200, 20)
+                .build()
+        )
+
+        val copyrightTextWidth = this.textRenderer.getWidth(copyrightText)
+        val copyrightTextX = this.width - copyrightTextWidth - 2
+        val altText: Text = Text.translatable("altmanager.gui.text")
+
+        this.addDrawableChild(
+            TextWidget(
+                this.width / 2 - textRenderer.getWidth(altText) / 2,
+                this.height / 2 - 60,
+                copyrightTextWidth,
+                10,
+                altText,
+                this.textRenderer
+            )
+        )
 
 
         this.addDrawableChild(
-                new PressableTextWidget(
-                        copyrightTextX,
-                        this.height - 10,
-                        copyrightTextWidth,
-                        10,
-                        copyrightText,
-                        (button) -> mc.setScreen(new CreditsAndAttributionScreen(this)),
-                        this.textRenderer
-                )
-        );
+            PressableTextWidget(
+                copyrightTextX,
+                this.height - 10,
+                copyrightTextWidth,
+                10,
+                copyrightText,
+                { mc.setScreen(CreditsAndAttributionScreen(this)) },
+                this.textRenderer
+            )
+        )
 
-        final Text clientVersionText = Text.of(Shinrai.INSTANCE.getFullVersion());
+        val clientVersionText = Text.of(fullVersion)
 
         this.addDrawableChild(
-                new PressableTextWidget(
-                        2,
-                        this.height - 10,
-                        this.textRenderer.getWidth(clientVersionText),
-                        10,
-                        clientVersionText,
-                        (button) -> mc.setScreen(new CreditsAndAttributionScreen(this)),
-                        this.textRenderer
-                )
-        );
+            PressableTextWidget(
+                2,
+                this.height - 10,
+                this.textRenderer.getWidth(clientVersionText),
+                10,
+                clientVersionText,
+                { mc.setScreen(CreditsAndAttributionScreen(this)) },
+                this.textRenderer
+            )
+        )
     }
 
-    @Override
-    public void render(DrawContext context, int mouseX, int mouseY, float deltaTicks) {
-        final LogoDrawer drawer = new LogoDrawer(false);
-        BackgroundDrawer.drawBackground(context);
-        drawer.draw(context, mc.getWindow().getScaledWidth(), 0);
-        super.render(context, mouseX, mouseY, deltaTicks);
+    override fun render(context: DrawContext, mouseX: Int, mouseY: Int, deltaTicks: Float) {
+        val drawer = LogoDrawer(false)
+        drawBackground(context)
+        drawer.draw(context, mc.window.scaledWidth, 0f)
+        super.render(context, mouseX, mouseY, deltaTicks)
     }
 
-    @Override
-    public boolean shouldCloseOnEsc() {
-        return true;
+    override fun shouldCloseOnEsc(): Boolean {
+        return true
     }
 
-    @Override
-    public void close() {
-        mc.setScreen(new ShinraiTitleScreen());
+    override fun close() {
+        mc.setScreen(ShinraiTitleScreen())
     }
 
-    @Override
-    public boolean shouldPause() {
-        return false;
+    override fun shouldPause(): Boolean {
+        return false
     }
 
-    void enterNewSession(Session alterSession){
-        ((MixinSessionAccessor) mc).setSession(alterSession);
-
+    fun enterNewSession(alterSession: Session?) {
+        (mc as MixinSessionAccessor).setSession(alterSession)
     }
-
-
 }

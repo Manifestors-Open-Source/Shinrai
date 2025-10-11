@@ -1,28 +1,29 @@
-package com.manifestors.shinrai.client.command.commands;
+package com.manifestors.shinrai.client.command.commands
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.command.Command;
+import com.manifestors.shinrai.client.Shinrai.addChatMessage
+import com.manifestors.shinrai.client.Shinrai.moduleManager
+import com.manifestors.shinrai.client.command.Command
 
-public class ToggleCommand extends Command {
+class ToggleCommand : Command(
+    commandName = "toggle",
+    commandDescription = "Toggles a module by name.",
+    validParameters = "module",
+    "t"
+) {
 
-    public ToggleCommand() {
-        super("toggle", "Toggles a module by name.", "module", "t");
-    }
+    override fun onCommandExecuted(args: Array<String>): Boolean {
+        if (args.size < 2) return false
 
-    @Override
-    public boolean onCommandExecuted(String[] args) {
-        if (args.length < 2)
-            return false;
-        var moduleName = args[1];
-        var module = Shinrai.INSTANCE.getModuleManager().getModuleByName(moduleName);
+        val moduleName = args[1]
+        val module = moduleManager.getModuleByName(moduleName)
 
         if (module != null) {
-            module.toggleModule();
-            Shinrai.INSTANCE.addChatMessage(module.getName() + " has been " + (module.isEnabled() ? "enabled" : "disabled") + ".");
+            module.toggleModule()
+            addChatMessage("${module.name} has been ${if (module.enabled) "enabled" else "disabled"}.")
         } else {
-            sendNotFound("Module '" + moduleName + "'");
+            sendNotFound("Module '$moduleName'")
         }
 
-        return true;
+        return true
     }
 }

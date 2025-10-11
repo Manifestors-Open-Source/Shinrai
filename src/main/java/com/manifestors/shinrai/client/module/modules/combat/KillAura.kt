@@ -1,51 +1,47 @@
-package com.manifestors.shinrai.client.module.modules.combat;
+package com.manifestors.shinrai.client.module.modules.combat
 
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import com.manifestors.shinrai.client.utils.math.TimingUtil;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.mob.MobEntity;
-import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.util.Hand;
+import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
+import com.manifestors.shinrai.client.utils.math.TimingUtil
+import net.minecraft.client.network.ClientPlayerEntity
+import net.minecraft.entity.LivingEntity
+import net.minecraft.entity.mob.MobEntity
+import net.minecraft.entity.passive.AnimalEntity
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.util.Hand
 
-@ModuleData(
-        name = "KillAura",
-        description = "Automatically attacks entities around you.",
-        category = ModuleCategory.COMBAT
-)
-public class KillAura extends Module {
-
-    private final TimingUtil timer = new TimingUtil();
+class KillAura : Module(
+    name = "KillAura",
+    description = "Automatically attacks entities around you.",
+    category = ModuleCategory.COMBAT
+) {
+    private val timer = TimingUtil()
 
     @ListenEvent
-    public void onTickMovement(TickMovementEvent event) {
-        if (mc.world == null || mc.player == null) return;
+    fun onTickMovement(event: TickMovementEvent) {
+        val world = mc.world ?: return
+        val player = mc.player ?: return
 
-        for (var entity : mc.world.getEntities()) {
-            if (isAttackable((LivingEntity) entity)) {
-                if (mc.player.distanceTo(entity) <= 3.5F && timer.hasElapsed(625L)) {
-                    mc.player.swingHand(mc.player.getActiveHand() == Hand.MAIN_HAND ? Hand.MAIN_HAND : Hand.OFF_HAND);
-                    mc.interactionManager.attackEntity(mc.player, entity);
-                    timer.reset();
+        world.entities
+            .filterIsInstance<LivingEntity>()
+            .filter { isAttackable(it) && player.distanceTo(it) <= 3.5f }
+            .forEach { target ->
+                if (timer.hasElapsed(625L)) {
+                    val hand = if (player.activeHand == Hand.MAIN_HAND) Hand.MAIN_HAND else Hand.OFF_HAND
+                    player.swingHand(hand)
+                    mc.interactionManager?.attackEntity(player, target)
+                    timer.reset()
                 }
             }
+    }
+
+    private fun isAttackable(entity: LivingEntity): Boolean {
+        return when (entity) {
+            is ClientPlayerEntity -> false
+            is PlayerEntity, is AnimalEntity, is MobEntity -> true
+            else -> entity.isAlive && entity.isAttackable
         }
     }
-
-    private boolean isAttackable(LivingEntity entity) {
-        if (entity instanceof ClientPlayerEntity) return false;
-        if (entity instanceof PlayerEntity) return true;
-        if (entity instanceof AnimalEntity) return true;
-        if (entity instanceof MobEntity) return true;
-
-        return entity.isAlive() && entity.isAttackable();
-    }
-
 }

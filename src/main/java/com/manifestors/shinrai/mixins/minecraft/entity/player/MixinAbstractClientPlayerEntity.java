@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.entity.player;
 
-import com.manifestors.shinrai.client.Shinrai;
+
 import com.manifestors.shinrai.client.module.modules.visuals.NoFOV;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
@@ -13,7 +13,7 @@ public class MixinAbstractClientPlayerEntity {
 
     @Inject(method = "getFovMultiplier", at = @At(value = "HEAD"), cancellable = true)
     private void noFovHook(CallbackInfoReturnable<Float> cir) {
-        if (Shinrai.INSTANCE.getModuleManager().isModuleEnabled(NoFOV.class)) {
+        if (NoFOV.INSTANCE.getEnabled()) {
             cir.setReturnValue(1.0F);
             cir.cancel();
         }

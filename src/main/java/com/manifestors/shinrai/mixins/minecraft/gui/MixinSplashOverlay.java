@@ -15,30 +15,9 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 
 @Mixin(SplashOverlay.class)
 public class MixinSplashOverlay {
-
-    /* We don't know how it works
-    @Unique
-    private static final Identifier manifestorsLogo = Identifier.of("shinrai","srclogo2.png");
-
-    @Redirect(method = "<clinit>",at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper;getArgb(IIII)I",ordinal = 0))
-    private static int manifestorsBlack(int alpha, int red, int green, int blue){
-
-        return ColorHelper.getArgb(0,0,0);
-    }
-
-    @Redirect(method = "init",at = @At(value = "FIELD", target = "Lnet/minecraft/client/gui/screen/SplashOverlay;LOGO:Lnet/minecraft/util/Identifier;",ordinal = 0))
-    private static Identifier init(){
-        return manifestorsLogo;
-    }
-    @Redirect(method = "<clinit>",at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Identifier;ofVanilla(Ljava/lang/String;)Lnet/minecraft/util/Identifier;",ordinal = 0))
-    private static Identifier manifestorsLogoFun(String path){
-        return Identifier.of("shinrai","textures/mddf.png");
-    }*/
-
-    // New code
     
     @Unique
-    private final Identifier mOpenSourceImage = ShinraiAssets.getTextureId("mopensource");
+    private final Identifier mOpenSourceImage = ShinraiAssets.INSTANCE.getTextureId("mopensource");
 
     @Redirect(method = "<clinit>",at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/ColorHelper;getArgb(IIII)I",ordinal = 0))
     private static int manifestorsBlack(int alpha, int red, int green, int blue){

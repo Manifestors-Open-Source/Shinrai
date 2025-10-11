@@ -1,183 +1,171 @@
-package com.manifestors.shinrai.client.module.modules.combat;
+package com.manifestors.shinrai.client.module.modules.combat
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import net.minecraft.block.Block;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.entity.projectile.ArrowEntity;
-import net.minecraft.entity.projectile.FireballEntity;
-import net.minecraft.entity.projectile.ProjectileEntity;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Direction;
-import net.minecraft.util.math.Vec3d;
-import net.minecraft.world.World;
+import com.manifestors.shinrai.client.Shinrai.moduleManager
+import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
+import net.minecraft.entity.player.PlayerEntity
+import net.minecraft.entity.projectile.*
+import net.minecraft.entity.projectile.thrown.SnowballEntity
+import net.minecraft.item.BlockItem
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.World
+import kotlin.math.floor
+import kotlin.math.round
+import kotlin.random.Random
 
-import java.util.List;
+object AutoDodge : Module(
+    name = "AutoDodge",
+    description = "Automatically dodges arrows, fireballs, and snowballs.",
+    category = ModuleCategory.COMBAT
+) {
+    private var dodging = false
+    private var dodgeTicks = 0
+    private var lastDodgeTarget: BlockPos? = null
+    private var lastProjectile: ProjectileEntity? = null
+    private var preDodgePos: Vec3d? = null
 
-@ModuleData(
-        name = "AutoDodge",
-        description = "Module will dodge arrow, fireballs and snowballs automatically.",
-        category = ModuleCategory.COMBAT
-)
-public class AutoDodge extends Module {
-
-    private boolean dodging = false;
-    private int dodgeTicks = 0;
-    private BlockPos lastDodgeTarget = null;
-    private ProjectileEntity lastProjectile = null;
-    private Vec3d preDodgePos = null;
-
-    private Module blockFlyModule = null;
-    private boolean blockFlyWasToggled = false;
-    private int originalSlot = -1;
+    private var blockFlyModule: Module? = null
+    private var blockFlyWasToggled = false
+    private var originalSlot = -1
 
     @ListenEvent
-    public void tick(TickMovementEvent event) {
-        if (mc.player == null || mc.world == null) return;
+    fun onTick(event: TickMovementEvent) {
+        val player = mc.player ?: return
+        val world = mc.world ?: return
+
         if (dodging) {
-            dodgeTicks++;
-            if (dodgeTicks > 5) {
-                if (lastProjectile != null && lastProjectile.isAlive()) {
-                    buildWallInDirection(mc.player, mc.world, lastProjectile);
+            if (++dodgeTicks > 5) {
+                lastProjectile?.takeIf { it.isAlive }?.let {
+                    buildWallInDirection(player, world, it)
                 }
-                dodging = false;
-                dodgeTicks = 0;
-                lastProjectile = null;
-                preDodgePos = null;
+                resetDodge()
             }
-            return;
+            return
         }
-        checkBlockFlySafeLanding();
-        checkIncomingProjectiles(mc.player, mc.world);
+
+        checkBlockFlySafeLanding(player)
+        checkIncomingProjectiles(player, world)
     }
 
-    private void checkBlockFlySafeLanding() {
+    private fun resetDodge() {
+        dodging = false
+        dodgeTicks = 0
+        lastProjectile = null
+        preDodgePos = null
+    }
+
+    private fun checkBlockFlySafeLanding(player: PlayerEntity) {
         if (blockFlyModule != null && blockFlyWasToggled && lastDodgeTarget != null) {
-            if (mc.player.getBlockPos().equals(lastDodgeTarget)) {
-                blockFlyModule.toggleModule(false);
-                blockFlyWasToggled = false;
-                lastDodgeTarget = null;
+            if (player.blockPos == lastDodgeTarget) {
+                blockFlyModule?.toggleModule(false)
+                blockFlyWasToggled = false
+                lastDodgeTarget = null
             }
         }
     }
 
-    public void checkIncomingProjectiles(PlayerEntity player, World world) {
-        if (player == null || world == null) return;
-        List<ProjectileEntity> projectiles = world.getEntitiesByClass(
-                ProjectileEntity.class,
-                player.getBoundingBox().expand(10),
-                p -> p instanceof ArrowEntity || p instanceof FireballEntity || p instanceof net.minecraft.entity.projectile.thrown.SnowballEntity
-        );
-        for (ProjectileEntity proj : projectiles) {
-            Vec3d projVel = proj.getVelocity();
-            if (projVel.lengthSquared() == 0) continue;
-            projVel = projVel.normalize();
-            Vec3d toPlayer = player.getPos().subtract(proj.getPos()).normalize();
-            double dot = projVel.dotProduct(toPlayer);
+    private fun checkIncomingProjectiles(player: PlayerEntity, world: World) {
+        val projectiles = world.getEntitiesByClass(
+            ProjectileEntity::class.java,
+            player.boundingBox.expand(10.0)
+        ) { it is ArrowEntity || it is FireballEntity || it is SnowballEntity }
+
+        for (proj in projectiles) {
+            val projVel = proj.velocity.takeIf { it.lengthSquared() > 0 }?.normalize() ?: continue
+            val toPlayer = player.pos.subtract(proj.pos).normalize()
+            val dot = projVel.dotProduct(toPlayer)
+
             if (dot > 0.9) {
-                preDodgePos = player.getPos();
-                lastProjectile = proj;
-                Vec3d right = player.getRotationVec(1.0F).crossProduct(new Vec3d(0, 1, 0)).normalize();
-                Vec3d dodgeDirection = Math.random() > 0.5 ? right : right.multiply(-1);
-                double dodgeSpeed = 0.7;
-                BlockPos targetPos = new BlockPos(
-                        (int) Math.floor(player.getX() + dodgeDirection.x),
-                        (int) Math.floor(player.getY()),
-                        (int) Math.floor(player.getZ() + dodgeDirection.z)
-                );
-                lastDodgeTarget = targetPos;
-                if (!world.getBlockState(targetPos.down()).isAir()) {
-                    player.setVelocity(dodgeDirection.multiply(dodgeSpeed).add(0, 0.2, 0));
+                preDodgePos = player.pos
+                lastProjectile = proj
+
+                val right = player.getRotationVec(1.0f).crossProduct(Vec3d(0.0, 1.0, 0.0)).normalize()
+                val dodgeDir = if (Random.nextBoolean()) right else right.multiply(-1.0)
+                val dodgeSpeed = 0.7
+                val targetPos = BlockPos(
+                    floor(player.x + dodgeDir.x).toInt(),
+                    floor(player.y).toInt(),
+                    floor(player.z + dodgeDir.z).toInt()
+                )
+
+                lastDodgeTarget = targetPos
+
+                if (!world.getBlockState(targetPos.down()).isAir) {
+                    player.velocity = dodgeDir.multiply(dodgeSpeed).add(0.0, 0.2, 0.0)
                 } else {
-                    if (hasAtLeastAirBelow(targetPos, 6)) {
-                        blockFlyModule = Shinrai.INSTANCE.getModuleManager().getModuleByName("BlockFly");
-                        if (blockFlyModule != null && !blockFlyModule.isEnabled()) {
-                            blockFlyModule.toggleModule(true);
-                            blockFlyWasToggled = true;
+                    if (hasAtLeastAirBelow(world, targetPos)) {
+                        blockFlyModule = moduleManager.getModuleByName("BlockFly")
+                        if (blockFlyModule?.enabled == false) {
+                            blockFlyModule?.toggleModule(true)
+                            blockFlyWasToggled = true
                         }
                     }
-                    player.setVelocity(dodgeDirection.multiply(dodgeSpeed).add(0, 0.2, 0));
+                    player.velocity = dodgeDir.multiply(dodgeSpeed).add(0.0, 0.2, 0.0)
                 }
-                dodging = true;
-                dodgeTicks = 0;
-                break;
+
+                dodging = true
+                dodgeTicks = 0
+                break
             }
         }
     }
 
-    public void buildWallInDirection(PlayerEntity player, World world, ProjectileEntity proj) {
-        if (player == null || world == null || proj == null) return;
-        Entity owner = proj.getOwner();
-        if (owner == null) return;
+    private fun buildWallInDirection(player: PlayerEntity, world: World, proj: ProjectileEntity) {
+        val owner = proj.owner ?: return
 
-        int blockSlot = findBlockInHotbar();
-        if (blockSlot == -1) return;
-        originalSlot = mc.player.getInventory().getSelectedSlot();
-        mc.player.getInventory().setSelectedSlot(blockSlot);
+        val blockSlot = findBlockInHotbar() ?: return
+        val inv = player.inventory
 
-        Vec3d toOwner = owner.getPos().subtract(player.getPos()).normalize();
-        Vec3d wallDirection = toOwner.crossProduct(new Vec3d(0, 1, 0)).normalize();
+        originalSlot = inv.selectedSlot
+        inv.selectedSlot = blockSlot
 
-        BlockPos playerPos = player.getBlockPos();
-        BlockPos basePos = playerPos.add((int)Math.round(toOwner.x), 0, (int)Math.round(toOwner.z));
+        val toOwner = owner.pos.subtract(player.pos).normalize()
+        val wallDir = toOwner.crossProduct(Vec3d(0.0, 1.0, 0.0)).normalize()
+        val basePos = player.blockPos.add(round(toOwner.x).toInt(), 0, round(toOwner.z).toInt())
 
-        for (int y = 0; y < 2; y++) {
-            BlockPos yPos = basePos.up(y);
-
-            for (int i = -1; i <= 1; i++) {
-                BlockPos wallPos = yPos.add((int) Math.round(wallDirection.x * i), 0, (int) Math.round(wallDirection.z * i));
-                placeBlock(wallPos);
+        for (y in 0..1) {
+            val yPos = basePos.up(y)
+            for (i in -1..1) {
+                val wallPos = yPos.add(
+                    round(wallDir.x * i).toInt(),
+                    0,
+                    round(wallDir.z * i).toInt()
+                )
+                placeBlock(world, wallPos)
             }
         }
-        mc.player.getInventory().setSelectedSlot(originalSlot);
+
+        inv.selectedSlot = originalSlot
     }
 
-    private void placeBlock(BlockPos pos) {
-        if (!mc.world.getBlockState(pos).isReplaceable()) return;
-        for (Direction side : Direction.values()) {
-            BlockPos neighbor = pos.offset(side);
-            Direction sideOpposite = side.getOpposite();
-            if (!mc.world.getBlockState(neighbor).isAir()) {
-                BlockHitResult result = new BlockHitResult(
-                        Vec3d.ofCenter(neighbor),
-                        sideOpposite,
-                        neighbor,
-                        false
-                );
-                if (mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND, result).isAccepted()) {
-                    mc.player.swingHand(Hand.MAIN_HAND);
-                    return;
+    private fun placeBlock(world: World, pos: BlockPos) {
+        if (!world.getBlockState(pos).isReplaceable) return
+
+        Direction.entries.forEach { side ->
+            val neighbor = pos.offset(side)
+            val sideOpposite = side.opposite
+            if (!world.getBlockState(neighbor).isAir) {
+                val result = BlockHitResult(Vec3d.ofCenter(neighbor), sideOpposite, neighbor, false)
+                if (mc.interactionManager?.interactBlock(mc.player, Hand.MAIN_HAND, result)?.isAccepted == true) {
+                    mc.player?.swingHand(Hand.MAIN_HAND)
+                    return
                 }
             }
         }
     }
 
-    private int findBlockInHotbar() {
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = mc.player.getInventory().getStack(i);
-            if (stack.getItem() instanceof BlockItem) {
-                return i;
-            }
-        }
-        return -1;
+    private fun findBlockInHotbar(): Int? {
+        val inv = mc.player?.inventory ?: return null
+        return (0..8).firstOrNull { inv.getStack(it).item is BlockItem }
     }
 
-    private boolean hasAtLeastAirBelow(BlockPos pos, int minAir) {
-        for (int i = 1; i <= minAir; i++) {
-            BlockPos check = pos.down(i);
-            if (!mc.world.getBlockState(check).isAir()) {
-                return false;
-            }
-        }
-        return true;
+    private fun hasAtLeastAirBelow(world: World, pos: BlockPos): Boolean {
+        return (1..6).none { !world.getBlockState(pos.down(it)).isAir }
     }
 }

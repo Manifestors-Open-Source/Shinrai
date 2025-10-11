@@ -14,7 +14,7 @@ public class MixinGameRenderer {
 
     @Inject(method = "tiltViewWhenHurt", at = @At("HEAD"), cancellable = true)
     private void hookNoHurtCam(MatrixStack matrices, float tickProgress, CallbackInfo ci) {
-        if (Shinrai.INSTANCE.getModuleManager().isModuleEnabled(NoHurtCam.class))
+        if (NoHurtCam.INSTANCE.getEnabled())
             ci.cancel();
     }
 

@@ -1,40 +1,27 @@
-package com.manifestors.shinrai.client.setting.settings;
+package com.manifestors.shinrai.client.setting.settings
 
-import com.manifestors.shinrai.client.setting.Setting;
-import lombok.Getter;
+import com.manifestors.shinrai.client.setting.Setting
 
-public class DoubleSetting extends Setting<Double> {
+class DoubleSetting(
+    name: String,
+    current: Double,
+    val min: Double,
+    val max: Double,
+    val step: Double
+) : Setting<Double>(name, current) {
 
-    @Getter
-    private double current;
-    @Getter
-    private final double max;
-    @Getter
-    private final double min;
-    private final double step;
+    var current: Double = current
+        private set
 
-    public DoubleSetting(String name, double current, double max, double min, double step) {
-        super(name, current);
-        this.current = current;
-        this.max = max;
-        this.min = min;
-        this.step = step;
+    fun increment() {
+        current = (current + step).coerceAtMost(max)
     }
 
-    public void incrementCurrent() {
-        current += step;
-
-        if (current >= max) {
-            current = max;
-        }
+    fun decrement() {
+        current = (current - step).coerceAtLeast(min)
     }
 
-    public void decrementCurrent() {
-        current -= step;
-
-        if (current <= min) {
-            current = min;
-        }
+    fun setValue(value: Double) {
+        current = value.coerceIn(min, max)
     }
-
 }

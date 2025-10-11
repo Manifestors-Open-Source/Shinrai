@@ -1,26 +1,21 @@
-package com.manifestors.shinrai.client.module.modules.fun;
+package com.manifestors.shinrai.client.module.modules.`fun`
 
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
 
-@ModuleData(
-        name = "NoGravity",
-        description = "Lets Change World Upside down",
-        category = ModuleCategory.FUN
-)
-public class NoGravity extends Module {
-
-    @Override
-    public void onEnable() {
-        if (mc.player != null)
-            mc.player.setNoGravity(true);
+class NoGravity : Module(
+    name = "NoGravity",
+    description = "Lets Change World Upside down",
+    category = ModuleCategory.FUN
+) {
+    override fun onEnable() {
+        val player = mc.player ?: return
+        player.setNoGravity(true)
     }
 
-    @Override
-    public void onDisable() {
-        if (mc.player != null)
-            mc.player.setNoGravity(false);
+    override fun onDisable() {
+        val player = mc.player ?: return
+        player.setNoGravity(false)
     }
 
 }

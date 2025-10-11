@@ -1,57 +1,32 @@
-package com.manifestors.shinrai.client.module;
+package com.manifestors.shinrai.client.module
 
-import com.google.gson.annotations.Expose;
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import com.manifestors.shinrai.client.utils.MinecraftInstance;
-import lombok.Getter;
-import lombok.Setter;
+import com.google.gson.annotations.Expose
+import com.manifestors.shinrai.client.Shinrai.eventManager
+import com.manifestors.shinrai.client.utils.MinecraftInstance
 
-@Getter
-public class Module implements MinecraftInstance {
-
-    @Expose
-    private String name;
-    private String description;
-    private ModuleCategory category;
-    @Setter
-    @Expose
-    private int keyCode;
-    private String[] alternativeNames;
+open class Module(
+    @Expose var name: String,
+    var description: String? = null,
+    var category: ModuleCategory,
+    @Expose var keyCode: Int = 0,
+    vararg var alternativeNames: String
+) : MinecraftInstance {
 
     @Expose
-    private boolean enabled;
+    var enabled: Boolean = false
+        private set
 
-    protected Module() {
-        if (getClass().isAnnotationPresent(ModuleData.class)) {
-            var moduleData = getClass().getAnnotation(ModuleData.class);
-            this.name = moduleData.name();
-            this.description = moduleData.description().isEmpty() ? "module." + name+ ".desc" : moduleData.description();
-            this.category = moduleData.category();
-            this.keyCode = moduleData.keyCode();
-            this.alternativeNames = moduleData.alternatives();
-        } else {
-            Shinrai.logger.error("A module have not ModuleData annotation: {}", getClass().getSimpleName());
-        }
-
-    }
-
-    public void toggleModule() {
-        toggleModule(!enabled);
-    }
-
-    public void toggleModule(boolean state) {
-        enabled = state;
+    fun toggleModule(state: Boolean = !enabled) {
+        enabled = state
         if (enabled) {
-            Shinrai.INSTANCE.getEventManager().registerListener(this);
-            onEnable();
+            eventManager.registerListener(this)
+            onEnable()
         } else {
-            Shinrai.INSTANCE.getEventManager().unregisterListener(this);
-            onDisable();
+            eventManager.unregisterListener(this)
+            onDisable()
         }
     }
 
-    public void onEnable() {}
-    public void onDisable() {}
-
+    open fun onEnable() {}
+    open fun onDisable() {}
 }

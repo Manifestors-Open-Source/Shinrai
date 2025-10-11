@@ -1,6 +1,5 @@
 package com.manifestors.shinrai.mixins.minecraft.block;
 
-import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.module.modules.extras.NoPortalCooldown;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.Entity;
@@ -15,7 +14,7 @@ public class MixinNetherPortalBlock {
 
     @Inject(method = "getPortalDelay", at = @At(value = "HEAD"), cancellable = true)
     private void removePortalDelay(ServerWorld world, Entity entity, CallbackInfoReturnable<Integer> cir) {
-        if (Shinrai.INSTANCE.getModuleManager().isModuleEnabled(NoPortalCooldown.class)) {
+        if (NoPortalCooldown.INSTANCE.getEnabled()) {
             cir.setReturnValue(0);
             cir.cancel();
         }

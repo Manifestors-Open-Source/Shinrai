@@ -1,40 +1,27 @@
-package com.manifestors.shinrai.client.setting.settings;
+package com.manifestors.shinrai.client.setting.settings
 
-import com.manifestors.shinrai.client.setting.Setting;
-import lombok.Getter;
+import com.manifestors.shinrai.client.setting.Setting
 
-public class IntegerSetting extends Setting<Integer> {
+class IntegerSetting(
+    name: String,
+    current: Int,
+    val min: Int,
+    val max: Int,
+    val step: Int
+) : Setting<Int>(name, current) {
 
-    @Getter
-    private int current;
-    @Getter
-    private final int max;
-    @Getter
-    private final int min;
-    private final int step;
+    var current: Int = current
+        private set
 
-    public IntegerSetting(String name, int current, int max, int min, int step) {
-        super(name, current);
-        this.current = current;
-        this.max = max;
-        this.min = min;
-        this.step = step;
+    fun increment() {
+        current = (current + step).coerceAtMost(max)
     }
 
-    public void incrementCurrent() {
-        current += step;
-
-        if (current >= max) {
-            current = max;
-        }
+    fun decrement() {
+        current = (current - step).coerceAtLeast(min)
     }
 
-    public void decrementCurrent() {
-        current -= step;
-
-        if (current <= min) {
-            current = min;
-        }
+    fun setValue(value: Int) {
+        current = value.coerceIn(min, max)
     }
-
 }

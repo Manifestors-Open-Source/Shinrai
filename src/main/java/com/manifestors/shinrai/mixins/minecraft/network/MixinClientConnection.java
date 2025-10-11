@@ -18,7 +18,7 @@ public class MixinClientConnection {
         var packetReadingEvent = new PacketReceivingEvent(packet);
         Shinrai.INSTANCE.getEventManager().listenEvent(packetReadingEvent);
 
-        if (packetReadingEvent.isCancelled())
+        if (packetReadingEvent.getCancelled())
             ci.cancel();
     }
 

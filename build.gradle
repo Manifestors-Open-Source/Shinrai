@@ -1,5 +1,6 @@
 plugins {
     id 'fabric-loom' version '1.10.5'
+    id 'org.jetbrains.kotlin.jvm'
 }
 
 version = project.mod_version
@@ -31,6 +32,7 @@ dependencies {
     javafx "org.openjfx:javafx-web:20"
     modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
     modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
 }
 
@@ -68,4 +70,7 @@ jar {
     from("LICENSE") {
         rename { "${it}_${project.archivesBaseName}"}
     }
+}
+kotlin {
+    jvmToolchain(21)
 }

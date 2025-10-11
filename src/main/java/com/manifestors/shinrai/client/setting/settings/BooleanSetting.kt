@@ -1,24 +1,12 @@
-package com.manifestors.shinrai.client.setting.settings;
+package com.manifestors.shinrai.client.setting.settings
 
-import com.manifestors.shinrai.client.setting.Setting;
-import lombok.Getter;
+import com.manifestors.shinrai.client.setting.Setting
 
-@Getter
-public class BooleanSetting extends Setting<Boolean> {
+class BooleanSetting(name: String?, var enabled: Boolean) : Setting<Boolean?>(
+    name,
+    enabled
+) {
 
-    private boolean enabled;
-
-    public BooleanSetting(String name, boolean enabled) {
-        super(name, enabled);
-        this.enabled = enabled;
-    }
-
-    public void toggle() {
-        toggle(!enabled);
-    }
-
-    public void toggle(boolean state) {
-        enabled = state;
-    }
+    fun toggle() { enabled = !enabled }
 
 }

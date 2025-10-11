@@ -1,53 +1,48 @@
-package com.manifestors.shinrai.client.module.modules.combat;
+package com.manifestors.shinrai.client.module.modules.combat
 
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import net.fabricmc.fabric.api.event.player.AttackEntityCallback;
-import net.minecraft.entity.LivingEntity;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.item.ItemStackSet;
-import net.minecraft.registry.tag.ItemTags;
-import net.minecraft.util.hit.EntityHitResult;
-import net.minecraft.util.hit.HitResult;
+import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
+import net.minecraft.entity.LivingEntity
+import net.minecraft.registry.tag.ItemTags
+import net.minecraft.util.hit.EntityHitResult
 
-@ModuleData(
-        name = "AutoWeapon",
-        description = "Module will get best weapon when you attack to an entity.",
-        category = ModuleCategory.COMBAT
-)
-public class AutoWeapon extends Module {
-
-
+object AutoWeapon : Module(
+    name = "AutoWeapon",
+    description = "Automatically selects the best weapon when attacking an entity.",
+    category = ModuleCategory.COMBAT
+) {
     @ListenEvent
-    public void onTick(TickMovementEvent event) {
-        if (mc.player == null || mc.world == null) return;
-        HitResult hit = mc.crosshairTarget;
-        if (!(hit instanceof EntityHitResult entityHit)) return;
-        if (!(entityHit.getEntity() instanceof LivingEntity)) return;
-        if (!mc.options.attackKey.isPressed()) return;
-        int bestSlot = -1;
-        float highestDamage = 0f;
-        for (int i = 0; i < 9; i++) {
-            ItemStack stack = mc.player.getInventory().getStack(i);
-            if (stack.isEmpty()) continue;
-            float damage = 0f;
-            if (stack.isIn(ItemTags.SWORDS)) {
-                damage = stack.getMaxDamage();
-            } else if (stack.isIn(ItemTags.AXES)) {
-                damage = stack.getMaxDamage() * 0.9f;
+    fun onTick(event: TickMovementEvent) {
+        val player = mc.player ?: return
+        val hit = mc.crosshairTarget as? EntityHitResult ?: return
+        val target = hit.entity as? LivingEntity ?: return
+
+        if (!mc.options.attackKey.isPressed) return
+
+        val inv = player.inventory
+        var bestSlot = -1
+        var highestDamage = 0f
+
+        for (i in 0..8) {
+            val stack = inv.getStack(i)
+            if (stack.isEmpty) continue
+
+            val damage = when {
+                stack.isIn(ItemTags.SWORDS) -> stack.maxDamage.toFloat()
+                stack.isIn(ItemTags.AXES) -> stack.maxDamage * 0.9f
+                else -> 0f
             }
+
             if (damage > highestDamage) {
-                highestDamage = damage;
-                bestSlot = i;
+                highestDamage = damage
+                bestSlot = i
             }
         }
-        if (bestSlot != -1 && mc.player.getInventory().getSelectedSlot() != bestSlot) {
-            mc.player.getInventory().setSelectedSlot(bestSlot);
+
+        if (bestSlot != -1 && inv.selectedSlot != bestSlot) {
+            inv.selectedSlot = bestSlot
         }
     }
 }
-

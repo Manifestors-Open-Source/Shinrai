@@ -1,79 +1,84 @@
-package com.manifestors.shinrai.client.module.modules.player;
+package com.manifestors.shinrai.client.module.modules.player
 
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.DataComponentTypes;
-import net.minecraft.component.type.FoodComponent;
-import net.minecraft.entity.player.PlayerInventory;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
+import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
+import net.minecraft.component.DataComponentTypes
+import net.minecraft.item.ItemStack
+import net.minecraft.util.Hand
+import net.minecraft.screen.slot.SlotActionType
 
-@ModuleData(
-        name = "AutoEat",
-        category = ModuleCategory.PLAYER
-)
-public class AutoEat extends Module {
+class AutoEat : Module(
+    name = "AutoEat",
+    category = ModuleCategory.PLAYER
+) {
+    private var isEating = false
+    private var foodSlot = -1
+    private var previousSlot = -1
 
-    private boolean isEating = false;
-    private int foodSlot = -1;
-    private int previousSlot = -1;
     @ListenEvent
-    public void onTick(TickMovementEvent event) {
-        if (mc.player == null || mc.interactionManager == null) return;
+    fun onTick(event: TickMovementEvent) {
+        val player = mc.player ?: return
+        val im = mc.interactionManager ?: return
+
         if (isEating) {
-            if (!mc.player.isUsingItem() || mc.player.getHungerManager().getFoodLevel() >= 20) {
-                stopEating();
+            if (!player.isUsingItem || player.hungerManager.foodLevel >= 20) {
+                stopEating(player)
             }
-            return;
+            return
         }
-        if (mc.player.getHungerManager().getFoodLevel() < 18) {
-            int bestSlot = findBestFoodSlot();
-            if (bestSlot != -1) {
-                startEating(bestSlot);
-            }
+
+        if (player.hungerManager.foodLevel < 18) {
+            findBestFoodSlot(player)?.let { startEating(player, it) }
         }
     }
 
-    private int findBestFoodSlot() {
-        PlayerInventory inventory = mc.player.getInventory();
-        double maxSaturation = -1.0;
-        int bestSlot = -1;
-        for (int i = 0; i < inventory.size(); i++) {
-            ItemStack stack = inventory.getStack(i);
-            FoodComponent foodComponent = stack.get(DataComponentTypes.FOOD);
+    private fun findBestFoodSlot(player: net.minecraft.client.network.ClientPlayerEntity): Int? {
+        val inv = player.inventory
+        var bestSlot: Int? = null
+        var maxSaturation = -1.0
 
-            if (foodComponent != null) {
-                double saturationValue = 2.0 * foodComponent.nutrition() * foodComponent.saturation();
-                if (saturationValue > maxSaturation) {
-                    maxSaturation = saturationValue;
-                    bestSlot = i;
-                }
+        for (i in 0 until inv.size()) {
+            val stack = inv.getStack(i)
+            val foodComponent = stack.get(DataComponentTypes.FOOD) ?: continue
+            val saturationValue = 2.0 * foodComponent.nutrition() * foodComponent.saturation()
+            if (saturationValue > maxSaturation) {
+                maxSaturation = saturationValue
+                bestSlot = i
             }
         }
-        return bestSlot;
+        return bestSlot
     }
-    private void startEating(int slot) {
-        this.previousSlot = mc.player.getInventory().getSelectedSlot();
-        if (slot >= 9) {
-            mc.interactionManager.clickSlot(mc.player.playerScreenHandler.syncId, slot, mc.player.getInventory().getSelectedSlot(), net.minecraft.screen.slot.SlotActionType.SWAP, mc.player);
-            this.foodSlot = mc.player.getInventory().getSelectedSlot();
+
+    private fun startEating(player: net.minecraft.client.network.ClientPlayerEntity, slot: Int) {
+        val im = mc.interactionManager ?: return
+
+        previousSlot = player.inventory.selectedSlot
+        foodSlot = if (slot >= 9) {
+            im.clickSlot(
+                player.playerScreenHandler.syncId,
+                slot,
+                player.inventory.selectedSlot,
+                SlotActionType.SWAP,
+                player
+            )
+            player.inventory.selectedSlot
         } else {
-            this.foodSlot = slot;
-            mc.player.getInventory().setSelectedSlot(this.foodSlot);
+            player.inventory.selectedSlot = slot
+            slot
         }
-        isEating = true;
-        mc.interactionManager.interactItem(mc.player, Hand.MAIN_HAND);
-        mc.options.useKey.setPressed(true);
+
+        isEating = true
+        im.interactItem(player, Hand.MAIN_HAND)
+        mc.options.useKey.isPressed = true
     }
-    private void stopEating() {
-        mc.options.useKey.setPressed(false);
-        isEating = false;
-        foodSlot = -1;
-        mc.player.getInventory().setSelectedSlot(previousSlot);
-        previousSlot = -1;
+
+    private fun stopEating(player: net.minecraft.client.network.ClientPlayerEntity) {
+        mc.options.useKey.isPressed = false
+        isEating = false
+        foodSlot = -1
+        player.inventory.selectedSlot = previousSlot
+        previousSlot = -1
     }
 }

@@ -1,4 +1,3 @@
-package com.manifestors.shinrai.client.event;
+package com.manifestors.shinrai.client.event
 
-public class ConstantEvent {
-}
+open class ConstantEvent 

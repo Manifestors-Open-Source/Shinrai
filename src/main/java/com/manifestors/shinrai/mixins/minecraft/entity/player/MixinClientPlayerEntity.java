@@ -21,7 +21,7 @@ public class MixinClientPlayerEntity {
 
     @Redirect(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec2f;multiply(F)Lnet/minecraft/util/math/Vec2f;", ordinal = 1))
     private Vec2f noSlowHook(Vec2f instance, float value) {
-        return instance.multiply(Shinrai.INSTANCE.getModuleManager().isModuleEnabled(NoSlow.class) ? 1.0F : value);
+        return instance.multiply(NoSlow.INSTANCE.getEnabled() ? 1.0F : value);
     }
 
 }

@@ -1,23 +1,16 @@
-package com.manifestors.shinrai.client.event.events.game;
+package com.manifestors.shinrai.client.event.events.game
 
-import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.event.CancellableEvent;
-import com.manifestors.shinrai.client.module.Module;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.Setter;
+import com.manifestors.shinrai.client.Shinrai.moduleManager
+import com.manifestors.shinrai.client.event.CancellableEvent
 
-@Getter
-@Setter
-@AllArgsConstructor
-public class KeyPressEvent extends CancellableEvent {
+class KeyPressEvent(
+    val key: Int
+) : CancellableEvent() {
 
-    private int key;
-
-    public void toggleModulesByKey() {
-        for (Module module : Shinrai.INSTANCE.getModuleManager().getModules())
-            if (module.getKeyCode() == getKey())
-                module.toggleModule();
+    fun toggleModulesByKey() {
+        moduleManager.modules
+            .filter { it.keyCode == key }
+            .forEach { it.toggleModule() }
     }
 
 }

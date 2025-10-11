@@ -26,7 +26,7 @@ public class MixinKeyboard {
                 var keyPressEvent = new KeyPressEvent(key);
                 keyPressEvent.toggleModulesByKey();
 
-                if (!keyPressEvent.isCancelled())
+                if (!keyPressEvent.getCancelled())
                     Shinrai.INSTANCE.getEventManager().listenEvent(keyPressEvent);
             }
         }

@@ -1,16 +1,12 @@
-package com.manifestors.shinrai.client.module.modules.movement;
+package com.manifestors.shinrai.client.module.modules.movement
 
 
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
 
-@ModuleData(
-        name = "SilkFall",
-        description = "Block fall damage",
-        category = ModuleCategory.MOVEMENT,
-        alternatives = "NoFall"
-
+object SilkFall : Module(
+    name = "SilkFall",
+    description = "Block fall damage",
+    category = ModuleCategory.MOVEMENT,
+    alternativeNames = arrayOf("NoFall")
 )
-public class SilkFall extends Module {
-}

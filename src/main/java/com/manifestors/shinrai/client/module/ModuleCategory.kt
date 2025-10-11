@@ -1,7 +1,6 @@
-package com.manifestors.shinrai.client.module;
+package com.manifestors.shinrai.client.module
 
-public enum ModuleCategory {
-
+enum class ModuleCategory {
     COMBAT,
     MOVEMENT,
     PLAYER,
@@ -9,5 +8,4 @@ public enum ModuleCategory {
     VISUALS,
     EXTRAS,
     FUN
-
 }

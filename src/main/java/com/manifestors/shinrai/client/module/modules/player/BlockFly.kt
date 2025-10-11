@@ -1,107 +1,87 @@
-package com.manifestors.shinrai.client.module.modules.player;
+package com.manifestors.shinrai.client.module.modules.player
 
-import com.manifestors.shinrai.client.event.annotations.ListenEvent;
-import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.Module;
-import com.manifestors.shinrai.client.module.ModuleCategory;
-import com.manifestors.shinrai.client.module.annotations.ModuleData;
-import net.minecraft.item.BlockItem;
-import net.minecraft.item.ItemStack;
-import net.minecraft.util.Hand;
-import net.minecraft.util.hit.BlockHitResult;
-import net.minecraft.util.math.*;
-import net.minecraft.world.EmptyBlockView;
+import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
+import com.manifestors.shinrai.client.module.Module
+import com.manifestors.shinrai.client.module.ModuleCategory
+import net.minecraft.item.BlockItem
+import net.minecraft.util.Hand
+import net.minecraft.util.hit.BlockHitResult
+import net.minecraft.util.math.BlockPos
+import net.minecraft.util.math.Direction
+import net.minecraft.util.math.Vec3d
+import net.minecraft.world.EmptyBlockView
 
-import java.util.ArrayList;
-import java.util.Comparator;
+class BlockFly : Module(
+    name = "BlockFly",
+    category = ModuleCategory.PLAYER,
+    alternativeNames = arrayOf("Scaffold")
+) {
+    private var previousSlot = -1
 
-@ModuleData(
-        name = "BlockFly",
-        category = ModuleCategory.PLAYER,
-        alternatives = "Scaffold"
-)
-public class BlockFly extends Module {
-
-    private int previousSlot = -1;
-
-    @Override
-    public void onEnable() {
-        if (mc.player == null) return;
-        previousSlot = mc.player.getInventory().getSelectedSlot();
+    override fun onEnable() {
+        previousSlot = mc.player?.inventory?.selectedSlot ?: -1
     }
 
     @ListenEvent
-    public void onTickMovement(TickMovementEvent event) {
-        if (mc.world == null || mc.player == null) return;
+    fun onTickMovement(event: TickMovementEvent) {
+        val player = mc.player ?: return
+        val world = mc.world ?: return
 
-        var newSlot = findBestSlot();
-        if (newSlot == -1) return;
+        val bestSlot = findBestSlot() ?: return
+        player.inventory.selectedSlot = bestSlot
 
-        mc.player.getInventory().setSelectedSlot(newSlot);
-
-        placeBlock(mc.player.getBlockPos().down());
+        placeBlock(player.blockPos.down())
     }
 
-    @Override
-    public void onDisable() {
-        if (mc.player == null) return;
-
-        if (previousSlot != -1)
-            mc.player.getInventory().setSelectedSlot(previousSlot);
-        previousSlot = -1;
+    override fun onDisable() {
+        mc.player?.let { player ->
+            if (previousSlot != -1) player.inventory.selectedSlot = previousSlot
+        }
+        previousSlot = -1
     }
 
-    private void placeBlock(BlockPos pos) {
-        if (!mc.world.getBlockState(pos).isReplaceable()) return;
+    private fun placeBlock(pos: BlockPos) {
+        val world = mc.world ?: return
+        val player = mc.player ?: return
 
-        for (var direction : Direction.values()) {
-            var neighborPos = pos.offset(direction);
+        if (!world.getBlockState(pos).isReplaceable) return
 
-            if (!mc.world.getBlockState(neighborPos).isAir()) {
-                var result = new BlockHitResult(
-                        Vec3d.ofCenter(neighborPos),
-                        direction.getOpposite(),
-                        neighborPos,
-                        false
-                );
-
-                if (mc.interactionManager.interactBlock(mc.player, Hand.MAIN_HAND, result).isAccepted())
-                    mc.player.swingHand(Hand.MAIN_HAND);
-                break;
+        for (direction in Direction.values()) {
+            val neighborPos = pos.offset(direction)
+            if (!world.getBlockState(neighborPos).isAir) {
+                val result = BlockHitResult(
+                    Vec3d.ofCenter(neighborPos),
+                    direction.opposite,
+                    neighborPos,
+                    false
+                )
+                if (mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)?.isAccepted == true) {
+                    player.swingHand(Hand.MAIN_HAND)
+                }
+                break
             }
         }
     }
 
-    private int findBestSlot() {
-        var slots = new ArrayList<ItemStack>();
-        var currentSlot = mc.player.getInventory().getSelectedSlot();
-        var currentStack = mc.player.getInventory().getStack(currentSlot);
+    private fun findBestSlot(): Int? {
+        val player = mc.player ?: return null
 
-        if (!currentStack.isEmpty() && currentStack.getItem() instanceof BlockItem item &&
-                item.getBlock().getDefaultState().isFullCube(EmptyBlockView.INSTANCE, BlockPos.ORIGIN))
-            return currentSlot;
+        val currentSlot = player.inventory.selectedSlot
+        val currentStack = player.inventory.getStack(currentSlot)
 
-        for (int i = 0; i < 9; i++) {
-            var stack = mc.player.getInventory().getStack(i);
-
-            if (stack.isEmpty() || !(stack.getItem() instanceof BlockItem))
-                continue;
-
-            var state = ((BlockItem) stack.getItem()).getBlock().getDefaultState();
-            if (!state.isFullCube(EmptyBlockView.INSTANCE, BlockPos.ORIGIN))
-                continue;
-
-            slots.add(stack);
+        if (currentStack.item is BlockItem) {
+            val state = (currentStack.item as BlockItem).block.defaultState
+            if (state.isFullCube(EmptyBlockView.INSTANCE, BlockPos.ORIGIN)) return currentSlot
         }
 
-        if (slots.isEmpty())
-            return -1;
+        val blockSlots = (0..8)
+            .map { player.inventory.getStack(it) }
+            .filter { it.item is BlockItem && (it.item as BlockItem).block.defaultState.isFullCube(EmptyBlockView.INSTANCE, BlockPos.ORIGIN) }
 
-        var biggest = slots.stream()
-                .max(Comparator.comparingInt(ItemStack::getCount))
-                .orElse(null);
+        if (blockSlots.isEmpty()) return null
 
-        return mc.player.getInventory().getSlotWithStack(biggest);
+        val biggestStack = blockSlots.maxByOrNull { it.count } ?: return null
+        return player.inventory.getSlotWithStack(biggestStack)
     }
-
 }
