@@ -26,7 +26,6 @@ class BlockFly : Module(
     @ListenEvent
     fun onTickMovement(event: TickMovementEvent) {
         val player = mc.player ?: return
-        val world = mc.world ?: return
 
         val bestSlot = findBestSlot() ?: return
         player.inventory.selectedSlot = bestSlot
@@ -47,7 +46,7 @@ class BlockFly : Module(
 
         if (!world.getBlockState(pos).isReplaceable) return
 
-        for (direction in Direction.values()) {
+        for (direction in Direction.entries) {
             val neighborPos = pos.offset(direction)
             if (!world.getBlockState(neighborPos).isAir) {
                 val result = BlockHitResult(
