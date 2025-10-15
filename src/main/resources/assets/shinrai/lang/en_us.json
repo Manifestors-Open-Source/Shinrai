@@ -7,5 +7,6 @@
   "altmanager.gui.text" : "Alt Account Name",
   "customization.gui.changebutton": "Change background",
   "customization.gui.resetbutton": "Reset background",
+  "customization.gui.splashbutton": "Splash Style",
   "multiplayer.gui.reconnect": "Reconnect"
 }

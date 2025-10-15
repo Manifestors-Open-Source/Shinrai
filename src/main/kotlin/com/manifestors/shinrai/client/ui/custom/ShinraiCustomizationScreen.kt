@@ -1,6 +1,7 @@
 package com.manifestors.shinrai.client.ui.custom
 
 import com.google.common.reflect.TypeToken
+import com.manifestors.shinrai.client.ui.custom.splash.SplashScreenStyle
 import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen
 import com.manifestors.shinrai.client.utils.LoggerInstance
 import com.manifestors.shinrai.client.utils.MinecraftInstance
@@ -13,14 +14,17 @@ import com.manifestors.shinrai.client.utils.rendering.BackgroundDrawer
 import net.minecraft.client.gui.DrawContext
 import net.minecraft.client.gui.screen.Screen
 import net.minecraft.client.gui.widget.ButtonWidget
+import net.minecraft.client.gui.widget.CyclingButtonWidget
 import net.minecraft.text.Text
 import org.lwjgl.system.MemoryStack
 import org.lwjgl.util.tinyfd.TinyFileDialogs
 import java.io.File
 
-class ShinraiCustomizationScreen : Screen(Text.of("Customization Screen")), MinecraftInstance, LoggerInstance {
+object ShinraiCustomizationScreen : Screen(Text.of("Customization Screen")), MinecraftInstance, LoggerInstance {
 
-    private val metadataProperties = arrayOf<String?>("custom_backgrounds", "metadata.json")
+    private val metadataProperties = arrayOf<String?>("customizations", "metadata.json")
+    private const val SPLASH_LOGO_JSON = "selected_splash.json"
+    private var selectedSplashMode = SplashScreenStyle.DEFAULT
 
     override fun init() {
         this.addDrawableChild(
@@ -40,12 +44,36 @@ class ShinraiCustomizationScreen : Screen(Text.of("Customization Screen")), Mine
         )
 
         this.addDrawableChild(
+            CyclingButtonWidget.builder<SplashScreenStyle> { Text.literal(it.displayName) }
+                .values(SplashScreenStyle.entries)
+                .initially(selectedSplashMode)
+                .build(
+                    this.width / 2 - 100,
+                    this.height / 4 + 90,
+                    200,
+                    20,
+                    Text.translatable("customization.gui.splashbutton")
+                ) {
+                        _, value ->
+                    selectedSplashMode = value
+                    val json = """
+                       {
+                         "selectedSplash": "$selectedSplashMode"
+                       }
+                   """.trimIndent()
+
+                    FileManager.writeJsonToFile(json, metadataProperties[0]!!, SPLASH_LOGO_JSON)
+                }
+        )
+
+        this.addDrawableChild(
             ButtonWidget.builder(
                 Text.of("Back")
             ) {  mc.setScreen(ShinraiTitleScreen()) }
-                .dimensions(this.width / 2 - 100, this.height / 4 + 90, 200, 20)
+                .dimensions(this.width / 2 - 100, this.height / 4 + 120, 200, 20)
                 .build()
         )
+
     }
 
     override fun render(context: DrawContext?, mouseX: Int, mouseY: Int, deltaTicks: Float) {
@@ -81,6 +109,28 @@ class ShinraiCustomizationScreen : Screen(Text.of("Customization Screen")), Mine
         BackgroundDrawer.isCustomBgActivated = false
         this.saveMetadata(false, "null")
         logger.info("Custom background reset and updated metadata.")
+    }
+
+    fun getSplashLogoFromJson(): SplashScreenStyle {
+        val json = FileManager.getJsonFromFile(metadataProperties[0]!!, SPLASH_LOGO_JSON)
+        if (json.isEmpty()) {
+            logger.warn("Custom splash data not found, loading default splash logo.")
+            return SplashScreenStyle.DEFAULT
+        }
+
+        val type = object : TypeToken<MutableMap<String?, Any?>?>() {}.type
+        val mapData = getObjectFromJson<MutableMap<String?, String?>?>(json, type)
+
+        runCatching {
+            selectedSplashMode = SplashScreenStyle.valueOf(mapData!!["selectedSplash"].toString())
+            logger.info("Custom splash logo loaded.")
+            return selectedSplashMode
+        }.onFailure {
+            logger.error("Custom splash logo could not load, resetting to default.")
+            return@onFailure
+        }
+
+        return SplashScreenStyle.DEFAULT
     }
 
     fun loadBackgroundFromJson() {

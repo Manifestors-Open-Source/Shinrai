@@ -48,7 +48,7 @@ class ShinraiTitleScreen : Screen(Text.of("Shinrai Title Screen")), MinecraftIns
         this.addDrawableChild(
             ButtonWidget.builder(
                 Text.translatable("title.screen.customization")
-            ) {  mc.setScreen(ShinraiCustomizationScreen()) }
+            ) {  mc.setScreen(ShinraiCustomizationScreen) }
                 .dimensions(this.width / 2 - 100, this.height / 4 + 113, 200, 20)
                 .build()
         )

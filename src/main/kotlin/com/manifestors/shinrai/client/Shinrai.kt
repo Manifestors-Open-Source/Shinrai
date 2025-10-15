@@ -32,7 +32,7 @@ object Shinrai : LoggerInstance, MinecraftInstance {
         RPCEngine.startRPC()
         FileManager.createDirectories()
 
-        ShinraiCustomizationScreen().loadBackgroundFromJson()
+        ShinraiCustomizationScreen.loadBackgroundFromJson()
     }
 
     fun shutdownShinrai() {
