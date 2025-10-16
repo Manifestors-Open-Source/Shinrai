@@ -6,7 +6,6 @@ import com.manifestors.shinrai.client.module.ModuleManager
 import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen
 import com.manifestors.shinrai.client.utils.LoggerInstance
 import com.manifestors.shinrai.client.utils.MinecraftInstance
-import com.manifestors.shinrai.client.utils.discord.RPCEngine
 import com.manifestors.shinrai.client.utils.file.FileManager
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
@@ -29,7 +28,6 @@ object Shinrai : LoggerInstance, MinecraftInstance {
         moduleManager.loadModulesFromJson()
         commandManager = CommandManager
         commandManager.registerCommands()
-        RPCEngine.startRPC()
         FileManager.createDirectories()
 
         ShinraiCustomizationScreen.loadBackgroundFromJson()
@@ -39,7 +37,6 @@ object Shinrai : LoggerInstance, MinecraftInstance {
         logger.info("Saving modules...")
         moduleManager.saveModulesJson()
         logger.info("Modules saved, shutting down subsystems...")
-        RPCEngine.shutdownRPC()
         logger.info("Goodbye!")
     }
 
