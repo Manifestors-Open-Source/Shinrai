@@ -24,4 +24,5 @@
     "minecraft": ["${minecraft_version}"],
     "fabricloader": ">=${min_loader_version}"
   }
+
 }
