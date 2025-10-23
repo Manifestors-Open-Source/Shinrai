@@ -35,6 +35,7 @@ public class MixinClientPlayerEntity {
     private void sendMovementPacketsPreHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
         motionEvent = new MovementPacketsEvent(EventState.PRE, player.getX(), player.getY(), player.getZ(), player.isOnGround());
+        Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 
     @ModifyExpressionValue(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
@@ -61,6 +62,7 @@ public class MixinClientPlayerEntity {
     private void sendMovementPacketsPostHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
         motionEvent = new MovementPacketsEvent(EventState.POST, player.getX(), player.getY(), player.getZ(), player.isOnGround());
+        Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 
 }

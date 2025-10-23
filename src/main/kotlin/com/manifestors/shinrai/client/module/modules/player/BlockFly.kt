@@ -22,7 +22,7 @@ class BlockFly : Module(
 ) {
 
     private val sprint = BooleanSetting("Sprinting", false)
-    private val swingMode = ChoiceSetting("Swing", "No Hide","Hide for Client", "Hide for Server", "Hide for Both")
+    private val swingMode = ChoiceSetting("Swing", "No Hide", "Hide for Client", "Hide for Server", "Hide for Both")
 
     private var previousSlot = -1
 
