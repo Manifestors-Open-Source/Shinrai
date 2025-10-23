@@ -4,7 +4,10 @@ import com.manifestors.shinrai.client.event.annotations.ListenEvent
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
 import com.manifestors.shinrai.client.module.Module
 import com.manifestors.shinrai.client.module.ModuleCategory
+import com.manifestors.shinrai.client.setting.settings.BooleanSetting
+import com.manifestors.shinrai.client.setting.settings.ChoiceSetting
 import net.minecraft.item.BlockItem
+import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket
 import net.minecraft.util.Hand
 import net.minecraft.util.hit.BlockHitResult
 import net.minecraft.util.math.BlockPos
@@ -17,6 +20,10 @@ class BlockFly : Module(
     category = ModuleCategory.PLAYER,
     alternativeNames = arrayOf("Scaffold")
 ) {
+
+    private val sprint = BooleanSetting("Sprinting", false)
+    private val swingMode = ChoiceSetting("Swing", "No Hide","Hide for Client", "Hide for Server", "Hide for Both")
+
     private var previousSlot = -1
 
     override fun onEnable() {
@@ -26,9 +33,11 @@ class BlockFly : Module(
     @ListenEvent
     fun onTickMovement(event: TickMovementEvent) {
         val player = mc.player ?: return
-
         val bestSlot = findBestSlot() ?: return
+
         player.inventory.selectedSlot = bestSlot
+
+        player.isSprinting = sprint.current
 
         placeBlock(player.blockPos.down())
     }
@@ -55,8 +64,9 @@ class BlockFly : Module(
                     neighborPos,
                     false
                 )
+
                 if (mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)?.isAccepted!!) {
-                    player.swingHand(Hand.MAIN_HAND)
+                    swing()
                 }
                 break
             }
@@ -83,4 +93,13 @@ class BlockFly : Module(
         val biggestStack = blockSlots.maxByOrNull { it.count } ?: return null
         return player.inventory.getSlotWithStack(biggestStack)
     }
+
+    private fun swing() {
+        when (swingMode.currentChoice) {
+            "No Hide" -> mc.player?.swingHand(Hand.MAIN_HAND)
+            "Hide for Client" -> mc.networkHandler?.sendPacket(HandSwingC2SPacket(Hand.MAIN_HAND))
+            "Hide for Server" -> mc.player?.swingHand(Hand.MAIN_HAND, false)
+        }
+    }
+
 }

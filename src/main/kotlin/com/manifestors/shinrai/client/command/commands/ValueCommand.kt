@@ -32,7 +32,7 @@ class ValueCommand : Command(
             is IntegerSetting -> newValue.toIntOrNull()?.let { setting.currentValue = it; true } ?: false
             is DoubleSetting -> newValue.toDoubleOrNull()?.let { setting.currentValue = it; true } ?: false
             is ChoiceSetting -> if (setting.getChoice(newValue.lowercase()) != "unknown") {
-                setting.currentChoice = newValue
+                setting.currentChoice = setting.getChoice(newValue)
                 true
             } else false
             is BooleanSetting -> {

@@ -124,9 +124,9 @@ object ModuleManager {
                 module.settings.find { it.settingName == settingName }?.apply {
                     when (this) {
                         is BooleanSetting -> this.current = current as Boolean
-                        is DoubleSetting -> this.current = (current as Number).toDouble()
-                        is IntegerSetting -> this.current = (current as Number).toInt()
-                        is ChoiceSetting -> this.current = current as String
+                        is DoubleSetting -> this.currentValue = (current as Number).toDouble()
+                        is IntegerSetting -> this.currentValue = (current as Number).toInt()
+                        is ChoiceSetting -> this.currentChoice = current as String
                     }
                 }
             }

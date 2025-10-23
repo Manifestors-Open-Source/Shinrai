@@ -11,7 +11,7 @@ class ChoiceSetting(
 
     var currentChoice: String = current
         set(value) {
-            if (field.lowercase() in choicesList) {
+            if (field in choicesList) {
                 field = value
                 super.current = field
             }
@@ -25,7 +25,7 @@ class ChoiceSetting(
     }.distinct().toMutableList()
 
     fun getChoice(choiceName: String?): String =
-        choicesList.firstOrNull { it.equals(choiceName, ignoreCase = true) } ?: "unknown"
+        choicesList.firstOrNull { it.replace(" ", "").equals(choiceName, ignoreCase = true) } ?: "unknown"
 
     fun getChoices(): List<String> = choicesList.toList()
 }
