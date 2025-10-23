@@ -1,5 +1,6 @@
 package com.manifestors.shinrai.client.ui.title
 
+import com.manifestors.shinrai.client.Shinrai
 import com.manifestors.shinrai.client.Shinrai.fullVersion
 import com.manifestors.shinrai.client.ui.alt.ShinraiAltMenuScreen
 import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen
@@ -64,7 +65,10 @@ class ShinraiTitleScreen : Screen(Text.of("Shinrai Title Screen")), MinecraftIns
         this.addDrawableChild(
             ButtonWidget.builder(
                 Text.translatable("menu.quit")
-            ) {  mc.scheduleStop() }
+            ) {
+                mc.scheduleStop()
+                Shinrai.shutdownShinrai()
+            }
                 .dimensions(this.width / 2 + 2, this.height / 4 + 140, 98, 20)
                 .build()
         )

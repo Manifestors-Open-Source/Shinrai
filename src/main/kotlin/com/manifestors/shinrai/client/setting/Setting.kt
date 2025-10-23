@@ -1,6 +1,8 @@
 package com.manifestors.shinrai.client.setting
 
-open class Setting<T>(
-    val settingName: String? = null,
-    val defaultValue: T? = null
+import com.google.gson.annotations.Expose
+
+open class Setting<T : Any>(
+    @Expose val settingName: String? = null,
+    @Expose var current: T
 )

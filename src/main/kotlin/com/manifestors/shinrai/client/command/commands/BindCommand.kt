@@ -14,26 +14,21 @@ class BindCommand : Command(
     override fun onCommandExecuted(args: Array<String>): Boolean {
         if (args.size < 3) return false
 
-        val moduleName = args[1]
-        val keyInput = args[2]
+        val (moduleName, keyInput) = args.drop(1)
 
-        val module = moduleManager.getModuleByName(moduleName)
-
-        if (module != null) {
+        moduleManager.getModuleByName(moduleName)?.let {
             if (keyInput.equals("none", ignoreCase = true)) {
-                module.keyCode = 0
-                addChatMessage("Unbound module " + module.name + ".")
+                it.keyCode = 0
+                addChatMessage("Unbound module " + it.name + ".")
             } else {
                 val keyName = keyInput.uppercase(Locale.getDefault())
                 val key = getKeyIndex(keyName)
                 if (key != -1) {
-                    module.keyCode = key
-                    addChatMessage(module.name + " bound to " + keyName + ".")
-                } else addChatMessage("Invalid key $keyInput.")
+                    it.keyCode = key
+                    addChatMessage(it.name + " bound to " + keyName + ".")
+                } else addChatMessage("Invalid key '$keyInput'.")
             }
-        } else {
-            sendNotFound("Module '$moduleName'")
-        }
+        } ?: sendNotFound("Module '$moduleName'")
 
         return true
     }

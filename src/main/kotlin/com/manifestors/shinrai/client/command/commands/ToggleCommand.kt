@@ -15,14 +15,10 @@ class ToggleCommand : Command(
         if (args.size < 2) return false
 
         val moduleName = args[1]
-        val module = moduleManager.getModuleByName(moduleName)
-
-        if (module != null) {
-            module.toggleModule()
-            addChatMessage("${module.name} has been ${if (module.enabled) "enabled" else "disabled"}.")
-        } else {
-            sendNotFound("Module '$moduleName'")
-        }
+        moduleManager.getModuleByName(moduleName)?.let {
+           it.toggleModule()
+           addChatMessage("${it.name} has been ${if (it.enabled) "enabled" else "disabled"}.")
+        } ?: sendNotFound("Module '$moduleName'")
 
         return true
     }

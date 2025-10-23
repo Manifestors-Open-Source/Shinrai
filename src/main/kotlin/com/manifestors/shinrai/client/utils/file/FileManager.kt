@@ -26,7 +26,7 @@ object FileManager {
         return gson.toJson(obj)
     }
 
-    fun toJson(data: MutableMap<String?, Any?>?): String? {
+    fun <T : Any> toJson(data: T?): String? {
         val gson = GsonBuilder().setPrettyPrinting().create()
 
         return gson.toJson(data)

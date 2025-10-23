@@ -10,18 +10,17 @@ class IntegerSetting(
     val step: Int
 ) : Setting<Int>(name, current) {
 
-    var current: Int = current
-        private set
+    var currentValue: Int = current
+        set(value) {
+            field = value.coerceIn(min, max)
+            super.current = field
+        }
 
-    fun increment() {
-        current = (current + step).coerceAtMost(max)
+    fun change(by: Int) {
+        currentValue += by
     }
 
-    fun decrement() {
-        current = (current - step).coerceAtLeast(min)
-    }
+    fun increment() = change(step)
+    fun decrement() = change(-step)
 
-    fun setValue(value: Int) {
-        current = value.coerceIn(min, max)
-    }
 }

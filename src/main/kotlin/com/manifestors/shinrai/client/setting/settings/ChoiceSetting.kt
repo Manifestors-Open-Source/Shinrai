@@ -5,26 +5,27 @@ import com.manifestors.shinrai.client.setting.Setting
 
 class ChoiceSetting(
     name: String,
-    private var defaultChoice: String,
+    current: String,
     vararg choices: String
-) : Setting<String>(name, defaultChoice) {
+) : Setting<String>(name, current) {
+
+    var currentChoice: String = current
+        set(value) {
+            if (field.lowercase() in choicesList) {
+                field = value
+                super.current = field
+            }
+            else
+                Shinrai.logger.warn("Invalid choice: {}", field)
+        }
 
     private val choicesList = buildList {
-        add(defaultChoice)
+        add(currentChoice)
         addAll(choices)
     }.distinct().toMutableList()
 
     fun getChoice(choiceName: String?): String =
         choicesList.firstOrNull { it.equals(choiceName, ignoreCase = true) } ?: "unknown"
 
-    fun setDefaultChoice(choiceName: String?) {
-        if (choiceName != null && choiceName in choicesList)
-            defaultChoice = choiceName
-        else
-            Shinrai.logger.warn("Invalid choice: {}", choiceName)
-    }
-
     fun getChoices(): List<String> = choicesList.toList()
-
-    fun getDefaultChoice(): String = defaultChoice
 }

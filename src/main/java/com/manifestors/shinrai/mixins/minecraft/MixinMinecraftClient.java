@@ -70,9 +70,4 @@ public abstract class MixinMinecraftClient {
         Shinrai.INSTANCE.initializeShinrai();
     }
 
-    @Inject(method = "stop", at = @At("TAIL"))
-    private void shutdownShinrai(CallbackInfo ci) {
-        Shinrai.INSTANCE.shutdownShinrai();
-    }
-
 }
