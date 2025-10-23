@@ -55,7 +55,7 @@ class BlockFly : Module(
                     neighborPos,
                     false
                 )
-                if (mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)?.isAccepted == true) {
+                if (mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)?.isAccepted!!) {
                     player.swingHand(Hand.MAIN_HAND)
                 }
                 break
