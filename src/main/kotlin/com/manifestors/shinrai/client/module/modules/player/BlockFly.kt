@@ -23,12 +23,15 @@ class BlockFly : Module(
 
     private val sprint = BooleanSetting("Sprinting", false)
     private val swingMode = ChoiceSetting("Swing", "No Hide", "Hide for Client", "Hide for Server", "Hide for Both")
+    private val expand = BooleanSetting("Expand", false)
 
     private var previousSlot = -1
 
     override fun onEnable() {
         previousSlot = mc.player?.inventory?.selectedSlot ?: -1
     }
+
+    private var tick = 0
 
     @ListenEvent
     fun onTickMovement(event: TickMovementEvent) {
@@ -39,7 +42,10 @@ class BlockFly : Module(
 
         player.isSprinting = sprint.current
 
-        placeBlock(player.blockPos.down())
+        if (!expand.current)
+            placeBlock(player.blockPos.down())
+        else
+            expand()
     }
 
     override fun onDisable() {
@@ -100,6 +106,25 @@ class BlockFly : Module(
             "Hide for Client" -> mc.networkHandler?.sendPacket(HandSwingC2SPacket(Hand.MAIN_HAND))
             "Hide for Server" -> mc.player?.swingHand(Hand.MAIN_HAND, false)
         }
+    }
+
+    private fun expand() {
+        val player = mc.player ?: return
+        val startPos = player.blockPos.down()
+
+        val distance = tick % 3
+        val targetPos = startPos.offset(player.horizontalFacing, distance)
+
+        if (player.isJumping && mc.options.jumpKey.isPressed) {
+            placeBlock(startPos)
+            tick = 0
+            return
+        }
+
+        placeBlock(targetPos)
+
+        tick++
+        if (tick > 3) tick = 0
     }
 
 }
