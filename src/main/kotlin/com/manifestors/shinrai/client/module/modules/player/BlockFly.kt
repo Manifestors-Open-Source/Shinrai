@@ -63,18 +63,28 @@ class BlockFly : Module(
 
         for (direction in Direction.entries) {
             val neighborPos = pos.offset(direction)
-            if (!world.getBlockState(neighborPos).isAir) {
+            val neighborState = world.getBlockState(neighborPos)
+
+            if (!neighborState.isAir && neighborState.fluidState.isEmpty) {
+                val hitVec = Vec3d.ofCenter(neighborPos).add(
+                    direction.opposite.offsetX * 0.5,
+                    direction.opposite.offsetY * 0.5,
+                    direction.opposite.offsetZ * 0.5
+                )
+
                 val result = BlockHitResult(
-                    Vec3d.ofCenter(neighborPos),
+                    hitVec,
                     direction.opposite,
                     neighborPos,
                     false
                 )
 
-                if (mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)?.isAccepted!!) {
+                val interactResult = mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)
+
+                if (interactResult?.isAccepted == true) {
                     swing()
+                    return
                 }
-                break
             }
         }
     }
