@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.mixins.minecraft.entity.player;
 
 
-import com.manifestors.shinrai.client.module.modules.visuals.NoFOV;
+import com.manifestors.shinrai.client.features.module.modules.visuals.NoFOV;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.block;
 
-import com.manifestors.shinrai.client.module.modules.extras.NoPortalCooldown;
+import com.manifestors.shinrai.client.features.module.modules.extras.NoPortalCooldown;
 import net.minecraft.block.NetherPortalBlock;
 import net.minecraft.entity.Entity;
 import net.minecraft.server.world.ServerWorld;

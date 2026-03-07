@@ -1,12 +1,12 @@
 package com.manifestors.shinrai.client
 
-import com.manifestors.shinrai.client.command.CommandManager
+import com.manifestors.shinrai.client.features.command.CommandManager
 import com.manifestors.shinrai.client.event.EventManager
-import com.manifestors.shinrai.client.module.ModuleManager
-import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen
+import com.manifestors.shinrai.client.features.module.ModuleManager
+import com.manifestors.shinrai.client.features.screen.customization.ShinraiCustomizationScreen
 import com.manifestors.shinrai.client.utils.LoggerInstance
 import com.manifestors.shinrai.client.utils.MinecraftInstance
-import com.manifestors.shinrai.client.utils.file.FileManager
+import com.manifestors.shinrai.client.file.FileManager
 import net.minecraft.text.Text
 import net.minecraft.util.Formatting
 

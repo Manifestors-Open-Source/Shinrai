@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.gui;
 
-import com.manifestors.shinrai.client.utils.file.ShinraiAssets;
+import com.manifestors.shinrai.client.file.ShinraiAssets;
 import net.minecraft.client.gl.RenderPipelines;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.LogoDrawer;

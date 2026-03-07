@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.entity.player;
 
-import com.manifestors.shinrai.client.module.modules.combat.BackToOldPVP;
+import com.manifestors.shinrai.client.features.module.modules.combat.BackToOldPVP;
 import net.minecraft.entity.player.PlayerEntity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;

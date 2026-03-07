@@ -1,8 +1,8 @@
 package com.manifestors.shinrai.mixins.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.manifestors.shinrai.client.module.modules.movement.NoJumpDelay;
-import com.manifestors.shinrai.client.module.modules.movement.SilkFall;
+import com.manifestors.shinrai.client.features.module.modules.movement.NoJumpDelay;
+import com.manifestors.shinrai.client.features.module.modules.movement.SilkFall;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.damage.DamageSource;

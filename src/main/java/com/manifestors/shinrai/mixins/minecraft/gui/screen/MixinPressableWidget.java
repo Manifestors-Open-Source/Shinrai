@@ -1,6 +1,6 @@
 package com.manifestors.shinrai.mixins.minecraft.gui.screen;
 
-import com.manifestors.shinrai.client.utils.file.ShinraiAssets;
+import com.manifestors.shinrai.client.file.ShinraiAssets;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.widget.PressableWidget;

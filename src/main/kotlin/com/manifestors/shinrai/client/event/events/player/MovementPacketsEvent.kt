@@ -1,12 +1,12 @@
 package com.manifestors.shinrai.client.event.events.player
 
 import com.manifestors.shinrai.client.event.ConstantEvent
+import net.minecraft.util.math.Vec3d
 
 class MovementPacketsEvent(
-    val state: EventState,
-    var x: Double,
-    var y: Double,
-    var z: Double,
+    val position: Vec3d,
+    val yaw: Float,
+    val pitch: Float,
     var onGround: Boolean
 ) : ConstantEvent()
 

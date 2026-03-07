@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.mixins.minecraft;
 
 import com.manifestors.shinrai.client.Shinrai;
-import com.manifestors.shinrai.client.ui.title.ShinraiTitleScreen;
+import com.manifestors.shinrai.client.features.screen.title.ShinraiTitleScreen;
 import net.minecraft.SharedConstants;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;

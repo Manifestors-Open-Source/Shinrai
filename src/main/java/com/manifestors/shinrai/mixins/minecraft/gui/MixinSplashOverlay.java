@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.mixins.minecraft.gui;
 
-import com.manifestors.shinrai.client.ui.custom.ShinraiCustomizationScreen;
-import com.manifestors.shinrai.client.ui.custom.splash.CustomSplashLogo;
+import com.manifestors.shinrai.client.features.screen.customization.ShinraiCustomizationScreen;
+import com.manifestors.shinrai.client.features.screen.customization.splash.CustomSplashLogo;
 import com.mojang.blaze3d.pipeline.RenderPipeline;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.screen.SplashOverlay;

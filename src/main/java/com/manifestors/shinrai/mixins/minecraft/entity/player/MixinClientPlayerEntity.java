@@ -1,11 +1,10 @@
 package com.manifestors.shinrai.mixins.minecraft.entity.player;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.manifestors.shinrai.client.Shinrai;
 import com.manifestors.shinrai.client.event.events.player.EventState;
 import com.manifestors.shinrai.client.event.events.player.MovementPacketsEvent;
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
-import com.manifestors.shinrai.client.module.modules.movement.NoSlow;
+import com.manifestors.shinrai.client.features.module.modules.movement.NoSlow;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.util.math.Vec2f;
 import org.spongepowered.asm.mixin.Mixin;
@@ -34,34 +33,44 @@ public class MixinClientPlayerEntity {
     @Inject(method = "sendMovementPackets", at = @At("HEAD"))
     private void sendMovementPacketsPreHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
-        motionEvent = new MovementPacketsEvent(EventState.PRE, player.getX(), player.getY(), player.getZ(), player.isOnGround());
+        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround());
         Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 
-    @ModifyExpressionValue(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
-    private double hookMotionEventPosX(double original) {
-        return motionEvent.getX();
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
+    private double hookMotionEventPosX(ClientPlayerEntity instance) {
+        return motionEvent.getPosition().x;
     }
 
-    @ModifyExpressionValue(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getY()D"))
-    private double hookMotionEventPosY(double original) {
-        return motionEvent.getY();
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getY()D"))
+    private double hookMotionEventPosY(ClientPlayerEntity instance) {
+        return motionEvent.getPosition().y;
     }
 
-    @ModifyExpressionValue(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getZ()D"))
-    private double hookMotionEventPosZ(double original) {
-        return motionEvent.getZ();
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getZ()D"))
+    private double hookMotionEventPosZ(ClientPlayerEntity instance) {
+        return motionEvent.getPosition().z;
     }
 
-    @ModifyExpressionValue(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
-    private boolean hookMotionEventIsOnGround(boolean original) {
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;isOnGround()Z"))
+    private boolean hookMotionEventIsOnGround(ClientPlayerEntity instance) {
         return motionEvent.getOnGround();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getYaw()F"))
+    private float hookMotionEventRotationYaw(ClientPlayerEntity instance) {
+        return motionEvent.getYaw();
+    }
+
+    @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getPitch()F"))
+    private float hookMotionEventRotationPitch(ClientPlayerEntity instance) {
+        return motionEvent.getPitch();
     }
 
     @Inject(method = "sendMovementPackets", at = @At("RETURN"))
     private void sendMovementPacketsPostHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
-        motionEvent = new MovementPacketsEvent(EventState.POST, player.getX(), player.getY(), player.getZ(), player.isOnGround());
+        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround());
         Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 

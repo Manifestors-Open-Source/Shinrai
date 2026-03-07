@@ -1,7 +1,7 @@
 package com.manifestors.shinrai.client.event
 
 import com.manifestors.shinrai.client.Shinrai
-import com.manifestors.shinrai.client.event.annotations.ListenEvent
+import com.manifestors.shinrai.client.event.annotations.InvokeEvent
 
 object EventManager {
 
@@ -19,7 +19,7 @@ object EventManager {
         try {
             for ((listenerObject, clazz) in listeners) {
                 clazz.declaredMethods.forEach { method ->
-                    val annotation = method.getAnnotation(ListenEvent::class.java)
+                    val annotation = method.getAnnotation(InvokeEvent::class.java)
                     if (annotation != null &&
                         method.parameterCount > 0 &&
                         method.parameters[0].type.isAssignableFrom(event.javaClass)
