@@ -24,7 +24,9 @@
     "minecraft.render.MixinGameRenderer",
     "minecraft.util.MixinWindow",
     "minecraft.entity.player.MixinAbstractClientPlayerEntity",
-    "minecraft.entity.player.MixinClientPlayerEntity"
+    "minecraft.entity.player.MixinClientPlayerEntity",
+    "minecraft.entity.MixinEntity",
+    "minecraft.input.MixinKeyboardInput"
   ],
   "injectors": {
     "defaultRequire": 1

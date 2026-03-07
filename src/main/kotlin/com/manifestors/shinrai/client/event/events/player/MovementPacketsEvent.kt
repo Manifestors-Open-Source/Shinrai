@@ -5,9 +5,10 @@ import net.minecraft.util.math.Vec3d
 
 class MovementPacketsEvent(
     val position: Vec3d,
-    val yaw: Float,
-    val pitch: Float,
-    var onGround: Boolean
+    var yaw: Float,
+    var pitch: Float,
+    var onGround: Boolean,
+    val state: EventState
 ) : ConstantEvent()
 
 enum class EventState {

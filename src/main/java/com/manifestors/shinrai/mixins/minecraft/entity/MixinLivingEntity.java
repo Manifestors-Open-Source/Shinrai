@@ -1,6 +1,8 @@
 package com.manifestors.shinrai.mixins.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.events.player.JumpFixEvent;
 import com.manifestors.shinrai.client.features.module.modules.movement.NoJumpDelay;
 import com.manifestors.shinrai.client.features.module.modules.movement.SilkFall;
 import net.minecraft.client.MinecraftClient;
@@ -24,6 +26,15 @@ public class MixinLivingEntity {
     @Inject(method = "handleFallDamage", at = @At("HEAD"), cancellable = true)
     private void cancelFallDamage(double fallDistance, float damagePerDistance, DamageSource damageSource, CallbackInfoReturnable<Boolean> cir) {
         cir.setReturnValue(!SilkFall.INSTANCE.getEnabled());
+    }
+
+    @ModifyExpressionValue(method = "jump", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/LivingEntity;getYaw()F"))
+    private float hookJumpFixEvent(float original) {
+        JumpFixEvent jumpFixEvent = new JumpFixEvent();
+        Shinrai.eventManager.listenEvent(jumpFixEvent);
+        var entity = (LivingEntity) (Object) this;
+        return jumpFixEvent.getYaw() != 0f &&
+                entity == MinecraftClient.getInstance().player ? jumpFixEvent.getYaw() : original;
     }
 
 }

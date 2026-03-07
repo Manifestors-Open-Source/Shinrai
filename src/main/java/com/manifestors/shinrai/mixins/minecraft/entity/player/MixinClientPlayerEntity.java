@@ -33,7 +33,7 @@ public class MixinClientPlayerEntity {
     @Inject(method = "sendMovementPackets", at = @At("HEAD"))
     private void sendMovementPacketsPreHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
-        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround());
+        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround(), EventState.PRE);
         Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 
@@ -70,7 +70,7 @@ public class MixinClientPlayerEntity {
     @Inject(method = "sendMovementPackets", at = @At("RETURN"))
     private void sendMovementPacketsPostHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
-        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround());
+        motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround(), EventState.POST);
         Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
     }
 
