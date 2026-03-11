@@ -3,7 +3,7 @@
 
 ## ✨ What is Shinrai?
 
-**Shinrai** is a sleek and powerful utility mod for **Minecraft 1.21.7**, developed using the **Fabric Mod Loader**.  
+**Shinrai** is a sleek and powerful utility mod for **Minecraft**, developed using the **Fabric Mod Loader**.  
 Our goal is simple: **make things easier, faster, and more enjoyable**, while maintaining performance and clarity.
 
 ---
