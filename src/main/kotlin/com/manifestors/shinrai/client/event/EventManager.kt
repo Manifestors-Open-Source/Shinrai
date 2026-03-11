@@ -24,7 +24,8 @@ object EventManager {
         for (listenerObject in listeners) {
             val methods = invokers[listenerObject] ?: continue
             methods.forEach { method ->
-                if (method.parameterTypes[0].isAssignableFrom(event.javaClass)) {
+                if (method.isAnnotationPresent(InvokeEvent::class.java) &&
+                    method.parameterTypes[0].isAssignableFrom(event.javaClass)) {
                     try {
                         method.isAccessible = true
                         method.invoke(listenerObject, event)

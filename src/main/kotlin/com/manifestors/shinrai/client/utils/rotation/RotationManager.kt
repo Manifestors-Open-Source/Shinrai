@@ -23,7 +23,7 @@ object RotationManager : MinecraftInstance {
         val yaw = Math.toDegrees(atan2(zDifference, xDifference)) - 90f
         val pitch = Math.toDegrees(-atan2(yDifference, distance))
 
-        return Rotation(yaw.toFloat(), pitch.toFloat())
+        return Rotation(yaw.toFloat(), Math.clamp(pitch.toFloat(), -90f, 90f))
     }
 
 }

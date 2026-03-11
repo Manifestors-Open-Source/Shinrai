@@ -28,7 +28,7 @@ class KillAura : Module(
     category = ModuleCategory.COMBAT
 ) {
     private val timer = TimingUtil()
-    private var currentTarget: LivingEntity? = null
+    var currentTarget: LivingEntity? = null
 
     private val moveFix = ChoiceSetting("Movement Fix", "Silent", "Strict", "Off")
 
@@ -62,10 +62,7 @@ class KillAura : Module(
 
             event.yaw = rotations.yaw
             event.pitch = rotations.pitch
-            val player = mc.player ?: return
 
-            player.bodyYaw = event.yaw
-            player.headYaw = event.yaw
             RotationManager.currentRotation = Rotation(event.yaw, event.pitch)
         }
     }
@@ -103,6 +100,11 @@ class KillAura : Module(
             event.forward = newForward.toFloat()
             event.strafe = newStrafe.toFloat()
         }
+    }
+
+    override fun onDisable() {
+        RotationManager.currentRotation = null
+        currentTarget = null
     }
 
     private fun isAttackable(entity: LivingEntity): Boolean {
