@@ -11,6 +11,7 @@ import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
 import com.manifestors.shinrai.client.setting.settings.ChoiceSetting
 import com.manifestors.shinrai.client.utils.math.TimingUtil
+import com.manifestors.shinrai.client.utils.movement.MovementUtils
 import com.manifestors.shinrai.client.utils.rotation.Rotation
 import com.manifestors.shinrai.client.utils.rotation.RotationManager
 import net.minecraft.client.network.ClientPlayerEntity
@@ -63,6 +64,11 @@ class KillAura : Module(
             event.yaw = rotations.yaw
             event.pitch = rotations.pitch
 
+            val player = mc.player ?: return
+            player.headYaw = event.yaw
+            player.bodyYaw = event.yaw
+            player.isSprinting = false
+
             RotationManager.currentRotation = Rotation(event.yaw, event.pitch)
         }
     }
@@ -89,16 +95,15 @@ class KillAura : Module(
             val current = RotationManager.currentRotation ?: return
             val player = mc.player ?: return
 
-            val angleDiff = Math.toRadians((player.yaw - current.yaw).toDouble())
+            if (MovementUtils.isMoving) {
+                val deltaYaw = Math.toRadians((player.yaw - current.yaw).toDouble())
 
-            val cos = cos(angleDiff)
-            val sin = sin(angleDiff)
+                val newForward = event.forward * cos(deltaYaw) + event.strafe * sin(deltaYaw)
+                val newStrafe = event.strafe * cos(deltaYaw) - event.forward * sin(deltaYaw)
 
-            val newForward = (event.forward * cos) + (event.strafe * sin)
-            val newStrafe = (event.forward * sin) - (event.strafe * cos)
-
-            event.forward = newForward.toFloat()
-            event.strafe = newStrafe.toFloat()
+                event.forward = newForward.toFloat()
+                event.strafe = newStrafe.toFloat()
+            }
         }
     }
 
