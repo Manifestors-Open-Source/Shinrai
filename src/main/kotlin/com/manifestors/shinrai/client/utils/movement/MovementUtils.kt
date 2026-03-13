@@ -1,7 +1,21 @@
+/*
+ *
+ *  * Copyright © 2026 Manifestors Open Source
+ *  * License: GPL-3.0
+ *  *
+ *  * All code in this project is the property of the Manifestors Open Source team
+ *  * and its contributors. If you use this code in any project, please provide proper attribution
+ *  * and release your project under the GPL-3.0 license as well.
+ *  *
+ *  * For more details, see: https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ */
+
 package com.manifestors.shinrai.client.utils.movement
 
 import com.manifestors.shinrai.client.utils.MinecraftInstance
 import net.minecraft.util.math.MathHelper
+import net.minecraft.util.math.Vec2f
 import kotlin.math.abs
 import kotlin.math.cos
 import kotlin.math.roundToInt
@@ -55,6 +69,18 @@ object MovementUtils : MinecraftInstance {
 
             mc.player!!.setVelocity(x, mc.player!!.velocity.y, z)
         }
+    }
+
+    fun applyMovementFix(movementVector: Vec2f, yaw: Float): Vec2f {
+        return if (isMoving) {
+            val player = mc.player ?: return Vec2f.ZERO
+            val deltaYaw = Math.toRadians((player.yaw - yaw).toDouble())
+
+            val newForward = movementVector.y * cos(deltaYaw) - movementVector.x * sin(deltaYaw)
+            val newStrafe = movementVector.x * cos(deltaYaw) + movementVector.y * sin(deltaYaw)
+
+            Vec2f(newStrafe.toFloat(), newForward.toFloat())
+        } else Vec2f.ZERO
     }
 
     val isLookingDiagonally: Boolean

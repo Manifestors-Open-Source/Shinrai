@@ -1,11 +1,29 @@
+/*
+ *
+ *  * Copyright © 2026 Manifestors Open Source
+ *  * License: GPL-3.0
+ *  *
+ *  * All code in this project is the property of the Manifestors Open Source team
+ *  * and its contributors. If you use this code in any project, please provide proper attribution
+ *  * and release your project under the GPL-3.0 license as well.
+ *  *
+ *  * For more details, see: https://www.gnu.org/licenses/gpl-3.0.en.html
+ *
+ */
+
 package com.manifestors.shinrai.client.features.module.modules.player
 
 import com.manifestors.shinrai.client.event.annotations.InvokeEvent
+import com.manifestors.shinrai.client.event.events.player.JumpFixEvent
+import com.manifestors.shinrai.client.event.events.player.MovementFixEvent
+import com.manifestors.shinrai.client.event.events.player.MovementInputEvent
+import com.manifestors.shinrai.client.event.events.player.MovementPacketsEvent
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
 import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
 import com.manifestors.shinrai.client.setting.settings.BooleanSetting
 import com.manifestors.shinrai.client.setting.settings.ChoiceSetting
+import com.manifestors.shinrai.client.utils.movement.MovementUtils
 import net.minecraft.item.BlockItem
 import net.minecraft.network.packet.c2s.play.HandSwingC2SPacket
 import net.minecraft.util.Hand
@@ -26,6 +44,7 @@ class BlockFly : Module(
     private val expand = BooleanSetting("Expand", false)
 
     private var previousSlot = -1
+    var isPlacing = false
 
     override fun onEnable() {
         previousSlot = mc.player?.inventory?.selectedSlot ?: -1
@@ -46,6 +65,41 @@ class BlockFly : Module(
             placeBlock(player.blockPos.down())
         else
             expand()
+    }
+
+    @InvokeEvent
+    fun onMovePackets(event: MovementPacketsEvent) {
+        if (!MovementUtils.isMoving && mc.options.jumpKey.isPressed) {
+            event.pitch = 89.8f
+        }
+
+        if (MovementUtils.isMoving) {
+            val player = mc.player ?: return
+            event.yaw = player.yaw - 180f
+            event.pitch = 76.75f
+        }
+    }
+
+    @InvokeEvent
+    fun onMoveFix(event: MovementFixEvent) {
+        val player = mc.player ?: return
+        event.yaw = player.yaw - 180f
+    }
+
+    @InvokeEvent
+    fun onJumpFix(event: JumpFixEvent) {
+        val player = mc.player ?: return
+        event.yaw = player.yaw - 180f
+    }
+
+    @InvokeEvent
+    fun onMoveInput(event: MovementInputEvent) {
+        val player = mc.player ?: return
+
+        val fixedMovement = MovementUtils.applyMovementFix(event.toVec(), player.yaw - 180f)
+
+        event.forward = fixedMovement.y
+        event.strafe = fixedMovement.x
     }
 
     override fun onDisable() {
@@ -79,12 +133,11 @@ class BlockFly : Module(
                     false
                 )
 
-                val interactResult = mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result)
+                val interactResult = mc.interactionManager?.interactBlock(player, Hand.MAIN_HAND, result) ?: continue
 
-                if (interactResult?.isAccepted == true) {
-                    swing()
-                    return
-                }
+                isPlacing = interactResult.isAccepted
+
+                if (isPlacing) swing()
             }
         }
     }
