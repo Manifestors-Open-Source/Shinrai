@@ -32,6 +32,7 @@ import com.manifestors.shinrai.client.features.module.modules.player.AutoEat
 import com.manifestors.shinrai.client.features.module.modules.player.AutoTotem
 import com.manifestors.shinrai.client.features.module.modules.player.BlockFly
 import com.manifestors.shinrai.client.features.module.modules.player.ChestStealer
+import com.manifestors.shinrai.client.features.module.modules.visuals.ESP
 import com.manifestors.shinrai.client.features.module.modules.visuals.HUD
 import com.manifestors.shinrai.client.features.module.modules.visuals.NoFOV
 import com.manifestors.shinrai.client.features.module.modules.visuals.NoHurtCam
@@ -80,6 +81,7 @@ object ModuleManager {
             ChestStealer(),
 
             // Visuals
+            ESP,
             HUD(),
             NoFOV,
             NoHurtCam,
