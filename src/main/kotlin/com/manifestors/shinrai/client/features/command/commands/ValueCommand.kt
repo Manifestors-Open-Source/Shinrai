@@ -12,8 +12,8 @@
 package com.manifestors.shinrai.client.features.command.commands
 
 import com.manifestors.shinrai.client.Shinrai.addChatMessage
-import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.features.command.Command
+import com.manifestors.shinrai.client.features.module.ModuleManager
 import com.manifestors.shinrai.client.setting.Setting
 import com.manifestors.shinrai.client.setting.settings.*
 
@@ -28,7 +28,7 @@ class ValueCommand : Command(
         if (args.size < 4) return false
 
         val (moduleName, settingName, newValue) = args.drop(1)
-        val module = moduleManager.getModuleByName(moduleName) ?: return true.also {
+        val module = ModuleManager.getModuleByName(moduleName) ?: return true.also {
             addChatMessage("Module '$moduleName' not found.")
         }
 

@@ -13,6 +13,7 @@ package com.manifestors.shinrai.mixins.minecraft.entity;
 
 import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.player.MovementFixEvent;
 import com.manifestors.shinrai.client.features.module.modules.visuals.ESP;
 import net.minecraft.client.MinecraftClient;
@@ -30,7 +31,7 @@ public class MixinEntity {
     @ModifyExpressionValue(method = "updateVelocity", at = @At(value = "INVOKE", target = "Lnet/minecraft/entity/Entity;getYaw()F"))
     private float hookMoveFixEvent(float original) {
         MovementFixEvent movementFixEvent = new MovementFixEvent();
-        Shinrai.eventManager.listenEvent(movementFixEvent);
+        EventManager.INSTANCE.listenEvent(movementFixEvent);
         var entity = (Entity) (Object) this;
         return movementFixEvent.getYaw() != 0f &&
                 entity == MinecraftClient.getInstance().player ? movementFixEvent.getYaw() : original;

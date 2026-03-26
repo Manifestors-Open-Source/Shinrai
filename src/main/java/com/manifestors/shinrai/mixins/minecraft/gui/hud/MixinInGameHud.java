@@ -11,13 +11,8 @@
 
 package com.manifestors.shinrai.mixins.minecraft.gui.hud;
 
-import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.rendering.Rendering2DEvent;
-import com.manifestors.shinrai.client.imgui.manager.ImGuiManager;
-import imgui.ImColor;
-import imgui.ImDrawList;
-import imgui.ImGui;
-import imgui.ImVec2;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.DrawContext;
 import net.minecraft.client.gui.hud.InGameHud;
@@ -39,7 +34,7 @@ public class MixinInGameHud {
 
     @Inject(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/option/GameOptions;hudHidden:Z", shift = At.Shift.AFTER, opcode = Opcodes.GETFIELD, ordinal = 1))
     private void renderEventHook(DrawContext context, RenderTickCounter tickCounter, CallbackInfo ci) {
-        Shinrai.INSTANCE.getEventManager().listenEvent(new Rendering2DEvent(context, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight()));
+        EventManager.INSTANCE.listenEvent(new Rendering2DEvent(context, this.client.getWindow().getScaledWidth(), this.client.getWindow().getScaledHeight()));
     }
 
     @Inject(method = "renderStatusEffectOverlay", at = @At("HEAD"), cancellable = true)

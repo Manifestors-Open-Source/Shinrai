@@ -11,8 +11,9 @@
 
 package com.manifestors.shinrai.mixins.minecraft.network;
 
-import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.player.ChatMessageSendEvent;
+import com.manifestors.shinrai.client.features.command.CommandManager;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,8 +26,8 @@ public class MixinClientPlayNetworkHandler {
     @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     private void injectCommandListener(String content, CallbackInfo ci) {
         var messageEvent = new ChatMessageSendEvent(content);
-        Shinrai.INSTANCE.getEventManager().listenEvent(messageEvent);
-        Shinrai.INSTANCE.getCommandManager().processCommands(messageEvent);
+        EventManager.INSTANCE.listenEvent(messageEvent);
+        CommandManager.INSTANCE.processCommands(messageEvent);
 
         if (messageEvent.getCancelled())
             ci.cancel();

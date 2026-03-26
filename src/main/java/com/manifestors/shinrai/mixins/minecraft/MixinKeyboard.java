@@ -11,7 +11,7 @@
 
 package com.manifestors.shinrai.mixins.minecraft;
 
-import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.game.KeyPressEvent;
 import net.minecraft.client.Keyboard;
 import net.minecraft.client.MinecraftClient;
@@ -38,7 +38,7 @@ public class MixinKeyboard {
                 keyPressEvent.toggleModulesByKey();
 
                 if (!keyPressEvent.getCancelled())
-                    Shinrai.INSTANCE.getEventManager().listenEvent(keyPressEvent);
+                    EventManager.INSTANCE.listenEvent(keyPressEvent);
             }
         }
     }

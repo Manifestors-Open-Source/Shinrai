@@ -12,8 +12,8 @@
 package com.manifestors.shinrai.client.features.command.commands
 
 import com.manifestors.shinrai.client.Shinrai.addChatMessage
-import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.features.command.Command
+import com.manifestors.shinrai.client.features.module.ModuleManager
 import com.manifestors.shinrai.client.utils.input.GLFWUtil.getKeyIndex
 import java.util.*
 
@@ -27,7 +27,7 @@ class BindCommand : Command(
 
         val (moduleName, keyInput) = args.drop(1)
 
-        moduleManager.getModuleByName(moduleName)?.let {
+        ModuleManager.getModuleByName(moduleName)?.let {
             if (keyInput.equals("none", ignoreCase = true)) {
                 it.keyCode = 0
                 addChatMessage("Unbound module " + it.name + ".")

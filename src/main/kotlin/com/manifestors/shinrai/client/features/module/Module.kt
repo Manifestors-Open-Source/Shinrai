@@ -12,7 +12,7 @@
 package com.manifestors.shinrai.client.features.module
 
 import com.google.gson.annotations.Expose
-import com.manifestors.shinrai.client.Shinrai.eventManager
+import com.manifestors.shinrai.client.event.EventManager
 import com.manifestors.shinrai.client.setting.Setting
 import com.manifestors.shinrai.client.utils.MinecraftInstance
 
@@ -34,10 +34,10 @@ open class Module(
     fun toggleModule(state: Boolean = !enabled) {
         enabled = state
         if (enabled) {
-            eventManager.registerListener(this)
+            EventManager.registerListener(this)
             onEnable()
         } else {
-            eventManager.unregisterListener(this)
+            EventManager.unregisterListener(this)
             onDisable()
         }
     }

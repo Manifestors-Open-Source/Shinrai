@@ -11,15 +11,15 @@
 
 package com.manifestors.shinrai.client.event.events.game
 
-import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.event.CancellableEvent
+import com.manifestors.shinrai.client.features.module.ModuleManager
 
 class KeyPressEvent(
     val key: Int
 ) : CancellableEvent() {
 
     fun toggleModulesByKey() {
-        moduleManager.modules
+        ModuleManager.modules
             .filter { it.keyCode == key }
             .forEach { it.toggleModule() }
     }

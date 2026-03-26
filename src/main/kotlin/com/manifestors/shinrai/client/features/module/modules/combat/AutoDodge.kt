@@ -11,11 +11,11 @@
 
 package com.manifestors.shinrai.client.features.module.modules.combat
 
-import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.event.annotations.InvokeEvent
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent
 import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
+import com.manifestors.shinrai.client.features.module.ModuleManager
 import net.minecraft.entity.player.PlayerEntity
 import net.minecraft.entity.projectile.*
 import net.minecraft.entity.projectile.thrown.SnowballEntity
@@ -111,7 +111,7 @@ object AutoDodge : Module(
                     player.velocity = dodgeDir.multiply(dodgeSpeed).add(0.0, 0.2, 0.0)
                 } else {
                     if (hasAtLeastAirBelow(world, targetPos)) {
-                        blockFlyModule = moduleManager.getModuleByName("BlockFly")
+                        blockFlyModule = ModuleManager.getModuleByName("BlockFly")
                         if (blockFlyModule?.enabled == false) {
                             blockFlyModule?.toggleModule(true)
                             blockFlyWasToggled = true

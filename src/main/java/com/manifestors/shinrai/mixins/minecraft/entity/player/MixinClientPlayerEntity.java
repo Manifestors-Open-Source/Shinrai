@@ -12,6 +12,7 @@
 package com.manifestors.shinrai.mixins.minecraft.entity.player;
 
 import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.player.EventState;
 import com.manifestors.shinrai.client.event.events.player.MovementPacketsEvent;
 import com.manifestors.shinrai.client.event.events.player.TickMovementEvent;
@@ -33,7 +34,7 @@ public class MixinClientPlayerEntity {
 
     @Inject(method = "tickMovement", at = @At(value = "HEAD"))
     private void updateEventHook(CallbackInfo ci) {
-        Shinrai.INSTANCE.getEventManager().listenEvent(new TickMovementEvent());
+        EventManager.INSTANCE.listenEvent(new TickMovementEvent());
     }
 
     @Redirect(method = "applyMovementSpeedFactors", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec2f;multiply(F)Lnet/minecraft/util/math/Vec2f;", ordinal = 1))
@@ -45,7 +46,7 @@ public class MixinClientPlayerEntity {
     private void sendMovementPacketsPreHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
         motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround(), EventState.PRE);
-        Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
+        EventManager.INSTANCE.listenEvent(motionEvent);
     }
 
     @Redirect(method = "sendMovementPackets", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/network/ClientPlayerEntity;getX()D"))
@@ -82,7 +83,7 @@ public class MixinClientPlayerEntity {
     private void sendMovementPacketsPostHook(CallbackInfo ci) {
         ClientPlayerEntity player = (ClientPlayerEntity) (Object) this;
         motionEvent = new MovementPacketsEvent(player.getPos(), player.getYaw(), player.getPitch(), player.isOnGround(), EventState.POST);
-        Shinrai.INSTANCE.getEventManager().listenEvent(motionEvent);
+        EventManager.INSTANCE.listenEvent(motionEvent);
     }
 
 }

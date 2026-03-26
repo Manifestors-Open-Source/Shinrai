@@ -12,7 +12,6 @@
 package com.manifestors.shinrai.client
 
 import com.manifestors.shinrai.client.features.command.CommandManager
-import com.manifestors.shinrai.client.event.EventManager
 import com.manifestors.shinrai.client.features.module.ModuleManager
 import com.manifestors.shinrai.client.features.screen.customization.ShinraiCustomizationScreen
 import com.manifestors.shinrai.client.utils.LoggerInstance
@@ -29,28 +28,19 @@ object Shinrai : LoggerInstance, MinecraftInstance {
     const val AUTHORS: String = "Manifestors"
     const val IN_DEV: Boolean = true
 
-    lateinit var moduleManager: ModuleManager
-    lateinit var eventManager: EventManager
-    lateinit var commandManager: CommandManager
-
     fun initializeShinrai() {
-        moduleManager = ModuleManager
-        moduleManager.registerModules()
-        eventManager = EventManager
-        moduleManager.loadModulesFromJson()
-        commandManager = CommandManager
-        commandManager.registerCommands()
-
-        FileManager.createDirectories()
-
+        ModuleManager.registerModules()
+        ModuleManager.loadModulesFromJson()
+        CommandManager.registerCommands()
         ImGuiManager.init(mc.window.handle)
 
+        FileManager.createDirectories()
         ShinraiCustomizationScreen.loadBackgroundFromJson()
     }
 
     fun shutdownShinrai() {
         logger.info("Saving modules...")
-        moduleManager.saveModulesJson()
+        ModuleManager.saveModulesJson()
         logger.info("Modules saved, shutting down subsystems...")
         logger.info("Goodbye!")
     }

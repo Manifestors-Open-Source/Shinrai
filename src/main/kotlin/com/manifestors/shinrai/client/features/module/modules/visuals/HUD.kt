@@ -12,16 +12,15 @@
 package com.manifestors.shinrai.client.features.module.modules.visuals
 
 import com.manifestors.shinrai.client.Shinrai
-import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.event.annotations.InvokeEvent
 import com.manifestors.shinrai.client.event.events.rendering.ImGuiDrawEvent
 import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
+import com.manifestors.shinrai.client.features.module.ModuleManager
 import com.manifestors.shinrai.client.imgui.ImGuiAccess
 import imgui.ImColor
 import imgui.ImGui
 import imgui.ImVec2
-import net.minecraft.client.gui.screen.GameMenuScreen
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffectUtil
 import net.minecraft.screen.ScreenTexts
@@ -62,7 +61,7 @@ class HUD : Module(
     private fun renderArrayList() {
         var yOffset = 0f
 
-        val activeModules = moduleManager.modules
+        val activeModules = ModuleManager.modules
             .filter { it.enabled }
             .sortedByDescending { ImGui.calcTextSize(it.name).x }
 

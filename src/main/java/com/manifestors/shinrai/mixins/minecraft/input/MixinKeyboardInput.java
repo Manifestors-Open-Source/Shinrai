@@ -11,7 +11,7 @@
 
 package com.manifestors.shinrai.mixins.minecraft.input;
 
-import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.player.MovementInputEvent;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
@@ -29,7 +29,7 @@ public class MixinKeyboardInput extends Input {
         Vec2f rawMoveVec = this.movementVector;
         MovementInputEvent event = new MovementInputEvent(rawMoveVec.y, rawMoveVec.x);
 
-        Shinrai.eventManager.listenEvent(event);
+        EventManager.INSTANCE.listenEvent(event);
 
         this.movementVector = event.toVec();
     }

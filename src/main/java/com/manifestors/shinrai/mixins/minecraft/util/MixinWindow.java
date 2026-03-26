@@ -12,6 +12,7 @@
 package com.manifestors.shinrai.mixins.minecraft.util;
 
 import com.manifestors.shinrai.client.Shinrai;
+import com.manifestors.shinrai.client.event.EventManager;
 import com.manifestors.shinrai.client.event.events.rendering.ImGuiDrawEvent;
 import com.manifestors.shinrai.client.imgui.manager.ImGuiManager;
 import net.minecraft.client.util.Icons;
@@ -60,7 +61,7 @@ public class MixinWindow {
     @Inject(method = "swapBuffers", at = @At("HEAD"))
     private void sa(TracyFrameCapturer capturer, CallbackInfo ci) {
         ImGuiDrawEvent event = new ImGuiDrawEvent();
-        Shinrai.INSTANCE.getEventManager().listenEvent(event);
+        EventManager.INSTANCE.listenEvent(event);
         if (event.isReadyForDraw()) {
             ImGuiManager.INSTANCE.render(event.draw);
         }
