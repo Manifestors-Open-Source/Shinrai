@@ -30,11 +30,30 @@ repositories {
     maven("https://jitpack.io")
 }
 
+val osName = System.getProperty("os.name").lowercase()
+
+val imGuiPlatform = when {
+    osName.contains("win") -> "windows"
+    osName.contains("mac") -> "macos"
+    osName.contains("nix") || osName.contains("nux") -> "linux"
+    else -> "Unknown"
+}
+
+val imGuiVersion = "1.90.0"
+
 dependencies {
     // To change the versions see the gradle.properties file
     minecraft("com.mojang:minecraft:${project.property("minecraft_version")}")
     mappings("net.fabricmc:yarn:${project.property("yarn_mappings")}:v2")
+
     implementation("com.google.code.gson:gson:2.13.1")
+    implementation("io.github.spair:imgui-java-binding:$imGuiVersion")
+    implementation("io.github.spair:imgui-java-lwjgl3:$imGuiVersion") {
+        exclude(group = "org.lwjgl")
+    }
+
+    runtimeOnly("io.github.spair:imgui-java-natives-$imGuiPlatform:$imGuiVersion")
+
     modImplementation("net.fabricmc:fabric-loader:${project.property("loader_version")}")
     modImplementation("net.fabricmc:fabric-language-kotlin:${project.property("kotlin_loader_version")}")
     modImplementation("net.fabricmc.fabric-api:fabric-api:${project.property("fabric_version")}")

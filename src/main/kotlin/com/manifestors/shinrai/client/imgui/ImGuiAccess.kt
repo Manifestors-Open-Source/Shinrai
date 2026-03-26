@@ -9,13 +9,17 @@
  *
  */
 
-package com.manifestors.shinrai.client.features.module.modules.movement
+package com.manifestors.shinrai.client.imgui
 
-import com.manifestors.shinrai.client.features.module.Module
-import com.manifestors.shinrai.client.features.module.ModuleCategory
+import imgui.ImDrawList
+import imgui.ImGui
+import imgui.ImGuiIO
 
-object NoSlow : Module(
-    name = "NoSlow",
-    description = "Removes slowness effect when consuming or using item.",
-    category = ModuleCategory.MOVEMENT
-)
+interface ImGuiAccess {
+
+    val io: ImGuiIO
+        get() = ImGui.getIO()
+
+    val drawList: ImDrawList
+        get() = ImGui.getBackgroundDrawList()
+}

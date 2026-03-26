@@ -9,13 +9,11 @@
  *
  */
 
-package com.manifestors.shinrai.client.features.module.modules.movement
+package com.manifestors.shinrai.client.event.events.rendering
 
-import com.manifestors.shinrai.client.features.module.Module
-import com.manifestors.shinrai.client.features.module.ModuleCategory
+import com.manifestors.shinrai.client.event.ConstantEvent
 
-object NoSlow : Module(
-    name = "NoSlow",
-    description = "Removes slowness effect when consuming or using item.",
-    category = ModuleCategory.MOVEMENT
-)
+class ImGuiDrawEvent : ConstantEvent() {
+    var isReadyForDraw = false
+    lateinit var draw: () -> Unit
+}

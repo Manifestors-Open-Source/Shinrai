@@ -9,13 +9,10 @@
  *
  */
 
-package com.manifestors.shinrai.client.features.module.modules.movement
+package com.manifestors.shinrai.client.features.module.modules.visuals
 
 import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
+import org.lwjgl.glfw.GLFW
 
-object NoSlow : Module(
-    name = "NoSlow",
-    description = "Removes slowness effect when consuming or using item.",
-    category = ModuleCategory.MOVEMENT
-)
+class ClickGUI : Module("ClickGUI", category = ModuleCategory.VISUALS, keyCode = GLFW.GLFW_KEY_RIGHT_SHIFT)

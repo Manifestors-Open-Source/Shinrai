@@ -1,13 +1,11 @@
 /*
  *
- *  * Copyright © 2026 Manifestors Open Source
- *  * License: GPL-3.0
- *  *
- *  * All code in this project is the property of the Manifestors Open Source team
- *  * and its contributors. If you use this code in any project, please provide proper attribution
- *  * and release your project under the GPL-3.0 license as well.
- *  *
- *  * For more details, see: https://www.gnu.org/licenses/gpl-3.0.en.html
+ * Copyright © 2026 Manifestors Open Source
+ * License: GPL-3.0
+ * All code in this project is the property of the Manifestors Open Source team
+ * and its contributors. If you use this code in any project, please provide proper attribution
+ * and release your project under the GPL-3.0 license as well.
+ * For more details, see: https://www.gnu.org/licenses/gpl-3.0.en.html
  *
  */
 
@@ -16,9 +14,14 @@ package com.manifestors.shinrai.client.features.module.modules.visuals
 import com.manifestors.shinrai.client.Shinrai
 import com.manifestors.shinrai.client.Shinrai.moduleManager
 import com.manifestors.shinrai.client.event.annotations.InvokeEvent
-import com.manifestors.shinrai.client.event.events.rendering.Rendering2DEvent
+import com.manifestors.shinrai.client.event.events.rendering.ImGuiDrawEvent
 import com.manifestors.shinrai.client.features.module.Module
 import com.manifestors.shinrai.client.features.module.ModuleCategory
+import com.manifestors.shinrai.client.imgui.ImGuiAccess
+import imgui.ImColor
+import imgui.ImGui
+import imgui.ImVec2
+import net.minecraft.client.gui.screen.GameMenuScreen
 import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffectUtil
 import net.minecraft.screen.ScreenTexts
@@ -29,7 +32,7 @@ class HUD : Module(
     name = "HUD",
     description = "Shows active modules and watermark.",
     category = ModuleCategory.VISUALS
-) {
+), ImGuiAccess {
 
     private val colors = arrayOf(
         Color.RED,
@@ -43,48 +46,53 @@ class HUD : Module(
     )
 
     @InvokeEvent
-    fun onRendering2D(event: Rendering2DEvent) {
-        renderWatermark(event)
-        renderArrayList(event)
-        renderPotionEffects(event)
-    }
-
-    private fun renderWatermark(event: Rendering2DEvent) {
-        event.context.drawText(mc.textRenderer, Shinrai.NAME, 2, 3, Color.RED.rgb, true)
-    }
-
-    private fun renderArrayList(event: Rendering2DEvent) {
-        var yOffset = 0
-
-        val activeModules = moduleManager.modules
-            .filter { it.enabled }
-            .sortedByDescending { mc.textRenderer.getWidth(it.name) }
-
-        for (module in activeModules) {
-            val name = module.name
-            val x = event.width - mc.textRenderer.getWidth(name) - 3
-            event.context.drawText(mc.textRenderer, name, x, yOffset + 5, Color.RED.rgb, true)
-            yOffset += 11
+    fun onDraw(event: ImGuiDrawEvent) {
+        event.isReadyForDraw = mc.world != null
+        event.draw = {
+            renderWatermark()
+            renderArrayList()
+            renderPotionEffects()
         }
     }
 
-    private fun renderPotionEffects(event: Rendering2DEvent) {
+    private fun renderWatermark() {
+        drawList.addText(ImVec2(2f, 3f), ImColor.rgb(255, 0, 0), Shinrai.NAME)
+    }
+
+    private fun renderArrayList() {
+        var yOffset = 0f
+
+        val activeModules = moduleManager.modules
+            .filter { it.enabled }
+            .sortedByDescending { ImGui.calcTextSize(it.name).x }
+
+        for (module in activeModules) {
+            val name = module.name
+            val x = io.displaySizeX - ImGui.calcTextSize(name).x - 3
+
+            drawList.addText(ImVec2(x, yOffset), ImColor.rgb(255, 0, 0), name)
+            yOffset += io.fontDefault.fontSize
+        }
+    }
+
+    private fun renderPotionEffects() {
         val player = mc.player ?: return
         val world = mc.world ?: return
 
         val statusEffects = player.statusEffects
-            .sortedByDescending { mc.textRenderer.getWidth(it.effectType.value().name.string) }
+            .sortedByDescending { ImGui.calcTextSize(it.effectType.value().name.string).x }
 
         if (statusEffects.isEmpty() || mc.currentScreen?.showsStatusEffects() == true) return
 
-        var yOffset = 0
+        var yOffset = 0f
+        val fontSize = io.fontDefault.fontSize
         statusEffects.forEachIndexed { index, effect ->
             val effectName = getStatusEffectDescription(effect).string + " : " +
                     StatusEffectUtil.getDurationText(effect, 1.0f, world.tickManager.tickRate).literalString
-            val x = event.width - mc.textRenderer.getWidth(effectName) - 3
-            val y = event.height - 15 - yOffset
-            event.context.drawText(mc.textRenderer, effectName, x, y, getRandomColor(index), true)
-            yOffset += 11
+            val x = io.displaySizeX - ImGui.calcTextSize(effectName).x - 3
+            val y = io.displaySizeY - fontSize - yOffset
+            drawList.addText(ImVec2(x, y), ImColor.rgb(255, 0, 0), effectName)
+            yOffset += fontSize
         }
     }
 
