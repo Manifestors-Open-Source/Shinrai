@@ -25,24 +25,12 @@ import net.minecraft.entity.effect.StatusEffectInstance
 import net.minecraft.entity.effect.StatusEffectUtil
 import net.minecraft.screen.ScreenTexts
 import net.minecraft.text.Text
-import java.awt.Color
 
 class HUD : Module(
     name = "HUD",
     description = "Shows active modules and watermark.",
     category = ModuleCategory.VISUALS
 ), ImGuiAccess {
-
-    private val colors = arrayOf(
-        Color.RED,
-        Color.BLUE,
-        Color.ORANGE,
-        Color.PINK,
-        Color.YELLOW,
-        Color.MAGENTA,
-        Color.CYAN,
-        Color(30, 190, 120)
-    )
 
     @InvokeEvent
     fun onDraw(event: ImGuiDrawEvent) {
@@ -105,7 +93,4 @@ class HUD : Module(
         return text
     }
 
-    private fun getRandomColor(index: Int): Int {
-        return colors[index % colors.size].rgb
-    }
 }

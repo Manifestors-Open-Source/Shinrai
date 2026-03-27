@@ -14,22 +14,30 @@ package com.manifestors.shinrai.client.imgui.fonts
 import com.manifestors.shinrai.client.Shinrai
 import com.manifestors.shinrai.client.imgui.ImGuiAccess
 
-
 object FontManager : ImGuiAccess {
 
     fun initializeFonts() {
         val path = "/assets/shinrai/font/SF-Pro-Display-Regular.ttf"
-        this.javaClass.getResourceAsStream(path)?.let { stream ->
-            val bytes = stream.readBytes()
+        val fontAtlas = io.fonts
 
-            val fontAtlas = io.fonts
+        val stream = this.javaClass.getResourceAsStream(path)
+
+        if (stream == null) {
+            io.fontDefault = fontAtlas.addFontDefault()
+            Shinrai.logger.error("Cannot find font: $path. Using ImGui's default font.")
+        } else {
+            Shinrai.logger.info("Loading custom ImGui font: $path")
+
+            val bytes = stream.readBytes()
 
             val font = fontAtlas.addFontFromMemoryTTF(bytes, 26.0f)
 
             io.fontDefault = font
 
-            fontAtlas.build()
-        } ?: Shinrai.logger.error("Cannot find font: $path. Using ImGui's default font.")
+            Shinrai.logger.info("Custom font(s) loaded successfully.")
+        }
+
+        fontAtlas.build()
     }
 
 }
