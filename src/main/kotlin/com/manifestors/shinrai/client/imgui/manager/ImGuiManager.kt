@@ -33,7 +33,6 @@ object ImGuiManager : MinecraftInstance {
 
         val io = ImGui.getIO()
         io.iniFilename = null
-        io.addConfigFlags(ImGuiConfigFlags.NavEnableKeyboard)
 
         FontManager.initializeFonts()
 
@@ -47,8 +46,13 @@ object ImGuiManager : MinecraftInstance {
 
     fun render(block: () -> Unit) {
         val ctx = ImGui.getCurrentContext()
-        if (ctx == null || !initialized) {
-            Shinrai.logger.error("Context is null or not initialized")
+        if (ctx == null) {
+            Shinrai.logger.error("ImGui context is null.")
+            return
+        }
+
+        if (!initialized) {
+            Shinrai.logger.error("ImGui context is not initialized.")
             return
         }
 
